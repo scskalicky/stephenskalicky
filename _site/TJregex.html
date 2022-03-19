@@ -378,12 +378,14 @@ grep(&quot;Hello&quot;, strings)</code></pre>
 <pre class="r"><code>strings_changed &lt;- sub(&quot;Hello&quot;, &quot;hi&quot;, strings)
 # notice &quot;Hello&quot; has changed to &quot;hi&quot;
 strings_changed</code></pre>
-<pre><code>## [1] &quot;hi&quot;                  &quot;where are you going&quot; &quot;goiing?&quot;             &quot;goi9ng&quot;</code></pre>
+<pre><code>## [1] &quot;hi&quot;                  &quot;where are you going&quot; &quot;goiing?&quot;            
+## [4] &quot;goi9ng&quot;</code></pre>
 <pre class="r"><code>strings_changed2 &lt;- sub(&quot;goiing&quot;, &quot;going&quot;, strings)
 
 # notice change to &quot;goiing&quot;
 strings_changed2</code></pre>
-<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;              &quot;goi9ng&quot;</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;             
+## [4] &quot;goi9ng&quot;</code></pre>
 </div>
 <div id="regular-expressions" class="section level2">
 <h2>Regular expressions</h2>
@@ -392,13 +394,15 @@ strings_changed2</code></pre>
 
 # the `.` means &quot;match anything&quot; so it has matched the extra &quot;i&quot;
 strings_changed3</code></pre>
-<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;              &quot;going&quot;</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;             
+## [4] &quot;going&quot;</code></pre>
 <p>Often times you may want to see what the character was that was replaced. You can do that by using brackets and this <code>\\1</code>:</p>
 <pre class="r"><code>strings_changed4 &lt;- sub(&quot;goi(.)ng&quot;, &quot;\\1&quot;, strings)
 
 # what is different here? Now the results are the thing that was matched (and subsequently used to replace the original string)
 strings_changed4</code></pre>
-<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;i?&quot;                  &quot;9&quot;</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;i?&quot;                 
+## [4] &quot;9&quot;</code></pre>
 <p>This should be all we need to start looking at some data (for now). </p>
 </div>
 <div id="course-learning-objectives" class="section level2">
@@ -410,12 +414,14 @@ strings_changed4</code></pre>
 </ol>
 <p>(you can download the data here <a href="https://www.stephenskalicky.com/r_data/closDataset.csv">FHSS CLOs</a>)</p>
 <pre class="r"><code>## import whole dataset
-dat &lt;- read.csv(&quot;closDataset.csv&quot;, sep=&quot;\t&quot;)
+#dat &lt;- read.csv(&quot;closDataset.csv&quot;, sep=&quot;\t&quot;)
+
+dat &lt;- read.csv(&#39;https://www.stephenskalicky.com/r_data/closDataset.csv&#39;, sep = &quot;\t&quot;)
 
 # note how the course code is entered - the last three digits are the number, where the first of these three digits tells us the level of the course (i.e., 1 = first year, 2 = second year, etc.).
 dat$COURSE[1:10]</code></pre>
-<pre><code>##  [1] &quot;ALIN591&quot; &quot;ALIN592&quot; &quot;ALIN690&quot; &quot;ANTH100&quot; &quot;ANTH101&quot; &quot;ANTH102&quot; &quot;ANTH200&quot; &quot;ANTH201&quot; &quot;ANTH204&quot;
-## [10] &quot;ANTH208&quot;</code></pre>
+<pre><code>##  [1] &quot;ALIN591&quot; &quot;ALIN592&quot; &quot;ALIN690&quot; &quot;ANTH100&quot; &quot;ANTH101&quot; &quot;ANTH102&quot; &quot;ANTH200&quot;
+##  [8] &quot;ANTH201&quot; &quot;ANTH204&quot; &quot;ANTH208&quot;</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>We will need to create a new variable <code>year</code> so we know which year a course is. Examine the <code>COURSE</code> variable and see what it looks like. You should see four characters followed by a series of numbers. We want to get the first number after the four letters. How can we do that? (Remember that the ‘.’ matches any character)</li>
 </ol>
@@ -450,36 +456,40 @@ clos &lt;- strsplit(dat$CLO, &quot;\\W&quot;)
 # check one - note that &quot;Undertake&quot; is captialized
 clos[5]</code></pre>
 <pre><code>## [[1]]
-##  [1] &quot;1&quot;               &quot;Identify&quot;        &quot;and&quot;             &quot;analyse&quot;         &quot;fundamental&quot;    
-##  [6] &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;        &quot;&quot;                &quot;and&quot;            
-## [11] &quot;research&quot;        &quot;practices&quot;       &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;         
-## [16] &quot;and&quot;             &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
-## [21] &quot;2&quot;               &quot;Undertake&quot;       &quot;research&quot;        &quot;utilising&quot;       &quot;an&quot;             
-## [26] &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;             &quot;communicate&quot;     &quot;your&quot;           
-## [31] &quot;findings&quot;        &quot;in&quot;              &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;        
-## [36] &quot;form&quot;            &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;Explain&quot;        
-## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;              &quot;culture&quot;        
-## [46] &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;             &quot;another&quot;         &quot;and&quot;            
-## [51] &quot;are&quot;             &quot;integrated&quot;      &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;       
-## [56] &quot;system&quot;</code></pre>
+##  [1] &quot;1&quot;               &quot;Identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;Undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;Explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
 <p>Let’s change all of the words to lowercase using <code>lappy</code> - this function will take a single function and “apply” it to a list of things. This means we will “apply” the function <code>tolower</code> to everything in the list <code>clos</code></p>
 <pre class="r"><code>clos &lt;- lapply(clos, tolower)
 
 # what happened to &quot;Undertake&quot;?
 clos[5]</code></pre>
 <pre><code>## [[1]]
-##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;         &quot;fundamental&quot;    
-##  [6] &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;        &quot;&quot;                &quot;and&quot;            
-## [11] &quot;research&quot;        &quot;practices&quot;       &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;         
-## [16] &quot;and&quot;             &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
-## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;       &quot;an&quot;             
-## [26] &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;             &quot;communicate&quot;     &quot;your&quot;           
-## [31] &quot;findings&quot;        &quot;in&quot;              &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;        
-## [36] &quot;form&quot;            &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
-## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;              &quot;culture&quot;        
-## [46] &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;             &quot;another&quot;         &quot;and&quot;            
-## [51] &quot;are&quot;             &quot;integrated&quot;      &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;       
-## [56] &quot;system&quot;</code></pre>
+##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Using what we know about, we can create stop-lists for each level of Bloom’s taxonomy. There is a guide from the university about writing CLOs. It includes a table at the bottom of common words for each level of Bloom’s taxonomy:</li>
 </ol>
@@ -502,18 +512,20 @@ evaluate &lt;-&quot;^judge|^recommend|^critique|^justify|^check&quot;</code></pr
 </ol>
 <pre class="r"><code>clos[5]</code></pre>
 <pre><code>## [[1]]
-##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;         &quot;fundamental&quot;    
-##  [6] &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;        &quot;&quot;                &quot;and&quot;            
-## [11] &quot;research&quot;        &quot;practices&quot;       &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;         
-## [16] &quot;and&quot;             &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
-## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;       &quot;an&quot;             
-## [26] &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;             &quot;communicate&quot;     &quot;your&quot;           
-## [31] &quot;findings&quot;        &quot;in&quot;              &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;        
-## [36] &quot;form&quot;            &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
-## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;              &quot;culture&quot;        
-## [46] &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;             &quot;another&quot;         &quot;and&quot;            
-## [51] &quot;are&quot;             &quot;integrated&quot;      &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;       
-## [56] &quot;system&quot;</code></pre>
+##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
 <p>Write a function again using <code>lapply</code> to “apply” a single function to a lot of things. In this case, we are using an <code>anonymous function</code> which is a function that does not have a name and is not saved permanently. Below, we apply the anonymous function which says to use <code>gsub</code> on every element of x, where x = clos. The pattern to search for is the object <code>know</code> (see above), and the replacement is the word <code>know</code>.</p>
 <pre class="r"><code>## apply each of the above to the clos, changing the words
 clos &lt;- lapply(clos, function(x) gsub(know, &quot;know&quot;, x))
@@ -521,18 +533,20 @@ clos &lt;- lapply(clos, function(x) gsub(know, &quot;know&quot;, x))
 # identify has been changed to know
 clos[5]</code></pre>
 <pre><code>## [[1]]
-##  [1] &quot;1&quot;               &quot;know&quot;            &quot;and&quot;             &quot;analyse&quot;         &quot;fundamental&quot;    
-##  [6] &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;        &quot;&quot;                &quot;and&quot;            
-## [11] &quot;research&quot;        &quot;practices&quot;       &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;         
-## [16] &quot;and&quot;             &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
-## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;       &quot;an&quot;             
-## [26] &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;             &quot;communicate&quot;     &quot;your&quot;           
-## [31] &quot;findings&quot;        &quot;in&quot;              &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;        
-## [36] &quot;form&quot;            &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
-## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;              &quot;culture&quot;        
-## [46] &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;             &quot;another&quot;         &quot;and&quot;            
-## [51] &quot;are&quot;             &quot;integrated&quot;      &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;       
-## [56] &quot;system&quot;</code></pre>
+##  [1] &quot;1&quot;               &quot;know&quot;            &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
 <p>Repeat this for each list representing a level of Bloom’s Taxonomy</p>
 <pre class="r"><code>clos &lt;- lapply(clos, function(x) gsub(comprehend, &quot;comprehend&quot;, x))
 clos &lt;- lapply(clos, function(x) gsub(apply, &quot;apply&quot;, x))

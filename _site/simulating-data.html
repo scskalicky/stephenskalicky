@@ -377,8 +377,8 @@ time &lt;- c(rep(&quot;pre&quot;,10), rep(&quot;post&quot;, 10))</code></pre>
 <pre class="r"><code>print(subjects)</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="r"><code>print(time)</code></pre>
-<pre><code>##  [1] &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;post&quot; &quot;post&quot; &quot;post&quot;
-## [14] &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot;</code></pre>
+<pre><code>##  [1] &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot; 
+## [11] &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot;</code></pre>
 </div>
 <div id="step-2." class="section level4">
 <h4>Step 2.</h4>
@@ -400,7 +400,8 @@ set.seed(1337)</code></pre>
 <pre class="r"><code>age &lt;- rnorm(n = 10, mean = 38, sd =  2)</code></pre>
 <p>Your age variable should look like this:</p>
 <pre class="r"><code>print(age)</code></pre>
-<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385 41.83423 37.17038</code></pre>
+<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385
+##  [9] 41.83423 37.17038</code></pre>
 <p>Run the <code>rnorm()</code> function again without using <code>set.seed()</code> - you will get different values.</p>
 </div>
 <div id="step-3." class="section level4">
@@ -424,8 +425,9 @@ age2 &lt;- rep(age, 2)</code></pre>
 <pre class="r"><code>print(subjects2)</code></pre>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10  1  2  3  4  5  6  7  8  9 10</code></pre>
 <pre class="r"><code>print(age2)</code></pre>
-<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385 41.83423 37.17038
-## [11] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385 41.83423 37.17038</code></pre>
+<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385
+##  [9] 41.83423 37.17038 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424
+## [17] 39.88756 42.16385 41.83423 37.17038</code></pre>
 </div>
 <div id="step-4." class="section level4">
 <h4>Step 4.</h4>
@@ -439,8 +441,8 @@ age2 &lt;- rep(age, 2)</code></pre>
 <pre><code>## Rows: 20
 ## Columns: 3
 ## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 39.88756, 42.16385, …
-## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;post&quot;, &quot;p…</code></pre>
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…</code></pre>
 </div>
 <div id="step-5." class="section level4">
 <h4>Step 5.</h4>
@@ -459,9 +461,11 @@ set.seed(9876)
 post &lt;- rnorm(10, 85, 2)</code></pre>
 <p>Your <code>pre</code> and <code>post</code> variables should look like this:</p>
 <pre class="r"><code>print(pre)</code></pre>
-<pre><code>##  [1] 73.17874 55.75703 63.47592 64.25773 65.15074 55.80743 69.76431 50.47631 70.11285 64.80356</code></pre>
+<pre><code>##  [1] 73.17874 55.75703 63.47592 64.25773 65.15074 55.80743 69.76431 50.47631
+##  [9] 70.11285 64.80356</code></pre>
 <pre class="r"><code>print(post)</code></pre>
-<pre><code>##  [1] 87.04468 82.68926 84.61898 84.81443 85.03769 82.70186 86.19108 81.36908 86.27821 84.95089</code></pre>
+<pre><code>##  [1] 87.04468 82.68926 84.61898 84.81443 85.03769 82.70186 86.19108 81.36908
+##  [9] 86.27821 84.95089</code></pre>
 </div>
 <div id="step-6." class="section level4">
 <h4>Step 6.</h4>
@@ -474,23 +478,23 @@ data02 &lt;- data01 %&gt;%
 <pre><code>## Rows: 20
 ## Columns: 4
 ## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 39.88756, 42.16385, …
-## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;post&quot;, &quot;p…
-## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 69.76431, 50.47631, …</code></pre>
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…
+## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 6…</code></pre>
 <p>Compare <code>data01</code> and <code>data02</code> using <code>glimpse()</code>- what happened?</p>
 <pre class="r"><code>glimpse(data01)</code></pre>
 <pre><code>## Rows: 20
 ## Columns: 3
 ## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 39.88756, 42.16385, …
-## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;post&quot;, &quot;p…</code></pre>
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…</code></pre>
 <pre class="r"><code>glimpse(data02)</code></pre>
 <pre><code>## Rows: 20
 ## Columns: 4
 ## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 39.88756, 42.16385, …
-## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;post&quot;, &quot;p…
-## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 69.76431, 50.47631, …</code></pre>
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…
+## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 6…</code></pre>
 </div>
 <div id="step-7." class="section level4">
 <h4>Step 7.</h4>
@@ -523,46 +527,52 @@ data02 &lt;- data01 %&gt;%
 <p>There are more sophisticated ways to get this information. For example, the package <code>psych</code> has the <code>describe()</code> function. (If you do not have <code>psych</code>, run <code>install.packages('psych')</code>)</p>
 <pre class="r"><code>library(psych)
 psych::describe(data02)</code></pre>
-<pre><code>##          vars  n  mean    sd median trimmed   mad   min   max range  skew kurtosis   se
-## subjects    1 20  5.50  2.95   5.50    5.50  3.71  1.00 10.00  9.00  0.00    -1.40 0.66
-## age         2 20 39.19  2.52  39.14   39.32  3.43 35.11 42.16  7.06 -0.13    -1.60 0.56
-## time*       3 20  1.50  0.51   1.50    1.50  0.74  1.00  2.00  1.00  0.00    -2.10 0.11
-## score       4 20 73.92 12.07  77.27   74.93 12.37 50.48 87.04 36.57 -0.44    -1.35 2.70</code></pre>
+<pre><code>##          vars  n  mean    sd median trimmed   mad   min   max range  skew
+## subjects    1 20  5.50  2.95   5.50    5.50  3.71  1.00 10.00  9.00  0.00
+## age         2 20 39.19  2.52  39.14   39.32  3.43 35.11 42.16  7.06 -0.13
+## time*       3 20  1.50  0.51   1.50    1.50  0.74  1.00  2.00  1.00  0.00
+## score       4 20 73.92 12.07  77.27   74.93 12.37 50.48 87.04 36.57 -0.44
+##          kurtosis   se
+## subjects    -1.40 0.66
+## age         -1.60 0.56
+## time*       -2.10 0.11
+## score       -1.35 2.70</code></pre>
 <p>The package <code>Hmisc</code> also has a describe function (annoying!) - (If you do not have <code>Hmisc</code>, run <code>install.packages('Hmisc')</code>) - but you probably should use <code>psych::describe()</code> anyhow.</p>
 <pre class="r"><code>library(Hmisc)
 Hmisc::describe(data02)</code></pre>
 <pre><code>## data02 
 ## 
 ##  4  Variables      20  Observations
-## ---------------------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------
 ## subjects 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75 
-##       20        0       10    0.992      5.5    3.474      1.0      1.9      3.0      5.5      8.0 
-##      .90      .95 
-##      9.1     10.0 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       10    0.992      5.5    3.474      1.0      1.9 
+##      .25      .50      .75      .90      .95 
+##      3.0      5.5      8.0      9.1     10.0 
 ## 
 ## lowest :  1  2  3  4  5, highest:  6  7  8  9 10
 ##                                                   
 ## Value        1   2   3   4   5   6   7   8   9  10
 ## Frequency    2   2   2   2   2   2   2   2   2   2
 ## Proportion 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
-## ---------------------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------
 ## age 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75 
-##       20        0       10    0.992    39.19     2.91    35.11    36.47    37.17    39.14    41.83 
-##      .90      .95 
-##    42.09    42.16 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       10    0.992    39.19     2.91    35.11    36.47 
+##      .25      .50      .75      .90      .95 
+##    37.17    39.14    41.83    42.09    42.16 
 ## 
-## lowest : 35.10660 36.62195 37.17038 37.35364 38.38498, highest: 39.88756 41.24459 41.83423 42.08424 42.16385
-##                                                                                            
-## Value      35.10660 36.62195 37.17038 37.35364 38.38498 39.88756 41.24459 41.83423 42.08424
-## Frequency         2        2        2        2        2        2        2        2        2
-## Proportion      0.1      0.1      0.1      0.1      0.1      0.1      0.1      0.1      0.1
-##                    
-## Value      42.16385
-## Frequency         2
-## Proportion      0.1
-## ---------------------------------------------------------------------------------------------------
+## lowest : 35.10660 36.62195 37.17038 37.35364 38.38498
+## highest: 39.88756 41.24459 41.83423 42.08424 42.16385
+##                                                                          
+## Value      35.10660 36.62195 37.17038 37.35364 38.38498 39.88756 41.24459
+## Frequency         2        2        2        2        2        2        2
+## Proportion      0.1      0.1      0.1      0.1      0.1      0.1      0.1
+##                                      
+## Value      41.83423 42.08424 42.16385
+## Frequency         2        2        2
+## Proportion      0.1      0.1      0.1
+## --------------------------------------------------------------------------------
 ## time 
 ##        n  missing distinct 
 ##       20        0        2 
@@ -570,23 +580,25 @@ Hmisc::describe(data02)</code></pre>
 ## Value      post  pre
 ## Frequency    10   10
 ## Proportion  0.5  0.5
-## ---------------------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------------
 ## score 
-##        n  missing distinct     Info     Mean      Gmd      .05      .10      .25      .50      .75 
-##       20        0       20        1    73.92    13.71    55.49    55.80    64.67    77.27    84.85 
-##      .90      .95 
-##    86.20    86.32 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       20        1    73.92    13.71    55.49    55.80 
+##      .25      .50      .75      .90      .95 
+##    64.67    77.27    84.85    86.20    86.32 
 ## 
-## lowest : 50.47631 55.75703 55.80743 63.47592 64.25773, highest: 84.95089 85.03769 86.19108 86.27821 87.04468
+## lowest : 50.47631 55.75703 55.80743 63.47592 64.25773
+## highest: 84.95089 85.03769 86.19108 86.27821 87.04468
 ## 
-## 50.4763082827118 (1, 0.05), 55.7570280170324 (1, 0.05), 55.8074272726501 (1, 0.05),
-## 63.4759184130138 (1, 0.05), 64.257728822454 (1, 0.05), 64.8035573081937 (1, 0.05),
-## 65.1507432628376 (1, 0.05), 69.7643060921729 (1, 0.05), 70.1128487352441 (1, 0.05),
-## 73.1787395912597 (1, 0.05), 81.369077070678 (1, 0.05), 82.6892570042581 (1, 0.05),
-## 82.7018568181625 (1, 0.05), 84.6189796032534 (1, 0.05), 84.8144322056135 (1, 0.05),
-## 84.9508893270484 (1, 0.05), 85.0376858157094 (1, 0.05), 86.1910765230432 (1, 0.05),
-## 86.278212183811 (1, 0.05), 87.0446848978149 (1, 0.05)
-## ---------------------------------------------------------------------------------------------------</code></pre>
+## 50.4763082827118 (1, 0.05), 55.7570280170324 (1, 0.05), 55.8074272726501 (1,
+## 0.05), 63.4759184130138 (1, 0.05), 64.257728822454 (1, 0.05), 64.8035573081937
+## (1, 0.05), 65.1507432628376 (1, 0.05), 69.7643060921729 (1, 0.05),
+## 70.1128487352441 (1, 0.05), 73.1787395912597 (1, 0.05), 81.369077070678 (1,
+## 0.05), 82.6892570042581 (1, 0.05), 82.7018568181625 (1, 0.05), 84.6189796032534
+## (1, 0.05), 84.8144322056135 (1, 0.05), 84.9508893270484 (1, 0.05),
+## 85.0376858157094 (1, 0.05), 86.1910765230432 (1, 0.05), 86.278212183811 (1,
+## 0.05), 87.0446848978149 (1, 0.05)
+## --------------------------------------------------------------------------------</code></pre>
 <ul>
 <li>Note that we called the specific use of <code>describe</code> by calling the specific package in the format of <code>package::function()</code></li>
 </ul>

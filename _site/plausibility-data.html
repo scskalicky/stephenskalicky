@@ -360,9 +360,9 @@ $(document).ready(function () {
 <p>The data is in the file <code>plausbility_data.csv</code></p>
 <p>You can download the data <a href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
 <pre class="r"><code>library(tidyverse)
-p.data &lt;- read_csv(&#39;plausibility_data.csv&#39;)</code></pre>
+p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_data.csv&#39;)</code></pre>
 <pre><code>## Rows: 800 Columns: 6
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (3): story_id, att, condition
 ## dbl (3): subject, age, rating
@@ -586,7 +586,8 @@ Line 5: I used <code>theme_bw()</code> from ggthemes to get the final look.</p>
   group_by(story_id, condition) %&gt;%
   summarise(mean.plaus = mean(rating), sd.plaus = sd(rating)) %&gt;%
   arrange(condition, mean.plaus)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <pre class="r"><code>p.data3</code></pre>
 <pre><code>## # A tibble: 80 × 4
 ## # Groups:   story_id [20]

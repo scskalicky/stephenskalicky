@@ -400,12 +400,12 @@ $(document).ready(function () {
 <li>Plot dprime</li>
 </ol>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
 ## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
 ## ✓ tidyr   1.2.0     ✓ stringr 1.4.0
 ## ✓ readr   2.1.2     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(ggthemes)</code></pre>
@@ -415,10 +415,10 @@ $(document).ready(function () {
 <p>You can download the dateset from <a href="&#39;https://stephenskalicky.com/r_data/dprime_data_raw.csv&#39;">here</a> or use read_csv() to import the data. The raw dataset can be saved as ‘df’.</p>
 <pre class="r"><code>df &lt;- read_csv(&#39;https://stephenskalicky.com/r_data/dprime_data_raw.csv&#39;)</code></pre>
 <pre><code>## Rows: 19711 Columns: 38
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (10): block, word, type, resp, vuw, condition, gender, test, otherL1, deci
-## dbl (28): order, rt, list, cycle, sequence, age, score, year, LexTale, cscoresum, prof, domil1,...
+## dbl (28): order, rt, list, cycle, sequence, age, score, year, LexTale, cscor...
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
@@ -444,7 +444,8 @@ You’ll need to use <code>group_by()</code>, <code>summarise()</code>, and <cod
 scores.tv &lt;- df2 %&gt;%
   dplyr::group_by(vuw, type, resp) %&gt;%
   dplyr::summarise(n = n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;vuw&#39;, &#39;type&#39;. You can override using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;vuw&#39;, &#39;type&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <pre class="r"><code># base R
 scores.b &lt;- as.data.frame(table(df2))</code></pre>
 <p>Your <code>scores</code> df should be like this:</p>
@@ -452,10 +453,10 @@ scores.b &lt;- as.data.frame(table(df2))</code></pre>
 <pre><code>## Rows: 302
 ## Columns: 4
 ## Groups: vuw, type [124]
-## $ vuw  &lt;chr&gt; &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;03faf09f&quot;, …
-## $ type &lt;chr&gt; &quot;nonword&quot;, &quot;nonword&quot;, &quot;nonword&quot;, &quot;word&quot;, &quot;word&quot;, &quot;word&quot;, &quot;nonword&quot;, &quot;nonword&quot;, &quot;word…
-## $ resp &lt;chr&gt; &quot;correct&quot;, &quot;incorrect&quot;, &quot;missing&quot;, &quot;correct&quot;, &quot;incorrect&quot;, &quot;missing&quot;, &quot;correct&quot;, &quot;in…
-## $ n    &lt;int&gt; 92, 65, 1, 151, 12, 1, 111, 47, 133, 29, 1, 103, 55, 152, 12, 83, 74, 1, 143, 20, 13…</code></pre>
+## $ vuw  &lt;chr&gt; &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d3700&quot;, &quot;009d…
+## $ type &lt;chr&gt; &quot;nonword&quot;, &quot;nonword&quot;, &quot;nonword&quot;, &quot;word&quot;, &quot;word&quot;, &quot;word&quot;, &quot;nonword…
+## $ resp &lt;chr&gt; &quot;correct&quot;, &quot;incorrect&quot;, &quot;missing&quot;, &quot;correct&quot;, &quot;incorrect&quot;, &quot;missi…
+## $ n    &lt;int&gt; 92, 65, 1, 151, 12, 1, 111, 47, 133, 29, 1, 103, 55, 152, 12, 83,…</code></pre>
 </div>
 <div id="pivot-the-data-wider" class="section level3">
 <h3>2. Pivot the data wider</h3>
