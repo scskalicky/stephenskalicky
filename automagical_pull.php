@@ -7,5 +7,3 @@ if ( $_POST['payload'] ) {
 shell_exec('mc -c ~/public_html/stephenskalicky/r_data/* ~/public_html/stephenskalicky/r_data/');
 
 }
-
-# ok need to move this into server and make it autowork then might be ok?
