@@ -15,7 +15,7 @@ navbar:
     - text: 'Research Topics'
       menu: 
           - text: 'Satire and figurative language'
-            href: /satire.html
+            href: satire.html
           - text: 'Computational modelling of humour, figurative language, and more'
             href: computational-modelling.html
           - text: 'Second language acquisition and representation'
