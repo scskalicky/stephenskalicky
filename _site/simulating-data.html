@@ -15,8 +15,8 @@
 
 <title>Simulating and describing data</title>
 
-<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -71,6 +71,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -91,6 +92,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -243,7 +247,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -259,7 +263,7 @@ $(document).ready(function () {
   <a href="academic-position.html">Academic Position</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Research Topics
      
     <span class="caret"></span>
@@ -277,7 +281,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     LALS VUW R
      
     <span class="caret"></span>
@@ -523,18 +527,15 @@ data02 &lt;- data01 %&gt;%
 <p>There are more sophisticated ways to get this information. For example, the package <code>psych</code> has the <code>describe()</code> function. (If you do not have <code>psych</code>, run <code>install.packages('psych')</code>)</p>
 <pre class="r"><code>library(psych)
 psych::describe(data02)</code></pre>
-<pre><code>## Warning in psych::describe(data02): NAs introduced by coercion</code></pre>
-<pre><code>## Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf</code></pre>
-<pre><code>## Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf</code></pre>
 <pre><code>##          vars  n  mean    sd median trimmed   mad   min   max range  skew
 ## subjects    1 20  5.50  2.95   5.50    5.50  3.71  1.00 10.00  9.00  0.00
 ## age         2 20 39.19  2.52  39.14   39.32  3.43 35.11 42.16  7.06 -0.13
-## time*       3 20   NaN    NA     NA     NaN    NA   Inf  -Inf  -Inf    NA
+## time*       3 20  1.50  0.51   1.50    1.50  0.74  1.00  2.00  1.00  0.00
 ## score       4 20 73.92 12.07  77.27   74.93 12.37 50.48 87.04 36.57 -0.44
 ##          kurtosis   se
 ## subjects    -1.40 0.66
 ## age         -1.60 0.56
-## time*          NA   NA
+## time*       -2.10 0.11
 ## score       -1.35 2.70</code></pre>
 <p>The package <code>Hmisc</code> also has a describe function (annoying!) - (If you do not have <code>Hmisc</code>, run <code>install.packages('Hmisc')</code>) - but you probably should use <code>psych::describe()</code> anyhow.</p>
 <pre class="r"><code>library(Hmisc)
@@ -588,6 +589,15 @@ Hmisc::describe(data02)</code></pre>
 ## 
 ## lowest : 50.47631 55.75703 55.80743 63.47592 64.25773
 ## highest: 84.95089 85.03769 86.19108 86.27821 87.04468
+## 
+## 50.4763082827118 (1, 0.05), 55.7570280170324 (1, 0.05), 55.8074272726501 (1,
+## 0.05), 63.4759184130138 (1, 0.05), 64.257728822454 (1, 0.05), 64.8035573081937
+## (1, 0.05), 65.1507432628376 (1, 0.05), 69.7643060921729 (1, 0.05),
+## 70.1128487352441 (1, 0.05), 73.1787395912597 (1, 0.05), 81.369077070678 (1,
+## 0.05), 82.6892570042581 (1, 0.05), 82.7018568181625 (1, 0.05), 84.6189796032534
+## (1, 0.05), 84.8144322056135 (1, 0.05), 84.9508893270484 (1, 0.05),
+## 85.0376858157094 (1, 0.05), 86.1910765230432 (1, 0.05), 86.278212183811 (1,
+## 0.05), 87.0446848978149 (1, 0.05)
 ## --------------------------------------------------------------------------------</code></pre>
 <ul>
 <li>Note that we called the specific use of <code>describe</code> by calling the specific package in the format of <code>package::function()</code></li>
