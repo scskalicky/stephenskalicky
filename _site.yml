@@ -2,10 +2,11 @@ name: "my-website"
 
 output:
   html_document:
+      theme: flatly
       includes:
           in_header: analytics.html
 navbar:
-  title: "SCS"
+  title: SCS
   left:
     - text: "Home"
       href: index.html
