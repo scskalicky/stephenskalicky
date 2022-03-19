@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+<meta name="date" content="2021-03-16" />
+
+<title>Simulating and describing data</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Simulating and describing data</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">2021-03-16</h4>
+
+</div>
+
+
+<p>Almost any quantitative report will need descriptive statistics. At a minimum, this means providing the mean and SD of your measures of interest, but many times you need to report more than that. Let’s focus on a way to report M and SD for now.</p>
+<p>Need to load our favourite library (load <code>tidyverse</code>)</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<div id="our-task" class="section level3">
+<h3>Our task</h3>
+<p>Simulating data is one strategy to gain experience.<br />
+Our goal is to create a tibble with 20 rows and 4 columns for 10 subjects.<br />
+We will have data for pre/post test for the subjects, along with their age.<br />
+We will then create summary statistics and output the statistics as a spreadsheet.</p>
+<p>Let’s go!</p>
+<div id="step-1." class="section level4">
+<h4>Step 1.</h4>
+<p>You may want to use the <code>rep()</code> function.</p>
+<p>Create a variable named <code>subjects</code> with 10 values. The values are the number range 1:10.</p>
+<p>Create a second variable named <code>time</code> with 20 values. The values should be ten repeats of “pre” and then ten repeats of “post”. It is important they remain in this order. You can do this many different ways, but one way is to use two <code>rep()</code> functions inside a single <code>c()</code> function. We will worry about why <code>time</code> is twice as long later.</p>
+<pre class="r"><code>subjects &lt;- rep(1:10, 1)
+time &lt;- c(rep(&quot;pre&quot;,10), rep(&quot;post&quot;, 10))</code></pre>
+<p>Your variables should look like this:</p>
+<pre class="r"><code>print(subjects)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>print(time)</code></pre>
+<pre><code>##  [1] &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot;  &quot;pre&quot; 
+## [11] &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot; &quot;post&quot;</code></pre>
+</div>
+<div id="step-2." class="section level4">
+<h4>Step 2.</h4>
+<p>Let’s simulate ages for the participants.</p>
+<p>We will use the <code>rnorm()</code> function, which randomly samples from a defined normal distribution.</p>
+<ul>
+<li>The <code>rnorm()</code> function takes three arguments: <code>n</code>, <code>mean</code>, and <code>sd</code><br />
+</li>
+<li>We have ten subjects, so set <code>n = 10</code>.<br />
+</li>
+<li>Let’s ask for a <code>mean</code> of 38 and a standard deviation (<code>sd</code>) of 3</li>
+</ul>
+<p>Before we do so, we will set a random seed so that we all get the same data.</p>
+<p>Please run <code>set.seed(1337)</code> (use this exact number)</p>
+<p>Always run the <code>set.seed()</code> function before creating the data (i.e., it is not enough to run <code>set.seed()</code> once per session. Ask if you’re confused.)</p>
+<pre class="r"><code># always run the set.seed() BEFORE you create the age variable, each time. 
+set.seed(1337)</code></pre>
+<p>Now, create a new variable named “age” which is the result of calling <code>rnorm()</code> for ten people, with a mean of 38 and a standard deviation of 2. After you create the age variable with the set.seed(), check to see what happens when you call more data from <code>rnorm()</code> without setting that seed.</p>
+<pre class="r"><code>age &lt;- rnorm(n = 10, mean = 38, sd =  2)</code></pre>
+<p>Your age variable should look like this:</p>
+<pre class="r"><code>print(age)</code></pre>
+<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385
+##  [9] 41.83423 37.17038</code></pre>
+<p>Run the <code>rnorm()</code> function again without using <code>set.seed()</code> - you will get different values.</p>
+</div>
+<div id="step-3." class="section level4">
+<h4>Step 3.</h4>
+<p>Create new versions of the <code>subjects</code> and <code>age</code> variables which are the results of duplicating each variable<br />
+- i.e., make <code>subjects</code> and <code>age</code> into new variables which repeat themselves.</p>
+<p>You could do with with the <code>c()</code> function or with the <code>rep()</code> function.</p>
+<p>Of course this is quite dangerous if you do this more than once, so use new variable names: <code>subjects2</code> and <code>age2</code></p>
+<pre class="r"><code># with rep()
+#rep(subjects, 2)
+#rep(age, 2)
+
+# with c()
+#c(subjects, subjects)
+#c(age, age)
+
+# make sure to create new names for the variables. 
+subjects2 &lt;- rep(subjects,2)
+age2 &lt;- rep(age, 2)</code></pre>
+<p>Your variables should look this like</p>
+<pre class="r"><code>print(subjects2)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>print(age2)</code></pre>
+<pre><code>##  [1] 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424 39.88756 42.16385
+##  [9] 41.83423 37.17038 38.38498 35.10660 37.35364 41.24459 36.62195 42.08424
+## [17] 39.88756 42.16385 41.83423 37.17038</code></pre>
+</div>
+<div id="step-4." class="section level4">
+<h4>Step 4.</h4>
+<p>Time to put our data into a better format: a tibble (data frame)</p>
+<p>Create a tibble named <code>data01</code> with three columns: <code>subjects2</code>, <code>age2</code>, and <code>time</code>. Create a pipe and use <code>rename()</code> to renamed <code>subjects2</code> as <code>subjects</code>, and <code>age2</code> as <code>age</code> (there are other ways you could do this.)</p>
+<p>Look at <code>data01</code> with <code>glimpse()</code></p>
+<pre class="r"><code>data01 &lt;- tibble(subjects2, age2, time) %&gt;%
+  rename(subjects = subjects2, age = age2)</code></pre>
+<p>Your tibble should look like this (using <code>glimpse()</code>)</p>
+<pre class="r"><code>glimpse(data01)</code></pre>
+<pre><code>## Rows: 20
+## Columns: 3
+## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…</code></pre>
+</div>
+<div id="step-5." class="section level4">
+<h4>Step 5.</h4>
+<p>Let’s pretend our subjects, on average, did better on the post-test compared to the pre-test. How can we simulate this?</p>
+<ul>
+<li>assume the tests have a range of 0-100</li>
+<li>assume a mean of 65 on the pretest, with an SD of 8, save the variable as <code>pre</code></li>
+<li>assume a mean of 97 on the posttest, with an SD of 2, save the variable as <code>post</code></li>
+<li>set a random seed of 9876 before each variable (use <code>set.seed()</code>)</li>
+</ul>
+<pre class="r"><code>set.seed(9876)
+pre &lt;- rnorm(10, 65, 8)
+  
+
+set.seed(9876)
+post &lt;- rnorm(10, 85, 2)</code></pre>
+<p>Your <code>pre</code> and <code>post</code> variables should look like this:</p>
+<pre class="r"><code>print(pre)</code></pre>
+<pre><code>##  [1] 73.17874 55.75703 63.47592 64.25773 65.15074 55.80743 69.76431 50.47631
+##  [9] 70.11285 64.80356</code></pre>
+<pre class="r"><code>print(post)</code></pre>
+<pre><code>##  [1] 87.04468 82.68926 84.61898 84.81443 85.03769 82.70186 86.19108 81.36908
+##  [9] 86.27821 84.95089</code></pre>
+</div>
+<div id="step-6." class="section level4">
+<h4>Step 6.</h4>
+<p>Combine <code>pre</code> and <code>post</code> into a new variable named <code>score</code> (use <code>c()</code>) Then, using a pipe, create a new tibble named <code>data02</code> from <code>data01</code>. Use the pipe to call <code>cbind()</code> on <code>score</code></p>
+<pre class="r"><code>score &lt;- c(pre, post)
+data02 &lt;- data01 %&gt;%
+  cbind(score)</code></pre>
+<p>Your data should look like this:</p>
+<pre class="r"><code>glimpse(data02)</code></pre>
+<pre><code>## Rows: 20
+## Columns: 4
+## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…
+## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 6…</code></pre>
+<p>Compare <code>data01</code> and <code>data02</code> using <code>glimpse()</code>- what happened?</p>
+<pre class="r"><code>glimpse(data01)</code></pre>
+<pre><code>## Rows: 20
+## Columns: 3
+## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…</code></pre>
+<pre class="r"><code>glimpse(data02)</code></pre>
+<pre><code>## Rows: 20
+## Columns: 4
+## $ subjects &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+## $ age      &lt;dbl&gt; 38.38498, 35.10660, 37.35364, 41.24459, 36.62195, 42.08424, 3…
+## $ time     &lt;chr&gt; &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;, &quot;pre&quot;…
+## $ score    &lt;dbl&gt; 73.17874, 55.75703, 63.47592, 64.25773, 65.15074, 55.80743, 6…</code></pre>
+</div>
+<div id="step-7." class="section level4">
+<h4>Step 7.</h4>
+<p>Now that we have our data, we want to generate some summary statistics.</p>
+<p>Let’s first check with <code>summary()</code> run this function on <code>data02</code>. what do we get? what are we missing?</p>
+<pre class="r"><code>summary(data02)</code></pre>
+<pre><code>##     subjects         age            time               score      
+##  Min.   : 1.0   Min.   :35.11   Length:20          Min.   :50.48  
+##  1st Qu.: 3.0   1st Qu.:37.17   Class :character   1st Qu.:64.67  
+##  Median : 5.5   Median :39.14   Mode  :character   Median :77.27  
+##  Mean   : 5.5   Mean   :39.19                      Mean   :73.92  
+##  3rd Qu.: 8.0   3rd Qu.:41.83                      3rd Qu.:84.85  
+##  Max.   :10.0   Max.   :42.16                      Max.   :87.04</code></pre>
+<p>There are a ton of ways to get summary statistics in R.</p>
+<p>For instance, we can manually call functions on each variable of interest. Run <code>mean()</code>, <code>sd()</code>, and <code>range()</code> on <code>data02$score</code> and <code>data02$age</code></p>
+<p>Your output should look like this:</p>
+<pre class="r"><code>mean(data02$score)</code></pre>
+<pre><code>## [1] 73.92404</code></pre>
+<pre class="r"><code>sd(data02$score)</code></pre>
+<pre><code>## [1] 12.06526</code></pre>
+<pre class="r"><code>range(data02$score)</code></pre>
+<pre><code>## [1] 50.47631 87.04468</code></pre>
+<pre class="r"><code>mean(data02$age)</code></pre>
+<pre><code>## [1] 39.1852</code></pre>
+<pre class="r"><code>sd(data02$age)</code></pre>
+<pre><code>## [1] 2.519155</code></pre>
+<pre class="r"><code>range(data02$age)</code></pre>
+<pre><code>## [1] 35.10660 42.16385</code></pre>
+<p>What are some issues with this method? How would you get these answers into your paper/thesis/report? What might go wrong?</p>
+<p>There are more sophisticated ways to get this information. For example, the package <code>psych</code> has the <code>describe()</code> function. (If you do not have <code>psych</code>, run <code>install.packages('psych')</code>)</p>
+<pre class="r"><code>library(psych)
+psych::describe(data02)</code></pre>
+<pre><code>## Warning in psych::describe(data02): NAs introduced by coercion</code></pre>
+<pre><code>## Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf</code></pre>
+<pre><code>## Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf</code></pre>
+<pre><code>##          vars  n  mean    sd median trimmed   mad   min   max range  skew
+## subjects    1 20  5.50  2.95   5.50    5.50  3.71  1.00 10.00  9.00  0.00
+## age         2 20 39.19  2.52  39.14   39.32  3.43 35.11 42.16  7.06 -0.13
+## time*       3 20   NaN    NA     NA     NaN    NA   Inf  -Inf  -Inf    NA
+## score       4 20 73.92 12.07  77.27   74.93 12.37 50.48 87.04 36.57 -0.44
+##          kurtosis   se
+## subjects    -1.40 0.66
+## age         -1.60 0.56
+## time*          NA   NA
+## score       -1.35 2.70</code></pre>
+<p>The package <code>Hmisc</code> also has a describe function (annoying!) - (If you do not have <code>Hmisc</code>, run <code>install.packages('Hmisc')</code>) - but you probably should use <code>psych::describe()</code> anyhow.</p>
+<pre class="r"><code>library(Hmisc)
+Hmisc::describe(data02)</code></pre>
+<pre><code>## data02 
+## 
+##  4  Variables      20  Observations
+## --------------------------------------------------------------------------------
+## subjects 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       10    0.992      5.5    3.474      1.0      1.9 
+##      .25      .50      .75      .90      .95 
+##      3.0      5.5      8.0      9.1     10.0 
+## 
+## lowest :  1  2  3  4  5, highest:  6  7  8  9 10
+##                                                   
+## Value        1   2   3   4   5   6   7   8   9  10
+## Frequency    2   2   2   2   2   2   2   2   2   2
+## Proportion 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+## --------------------------------------------------------------------------------
+## age 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       10    0.992    39.19     2.91    35.11    36.47 
+##      .25      .50      .75      .90      .95 
+##    37.17    39.14    41.83    42.09    42.16 
+## 
+## lowest : 35.10660 36.62195 37.17038 37.35364 38.38498
+## highest: 39.88756 41.24459 41.83423 42.08424 42.16385
+##                                                                          
+## Value      35.10660 36.62195 37.17038 37.35364 38.38498 39.88756 41.24459
+## Frequency         2        2        2        2        2        2        2
+## Proportion      0.1      0.1      0.1      0.1      0.1      0.1      0.1
+##                                      
+## Value      41.83423 42.08424 42.16385
+## Frequency         2        2        2
+## Proportion      0.1      0.1      0.1
+## --------------------------------------------------------------------------------
+## time 
+##        n  missing distinct 
+##       20        0        2 
+##                     
+## Value      post  pre
+## Frequency    10   10
+## Proportion  0.5  0.5
+## --------------------------------------------------------------------------------
+## score 
+##        n  missing distinct     Info     Mean      Gmd      .05      .10 
+##       20        0       20        1    73.92    13.71    55.49    55.80 
+##      .25      .50      .75      .90      .95 
+##    64.67    77.27    84.85    86.20    86.32 
+## 
+## lowest : 50.47631 55.75703 55.80743 63.47592 64.25773
+## highest: 84.95089 85.03769 86.19108 86.27821 87.04468
+## --------------------------------------------------------------------------------</code></pre>
+<ul>
+<li>Note that we called the specific use of <code>describe</code> by calling the specific package in the format of <code>package::function()</code></li>
+</ul>
+</div>
+<div id="step-8." class="section level4">
+<h4>Step 8.</h4>
+<p>The above information is not sufficient for two reasons. First of all, subjects are repeated twice and thus so is their age score - while this does not affect calculations such as <code>mean()</code> it does affect calculations such as <code>sd()</code> and more. Not good! We also do not care about the M and SD for <code>score</code> as a whole, but rather for the two different time points (pre and post)</p>
+<p>R has plenty of ways to do this. Base R has bracket notation and conditional logic. Below I extract the mean for <code>score</code> for both the pre test and the post test.</p>
+<pre class="r"><code># Do you understand what this code is doing?
+
+mean(data02[data02$time == &#39;pre&#39;,]$score)</code></pre>
+<pre><code>## [1] 63.27846</code></pre>
+<pre class="r"><code>mean(data02[data02$time == &#39;post&#39;,]$score)</code></pre>
+<pre><code>## [1] 84.56962</code></pre>
+<p>Of course, I would recommend using <code>tidyverse</code> functions for this.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+
+<title>joins, factors, plots</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">joins, factors, plots</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">28/04/2021</h4>
+
+</div>
+
+
+<div id="combining-data-from-two-different-sources-using-joins" class="section level3">
+<h3>Combining data from two different sources using joins</h3>
+<p>When working with long data, where participants have multiple observations in multiple rows, you will find that a lot of data is repeated. For instance, demographic features such as participant age and sex or experimental conditions will stay the same for each observation.<br />
+</p>
+<p>Sometimes you will want to add or manipulate data and join it with this repeated measures data. For example:</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>Long data</p>
+<pre class="r"><code>tibble(subject = c(rep(&#39;one&#39;,5), rep(&#39;two&#39;, 5)), 
+       score = (c(1:5, 10:6)))</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    subject score
+##    &lt;chr&gt;   &lt;int&gt;
+##  1 one         1
+##  2 one         2
+##  3 one         3
+##  4 one         4
+##  5 one         5
+##  6 two        10
+##  7 two         9
+##  8 two         8
+##  9 two         7
+## 10 two         6</code></pre>
+<p>Another set of data you want to add</p>
+<pre class="r"><code>tibble(subject = c(&#39;one&#39;,&#39;two&#39;), age = c(42, 79))</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   subject   age
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 one        42
+## 2 two        79</code></pre>
+<p>How can you form a single tibble which has both the score and ages in long format?</p>
+<pre class="r"><code>tibble(subject = c(rep(&#39;one&#39;,5), rep(&#39;two&#39;, 5)), 
+       score = (c(1:5, 10:6)),
+       age = c(rep(42,5), rep(79,5)))</code></pre>
+<pre><code>## # A tibble: 10 × 3
+##    subject score   age
+##    &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;
+##  1 one         1    42
+##  2 one         2    42
+##  3 one         3    42
+##  4 one         4    42
+##  5 one         5    42
+##  6 two        10    79
+##  7 two         9    79
+##  8 two         8    79
+##  9 two         7    79
+## 10 two         6    79</code></pre>
+<p>We could manually sort and join the two objects, but we would prefer a method more precise. This is where joins come in.</p>
+</div>
+<div id="using-left_join" class="section level3">
+<h3>1. Using <code>left_join()</code></h3>
+<p>There are several ways to join but we will use <code>left_join()</code>. This function joins the rows of two tibbles into one object. The arguments for <code>left_join()</code> are:<br />
+</p>
+<ul>
+<li><code>x</code> - the first tibble</li>
+<li><code>y</code> - the second tibble</li>
+<li><code>by</code> - a column or column(s) shared by both tibbles, used to match values</li>
+</ul>
+<p><code>left_join()</code> means that the object on the left (<code>x</code>) is the final object to retain. All matches in <code>y</code> that are also in <code>x</code> will be added. For example:<br />
+</p>
+<pre class="r"><code>one &lt;- tibble(subject = c(rep(1,5), rep(2,5)), score = 1:10)
+one</code></pre>
+<pre><code>## # A tibble: 10 × 2
+##    subject score
+##      &lt;dbl&gt; &lt;int&gt;
+##  1       1     1
+##  2       1     2
+##  3       1     3
+##  4       1     4
+##  5       1     5
+##  6       2     6
+##  7       2     7
+##  8       2     8
+##  9       2     9
+## 10       2    10</code></pre>
+<pre class="r"><code>two &lt;- tibble(subject = c(1,2), age = c(38,40))
+two</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   subject   age
+##     &lt;dbl&gt; &lt;dbl&gt;
+## 1       1    38
+## 2       2    40</code></pre>
+<p>We can use left join to add age to each row. Notice how it matches each instance of age in <code>y</code> to any matches in <code>x</code>. All rows in <code>x</code> are retained.</p>
+<pre class="r"><code>three &lt;- left_join(one,two, by = &#39;subject&#39;)
+three</code></pre>
+<pre><code>## # A tibble: 10 × 3
+##    subject score   age
+##      &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+##  1       1     1    38
+##  2       1     2    38
+##  3       1     3    38
+##  4       1     4    38
+##  5       1     5    38
+##  6       2     6    40
+##  7       2     7    40
+##  8       2     8    40
+##  9       2     9    40
+## 10       2    10    40</code></pre>
+<p>Even if we reverse the order of the data objects, we still sort of get the results we want. This is because:<br />
+</p>
+<p><em>“If a row in x matches multiple rows in y, all the rows in y will be returned once for each matching row in x.”</em></p>
+<p>Also, note what happens if you do not specify a <code>by</code> argument</p>
+<pre class="r"><code>left_join(two,one)</code></pre>
+<pre><code>## Joining, by = &quot;subject&quot;</code></pre>
+<pre><code>## # A tibble: 10 × 3
+##    subject   age score
+##      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
+##  1       1    38     1
+##  2       1    38     2
+##  3       1    38     3
+##  4       1    38     4
+##  5       1    38     5
+##  6       2    40     6
+##  7       2    40     7
+##  8       2    40     8
+##  9       2    40     9
+## 10       2    40    10</code></pre>
+</div>
+<div id="create-a-tibble-named-exp.data-which-has-the-following-columns" class="section level3">
+<h3>2. Create a tibble named <code>exp.data</code> which has the following columns:<br />
+</h3>
+<ul>
+<li><code>subject</code> - which is the numbers 1 through 10</li>
+<li><code>pre</code> - 10 numbers randomly sampled from a normal distribution with mean = 20, sd = 3</li>
+<li><code>post1</code> - 10 numbers randomly sampled from a normal distribution with mean = 30, sd = 1</li>
+<li><code>post2</code> - 10 numbers randomly sampled from a normal distribution with mean = 15, sd = 5</li>
+<li>use a <code>set.seed</code> of 500</li>
+</ul>
+<p>You should see this:</p>
+<pre class="r"><code>set.seed(500)
+exp.data &lt;- tibble(subject = 1:10, pre = rnorm(10, 20, 3), 
+                   post1 = rnorm(10, 30, 1), 
+                   post2 = rnorm(10, 15, 5))
+
+exp.data</code></pre>
+<pre><code>## # A tibble: 10 × 4
+##    subject   pre post1 post2
+##      &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1       1  22.9  28.6 10.7 
+##  2       2  25.9  28.2 19.8 
+##  3       3  22.7  29.4 20.3 
+##  4       4  20.1  30.5 16.0 
+##  5       5  22.8  28.2 11.4 
+##  6       6  18.3  28.5 11.3 
+##  7       7  22.2  30.3 14.6 
+##  8       8  21.9  29.7 10.7 
+##  9       9  20.1  30.9  7.96
+## 10      10  20.8  31.5 24.0</code></pre>
+</div>
+<div id="create-a-new-tibble-named-exp.data.long-from-exp.data-using-pivot_longer" class="section level3">
+<h3>3. Create a new tibble named <code>exp.data.long</code> from <code>exp.data</code> using <code>pivot_longer()</code></h3>
+<ul>
+<li>the new column names should be <code>score</code> and <code>test</code></li>
+</ul>
+<p>You should see this:</p>
+<pre class="r"><code>exp.data.long &lt;- pivot_longer(exp.data, c(pre,post1,post2), values_to = &#39;score&#39;, names_to = &#39;test&#39; )
+exp.data.long</code></pre>
+<pre><code>## # A tibble: 30 × 3
+##    subject test  score
+##      &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+##  1       1 pre    22.9
+##  2       1 post1  28.6
+##  3       1 post2  10.7
+##  4       2 pre    25.9
+##  5       2 post1  28.2
+##  6       2 post2  19.8
+##  7       3 pre    22.7
+##  8       3 post1  29.4
+##  9       3 post2  20.3
+## 10       4 pre    20.1
+## # … with 20 more rows</code></pre>
+</div>
+<div id="create-a-second-tibble-named-demographic.data-with-the-following-columns" class="section level3">
+<h3>4. Create a second tibble named <code>demographic.data</code> with the following columns<br />
+</h3>
+<ul>
+<li>subject: the values 1-10</li>
+<li>age: 10 random values from a normal distribution with a mean of 20, sd of .2, set.seed of 100</li>
+<li>condition: the word “high” repeated five times, then the word “low” repeated five times</li>
+</ul>
+<p>You should see this:</p>
+<pre class="r"><code>set.seed(100)
+demographic.data &lt;- tibble(subject = 1:10, age = rnorm(10, 20, .2), condition = c(rep(&#39;high&#39;,5), rep(&#39;low&#39;, 5)))
+demographic.data</code></pre>
+<pre><code>## # A tibble: 10 × 3
+##    subject   age condition
+##      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;    
+##  1       1  19.9 high     
+##  2       2  20.0 high     
+##  3       3  20.0 high     
+##  4       4  20.2 high     
+##  5       5  20.0 high     
+##  6       6  20.1 low      
+##  7       7  19.9 low      
+##  8       8  20.1 low      
+##  9       9  19.8 low      
+## 10      10  19.9 low</code></pre>
+</div>
+<div id="make-a-new-tibble-named-full.data-which-is-the-result-of-using-left_join-on-exp.data.long-and-demographic.data" class="section level3">
+<h3>5. Make a new tibble named <code>full.data</code> which is the result of using <code>left_join()</code> on <code>exp.data.long</code> and <code>demographic.data</code><br />
+</h3>
+<pre class="r"><code>full.data &lt;- left_join(exp.data.long, demographic.data)</code></pre>
+<pre><code>## Joining, by = &quot;subject&quot;</code></pre>
+<pre class="r"><code>full.data</code></pre>
+<pre><code>## # A tibble: 30 × 5
+##    subject test  score   age condition
+##      &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;    
+##  1       1 pre    22.9  19.9 high     
+##  2       1 post1  28.6  19.9 high     
+##  3       1 post2  10.7  19.9 high     
+##  4       2 pre    25.9  20.0 high     
+##  5       2 post1  28.2  20.0 high     
+##  6       2 post2  19.8  20.0 high     
+##  7       3 pre    22.7  20.0 high     
+##  8       3 post1  29.4  20.0 high     
+##  9       3 post2  20.3  20.0 high     
+## 10       4 pre    20.1  20.2 high     
+## # … with 20 more rows</code></pre>
+</div>
+<div id="create-a-new-tibble-named-output-which-contains-the-mean-and-sd-of-score-at-each-test-time-separated-by-condition" class="section level3">
+<h3>6. Create a new tibble named <code>output</code> which contains the mean and sd of <code>score</code> at each test time, separated by condition<br />
+</h3>
+<p>You should see this:</p>
+<pre class="r"><code>output &lt;- full.data %&gt;%
+  group_by(test, condition) %&gt;%
+  summarise(mean.score = mean(score), sd.score = sd(score))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;test&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>output</code></pre>
+<pre><code>## # A tibble: 6 × 4
+## # Groups:   test [3]
+##   test  condition mean.score sd.score
+##   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
+## 1 post1 high            29.0    0.971
+## 2 post1 low             30.2    1.15 
+## 3 post2 high            15.6    4.51 
+## 4 post2 low             13.7    6.22 
+## 5 pre   high            22.9    2.06 
+## 6 pre   low             20.6    1.56</code></pre>
+</div>
+<div id="now-let-us-do-some-simple-visualization-using-ggplot" class="section level3">
+<h3>7. Now let us do some <em>simple</em> visualization using <code>ggplot</code><br />
+</h3>
+<p><code>ggplot</code> is a function to plot data and is usually what you see when people show r plots. The function is more complicated than other functions, but we can learn the basics for now.</p>
+<p>ggplot needs to know the data it is using, as well as what to define the x and y axis with. This is done with the following syntax:</p>
+<p><code>ggplot(data, aes(x = column1, y = column2))</code></p>
+<p>Can you make a ggplot from <code>output</code> in which <code>mean.score</code> is the y axis and <code>test</code> is the x axis?</p>
+<p>You will want to see something like this:</p>
+<pre class="r"><code>ggplot(output, aes(y = mean.score, x = test))</code></pre>
+<p><img src="joins_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>What’s wrong with our plot so far? The order of “test” is wonky. This is because R will auto-sort alphabetically.</p>
+<p>use the <code>summary()</code> function on <code>output$test</code> - what do you see?</p>
+</div>
+<div id="reordering-a-factor" class="section level3">
+<h3>8. Reordering a factor</h3>
+<p>Create a new value named <code>test2</code> which is the result of calling <code>as.factor()</code> on <code>output$test</code>. Then call a <code>summary()</code> on <code>test2</code>, then call the function <code>levels()</code> on <code>test2</code> - what does this tell us?</p>
+<pre class="r"><code>test2 &lt;- as.factor(output$test)
+summary(test2)</code></pre>
+<pre><code>## post1 post2   pre 
+##     2     2     2</code></pre>
+<pre class="r"><code>levels(test2)</code></pre>
+<pre><code>## [1] &quot;post1&quot; &quot;post2&quot; &quot;pre&quot;</code></pre>
+<p>We can use <code>relevel()</code> to set a new baseline level for our factor, but we might want more control than this.</p>
+<pre class="r"><code>levels(relevel(test2, ref = &#39;pre&#39;))</code></pre>
+<pre><code>## [1] &quot;pre&quot;   &quot;post1&quot; &quot;post2&quot;</code></pre>
+<p>The <code>factor()</code> function allows us to define the <code>levels</code> and the <code>labels</code> of our factor. The <code>levels</code> argument should match what it already in the data, and the <code>labels</code> can be used to give prettier text labels (e.g., for plotting</p>
+<pre class="r"><code>factor(test2, levels = c(&#39;pre&#39;,&#39;post1&#39;, &#39;post2&#39;))</code></pre>
+<pre><code>## [1] post1 post1 post2 post2 pre   pre  
+## Levels: pre post1 post2</code></pre>
+<pre class="r"><code>factor(test2, levels = c(&#39;pre&#39;,&#39;post1&#39;, &#39;post2&#39;), labels = c(&quot;Pre&quot;, &quot;Post 1&quot;, &quot;Post 2&quot;))</code></pre>
+<pre><code>## [1] Post 1 Post 1 Post 2 Post 2 Pre    Pre   
+## Levels: Pre Post 1 Post 2</code></pre>
+</div>
+<div id="your-turn-please-change-the-value-of-outputtest-to-be-a-factor-with-levels-and-labels-matching-test2.-you-can-do-this-by-assigning-a-value-to-itself-outputtest-factor" class="section level3">
+<h3>9. your turn: Please change the value of <code>output$test</code> to be a factor, with levels and labels matching <code>test2</code>. You can do this by assigning a value to itself: <code>output$test = factor()</code></h3>
+<p>afterwards run <code>summary()</code> and <code>levels()</code> on <code>output$test</code>. you should see this:</p>
+<pre class="r"><code>output$test &lt;- factor(output$test, levels = c(&#39;pre&#39;, &#39;post1&#39;, &#39;post2&#39;), labels = c(&#39;Pre&#39;, &#39;Post 1&#39;, &#39;Post 2&#39;))
+levels(output$test)</code></pre>
+<pre><code>## [1] &quot;Pre&quot;    &quot;Post 1&quot; &quot;Post 2&quot;</code></pre>
+<pre class="r"><code>summary(output$test)</code></pre>
+<pre><code>##    Pre Post 1 Post 2 
+##      2      2      2</code></pre>
+</div>
+<div id="plot-the-same-plot-again-but-this-time-save-it-as-an-object-named-my.plot.-call-the-plot-by-typing-the-name---this-time-your-x-axis-should-look-better" class="section level3">
+<h3>10. Plot the same plot again, but this time save it as an object named <code>my.plot</code>. call the plot by typing the name - this time your x-axis should look better</h3>
+<pre class="r"><code>my.plot &lt;- ggplot(output, aes(x = test, y = mean.score))
+my.plot</code></pre>
+<p><img src="joins_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>We want to add actual points to the plot, to do so we add <code>geoms</code> to the ggplot, which are different geometric objects. These geoms can also take their own <code>aes</code> arguments, making ggplot very powerful (but also confusing at times). Also, instead of a pipe <code>%&gt;%</code>, you use a <code>+</code> to link geoms. add a <code>geom_col()</code> to the plot</p>
+<pre class="r"><code>my.plot + 
+  geom_col()</code></pre>
+<p><img src="joins_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>Now add an <code>aes</code> function inside <code>geom_col</code> and set <code>fill</code> to equal <code>condition</code></p>
+<pre class="r"><code>my.plot + 
+  geom_col(aes(fill = condition))</code></pre>
+<p><img src="joins_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Now, let’s “dodge” the stacked columns so that they are side by side. Add the argument <code>position</code> inside <code>geom_col</code> but not inside <code>aes</code> and set it equal to <code>'dodge'</code></p>
+<pre class="r"><code>my.plot + 
+  geom_col(aes(fill = condition), position = &#39;dodge&#39;)</code></pre>
+<p><img src="joins_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
