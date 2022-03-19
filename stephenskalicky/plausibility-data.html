@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+
+<title>Plausibility</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Plausibility</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">21/07/2021</h4>
+
+</div>
+
+
+<p>Today we are going to use some real data collected just a few days ago. This data is a series of plausbility ratings provided for different short stories in English. Here are the instructions participants received:</p>
+<p><em>Plausibility is a measure of how likely you think something can occur. For example, being full after eating a meal is more plausible than being hungry after eating a meal. However, one could still feel hungry after eating a meal. It is just less plausible when compared to being full." Your task is to rate each story you read on a scale of plausability.The scale ranges from 0 (not at all plausible) to 5 (highly plausible). When making your ratings, please consider all aspects of the story.</em></p>
+<p>The data is in the file <code>plausbility_data.csv</code></p>
+<p>You can download the data <a href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
+<pre class="r"><code>library(tidyverse)
+p.data &lt;- read_csv(&#39;plausibility_data.csv&#39;)</code></pre>
+<pre><code>## Rows: 800 Columns: 6
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): story_id, att, condition
+## dbl (3): subject, age, rating
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Use <code>str</code> to examine the structre of the data</p>
+<pre class="r"><code>str(p.data)</code></pre>
+<pre><code>## spec_tbl_df [800 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ subject  : num [1:800] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ story_id : chr [1:800] &quot;S11&quot; &quot;S19&quot; &quot;S01&quot; &quot;S02&quot; ...
+##  $ age      : num [1:800] 34 34 34 34 34 34 34 34 34 34 ...
+##  $ att      : chr [1:800] &quot;I don&#39;t know&quot; &quot;I don&#39;t know&quot; &quot;I don&#39;t know&quot; &quot;I don&#39;t know&quot; ...
+##  $ rating   : num [1:800] 1 4 0 4 4 4 3 4 4 2 ...
+##  $ condition: chr [1:800] &quot;by phrase (locative)&quot; &quot;by phrase (locative)&quot; &quot;temporal prep&quot; &quot;locative prep&quot; ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   subject = col_double(),
+##   ..   story_id = col_character(),
+##   ..   age = col_double(),
+##   ..   att = col_character(),
+##   ..   rating = col_double(),
+##   ..   condition = col_character()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<div id="part-1-do-you-remember-how-to-do-this" class="section level1">
+<h1>part 1, do you remember how to do this?</h1>
+<p>Using code (i.e., not looking at the data in the viewer), answer the following questions:<br />
+</p>
+<ol style="list-style-type: decimal">
+<li>How many subjects are there? (hint: you can do this in one line using <code>nrow()</code> and <code>unique()</code><br />
+</li>
+<li>What is the mean and sd of their age? (do you remember how to use <code>summarise()</code>?)<br />
+</li>
+<li>How many different stories are there?<br />
+</li>
+<li>How many different text conditions are there? (for 3 and 4 you can use <code>lenght()</code> of <code>levels()</code> of a factor)<br />
+</li>
+<li>Which stories occur in which condition(s)? [this is a trick question - use <code>table()</code>]</li>
+</ol>
+<pre class="r"><code># number of subjects 
+nrow(unique(select(p.data, subject)))</code></pre>
+<pre><code>## [1] 40</code></pre>
+<pre class="r"><code># mean and sd of age
+p.data2 &lt;- p.data %&gt;%
+  select(subject, age) %&gt;%
+  unique() %&gt;%
+  summarise(mean.age = mean(age), sd.age = sd(age))
+
+p.data2</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   mean.age sd.age
+##      &lt;dbl&gt;  &lt;dbl&gt;
+## 1     33.2   10.6</code></pre>
+<pre class="r"><code># number of stories
+length(levels(as.factor(p.data$story_id)))</code></pre>
+<pre><code>## [1] 20</code></pre>
+<pre class="r"><code># number of conditions
+length(levels(as.factor(p.data$condition)))</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code># breakdown of stories in conditions
+table(p.data$story_id, p.data$condition)</code></pre>
+<pre><code>##      
+##       by phrase (agentive) by phrase (locative) locative prep temporal prep
+##   S01                   10                   11             9            10
+##   S02                   11                    9            10            10
+##   S03                    9                   10            10            11
+##   S04                   10                   10            11             9
+##   S05                   10                   11             9            10
+##   S06                   11                    9            10            10
+##   S07                    9                   10            10            11
+##   S08                   10                   10            11             9
+##   S09                   10                   11             9            10
+##   S10                   11                    9            10            10
+##   S11                    9                   10            10            11
+##   S12                   10                   10            11             9
+##   S13                   10                   11             9            10
+##   S14                   11                    9            10            10
+##   S15                    9                   10            10            11
+##   S16                   10                   10            11             9
+##   S17                   10                   11             9            10
+##   S18                   11                    9            10            10
+##   S19                    9                   10            10            11
+##   S20                   10                   10            11             9</code></pre>
+<p>That was a nice refresher! The point of this data collection was to check whether our manipulation to the stories was effective. Our evidence of this being effective is whether or not one of the conditions received significantly lower plausibility ratings compared to the other three. Specifically, we want to check if stories presented in the <code>by phrase (locative)</code> condition received lower plausbility ratings.</p>
+</div>
+<div id="part-2-return-of-ggplot." class="section level1">
+<h1>part 2, return of ggplot.</h1>
+<p>What is the mean and sd of the plausability ratings in each condition? Make a tibble named <code>p.data2</code> from <code>p.data</code> which reports the mean and sd of the plausibility ratings in each of the four conditions.</p>
+<pre class="r"><code>p.data2 &lt;- p.data %&gt;%
+  group_by(condition) %&gt;%
+  summarise(mean.plaus = mean(rating), sd.plaus = sd(rating))</code></pre>
+<p>Your output should look like this:</p>
+<pre class="r"><code>p.data2</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##   condition            mean.plaus sd.plaus
+##   &lt;chr&gt;                     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 by phrase (agentive)       2.56     1.21
+## 2 by phrase (locative)       1.35     1.19
+## 3 locative prep              2.58     1.20
+## 4 temporal prep              2.33     1.17</code></pre>
+<p>Have we answered our question? Maybe we also need to visualize it! Let’s create the following ggplot:</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+  geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
+  ylim(0,4) +
+  coord_flip() +
+  labs(x = &#39;&#39;, y = &#39;&#39;, title = &quot;Mean plausbility ratings with +/-1 SD&quot;) +
+  theme(legend.position = &#39;none&#39;)  + 
+  geom_label() +
+  theme_classic()</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="create-code" class="section level1">
+<h1>create code</h1>
+<p>First, create the skeleton of your <code>ggplot</code>. Call <code>ggplot</code> and set the data to <code>p.data2</code>, then within the <code>aes</code> call, choose the correct x and y axes. In case you forgot, our format will be <code>ggplot(data, aes(x = , y = ))</code></p>
+<p>You should see something like this:</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus))</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="create-code-1" class="section level1">
+<h1>create code</h1>
+<p>Add a third argument to your <code>aes</code> call, which is <code>label</code>. Using <code>round()</code>, set <code>label</code> to equal the mean plausibility rating, rounded to one decimal. Then, using <code>+</code>, add a <code>geom_label()</code> geom to your ggplot.<br />
+</p>
+<p>You should see something like this:</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+  geom_label()</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Let’s flip the axes so the plot matches our goal - add a <code>coord_flip</code> to your ggplot (using <code>+</code>)</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+  geom_label() +
+  coord_flip()</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="create-code-2" class="section level1">
+<h1>create code</h1>
+<p>Now let’s fix the y axis to that it covers the entire range of data. The ratings go from 0-4, so that should be the limits of our y axis. Using <code>+</code>, add a <code>ylim()</code> to the ggplot, which includes the range <code>0,4</code>.<br />
+</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+  geom_label() +
+  coord_flip() +
+  ylim(0,4)</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="create-code-3" class="section level1">
+<h1>create code</h1>
+<p>We’re almost there - now we are going to add the errorbars. Luckily we can use <code>geom_errorbar</code> for this! Using <code>+</code>, add a <code>geom_errorbar()</code> to your ggplot.<br />
+</p>
+<p>The <code>geom_errorbar</code> will need you to include this information:</p>
+<p><code>geom_errorbar(stat = 'identity', aes(ymin = ??, ymax = ??), size = ?, width = ?)</code></p>
+<p>The <code>size</code> and <code>width</code> control the appearance of the errorbars - to set them to match my plot, set <code>size</code> to .5 and <code>width</code> to .2.</p>
+<p>The <code>ymin</code> and <code>ymax</code> delineate the boundaries of our error bar. We want the errors to range from -1 SD from the mean and +1 SD from the mean. Time for some math - you’ll need to use the variables in <code>p.data2</code> to set <code>ymin</code> to -1SD from the mean, and <code>ymax</code> to +1SD from the mean.</p>
+<p>If you are successful, you will see this:</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+  geom_label() +
+  coord_flip() +
+  ylim(0,4) +
+  geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2)</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="create-code-4" class="section level1">
+<h1>create code</h1>
+<p>Why do you think the line is covering the label? This gives us insight into how ggplot works - each geom is layered onto the plot in the order that you include it in the code. It kinda sucks having the line go through the number - to fix this, we can adjust our code so that we call <code>geom_label()</code> after we call <code>geom_errorbar()</code>. Move your <code>geom_errorbar()</code> to be the first geom in your ggplot. Make sure you don’t leave a <code>+</code> at the end of your final line!</p>
+<p>If you are successful, you will see this:</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+    geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
+  geom_label() +
+  coord_flip() +
+  ylim(0,4)</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="create-code-5" class="section level1">
+<h1>create code</h1>
+<p>The final steps are aesthetic. Use <code>labs()</code> to set x equal to nothing, y equal to nothing, and title = “Mean plausbility ratings with +/-1 SD”</p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+    geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
+  geom_label() +
+  coord_flip() +
+  ylim(0,4) +
+  labs(x = &#39;&#39;, y = &#39;&#39;, title = &quot;Mean plausbility ratings with +/-1 SD&quot;) </code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
+<div id="create-code-6" class="section level1">
+<h1>create code</h1>
+<p>You can also install the package <code>ggthemes</code> and change the theme in the last line using <code>theme_classic()</code></p>
+<pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
+    geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
+  geom_label() +
+  coord_flip() +
+  ylim(0,4) +
+  labs(x = &#39;&#39;, y = &#39;&#39;, title = &quot;Mean plausbility ratings with +/-1 SD&quot;) +
+  theme_classic()</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="part-3-return-of-the-violins" class="section level1">
+<h1>part 3, return of the violins<br />
+</h1>
+<p>Plotting the mean and SD is fine, but it’s also very useful to plot the <em>entire</em> distribution of the data. I want you to recreate this plot:</p>
+<pre class="r"><code>ggplot(p.data, aes(x = condition, y = rating)) +
+  geom_violin(aes(fill = condition)) +
+  geom_jitter(alpha = .5) +
+  labs(y = &#39;Plausbility Rating&#39;, x = &#39;&#39;, title = &#39;Story plausibility ratings&#39;) + 
+  theme_bw() </code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="create-code-7" class="section level1">
+<h1>create code<br />
+</h1>
+<p>That plot only requires five lines of code. You can do it!! You might want to go one line at a time here.<br />
+</p>
+<p>Line 1: your call to <code>ggplot</code>, data should be <code>p.data</code>, choose appropriate x and y axes.<br />
+Line 2: add a <code>geom_violin</code> object. It will need an <code>aes</code>, inside of which you will set <code>fill</code> = to condition<br />
+Line 3: add a <code>geom_jitter()</code> object. Inside of it, set <code>alpha</code> to .5.<br />
+Line 4: Use <code>labs()</code> to add the same labels you see in the example<br />
+Line 5: I used <code>theme_bw()</code> from ggthemes to get the final look.</p>
+</div>
+<div id="part-4-still-have-energy" class="section level1">
+<h1>part 4, still have energy?</h1>
+<p>We might also want to know the average for each story (rather than each condition). Create a tibble named <code>p.data3</code> from <code>p.data</code> which includes the <code>mean</code> for plausbility ratings, grouped by both story and condition. After your summary call, use <code>arrange()</code> to sort the data by condition, and then by the mean rating.<br />
+</p>
+<pre class="r"><code>p.data3 &lt;- p.data %&gt;%
+  group_by(story_id, condition) %&gt;%
+  summarise(mean.plaus = mean(rating), sd.plaus = sd(rating)) %&gt;%
+  arrange(condition, mean.plaus)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>p.data3</code></pre>
+<pre><code>## # A tibble: 80 × 4
+## # Groups:   story_id [20]
+##    story_id condition            mean.plaus sd.plaus
+##    &lt;chr&gt;    &lt;chr&gt;                     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 S06      by phrase (agentive)       1.27     1.42
+##  2 S02      by phrase (agentive)       2        1   
+##  3 S05      by phrase (agentive)       2        1.15
+##  4 S08      by phrase (agentive)       2        1.15
+##  5 S04      by phrase (agentive)       2.1      1.20
+##  6 S17      by phrase (agentive)       2.4      1.07
+##  7 S20      by phrase (agentive)       2.5      1.18
+##  8 S14      by phrase (agentive)       2.64     1.21
+##  9 S18      by phrase (agentive)       2.64     1.57
+## 10 S01      by phrase (agentive)       2.7      1.16
+## # … with 70 more rows</code></pre>
+<p>The following plot uses that data to create a staircase plot of the stories to visualize their relative rankings in the four different conditions:<br />
+</p>
+<pre class="r"><code>ggplot(p.data3, aes(y = 1:nrow(p.data3), x = mean.plaus, label = story_id)) +
+  facet_wrap(. ~ condition, scales = &#39;free&#39;) +
+  xlim(0,4) +
+  labs(y = &#39;&#39;, x = &#39;&#39;, title = &#39;Stories sorted by mean plausibility&#39;) +
+  geom_text() +
+  theme_bw() +
+  theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())</code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="create-code-8" class="section level1">
+<h1>create code</h1>
+<p>How to make this plot?</p>
+<p>Line 1: call ggplot using <code>p.data3</code>. in <code>aes</code>, set x to the mean ratings, and set y to be a range from 1 to the total length of the data. Also include a third argument, <code>label</code>, which is set to the name of the story.</p>
+<p>Line 2: Add the function <code>facet_wrap()</code>, which will create the four panels (the facets). Inside <code>facet_wrap()</code>, type <code>. ~ condition, scales = 'free')</code>. The <code>. ~ condition</code> says wrap all variables (indicated by the <code>.</code>) by <code>condition</code>. The <code>scales = free</code> means each facet will have its own y and x axes labels/ticks.</p>
+<p>You should see something like this (and if you look at the name of the y axis that should show you how to set the correct y axis length:):  </p>
+<pre class="r"><code>ggplot(p.data3, aes(y = 1:nrow(p.data3), x = mean.plaus, label = story_id)) +
+  facet_wrap(. ~ condition, scales = &#39;free&#39;) </code></pre>
+<p><img src="plausibility-data_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>That’s the hard part over. Now, add the following:</p>
+<ul>
+<li>set the y axis limits to be the range of the ratings</li>
+<li>add the appropriate x axis, y axis, and title to match the example</li>
+<li>add a geom_text() geom</li>
+<li>use the theme <code>theme_bw()</code></li>
+<li>delete the y axes ticks and labels using <code>theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())</code></li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

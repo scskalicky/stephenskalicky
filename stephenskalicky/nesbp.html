@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+
+<title>byphraseNES</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">byphraseNES</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">20/10/2021</h4>
+
+</div>
+
+
+<p>Let’s work on cleaning some more real data from a project currently being conducted by Stephen and Victoria.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>In this study, participants read short stories, word-by-word,. The stories tested whether people attributed AGENTIVE or LOCATIVE meanings to the preposition <code>by</code>. We used past-tense passivised verbs to test this.<br />
+</p>
+<p>There are two formats for the stories:<br />
+</p>
+<ol style="list-style-type: decimal">
+<li><p>PERSON_A was with PERSON_ B, when PERSON_C appeared.</p>
+<p>1a. BP.A condition: PERSON_A was verbed by PERSON_C (agent)<br />
+1b. BP.L condition: PERSON_A was verbed by PERSON_B (locative)<br />
+</p></li>
+<li><p>PERSON_A was with OBJECT_B, when PERSON_C verbed.</p>
+<p>2a. BP.A OBJECT_B was verbed by PERSON_A (locative)<br />
+2b. BP.L OBJECT_B was verbed by PERSON_C (agentive)</p></li>
+</ol>
+<p>After each story, participants were asked:</p>
+<pre><code>Q. WHO VERBED PERSON_A / OBJECT_B?
+
+1. PERSON_C        2. PERSON_B / PERSON_A</code></pre>
+<ul>
+<li>If story was BP.A - the “by” was associated with an agentive interpretation - choosing PERSON_C is expected</li>
+<li>If story was BP.L - the “by” was associated with an locative interpretation - choosing PERSON_A/PERSON_B is expected</li>
+</ul>
+<p><strong>For each person, we need to calculate</strong><br />
+</p>
+<ol style="list-style-type: decimal">
+<li>Whether their choice reflects locative or agentive interpretation</li>
+<li>Reading time for the words immediately after <code>by</code></li>
+</ol>
+<p>Load in the data from <a href="https://www.stephenskalicky.com/r_data/nes_byphrase_raw.csv">here</a><br />
+</p>
+<pre class="r"><code>by_raw &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/nes_byphrase_raw.csv&#39;)</code></pre>
+<pre><code>## Rows: 13527 Columns: 56
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (53): rt, button_pressed, PROLIFIC_PID, subject, sex, nes, att, trial_it...
+## dbl  (3): condition, trial_index, age
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div id="create-an-object-by_trim-from-by_raw-which-contains-these-columns" class="section level2">
+<h2>1. create an object <code>by_trim</code> from <code>by_raw</code> which contains these columns:<br />
+</h2>
+<ul>
+<li>subject,</li>
+<li>button_pressed,</li>
+<li>stim_id,</li>
+<li>story_condition,</li>
+<li>trial_item,</li>
+<li>button_cresp,</li>
+<li>comp_answer,</li>
+<li>button_order</li>
+</ul>
+<pre class="r"><code>by_trim &lt;- by_raw %&gt;%
+  dplyr::select(subject, button_pressed, stim_id, story_condition, trial_item, button_cresp, comp_answer, button_order)</code></pre>
+</div>
+<div id="inspect-story_condition.-filter-the-data-so-that-it-only-contains-the-two-conditions-we-need.-name-your-new-object-by_trim01" class="section level2">
+<h2>2. Inspect <code>story_condition</code>. Filter the data so that it only contains the two conditions we need. Name your new object <code>by_trim01</code></h2>
+<pre class="r"><code>summary(as.factor(by_trim$story_condition))</code></pre>
+<pre><code>## BP.A BP.L    L PRAC    T NA&#39;s 
+## 2940 2940 2940 1764 2940    3</code></pre>
+<pre class="r"><code>by_trim01 &lt;- by_trim %&gt;%
+  dplyr::filter(story_condition == &#39;BP.L&#39; | story_condition == &#39;BP.A&#39;)
+
+# str_detect()
+# by_trim[grep(&quot;BP&quot;, by_trim$story_condition),]</code></pre>
+</div>
+<div id="inspect-trial_item.-filter-the-data-so-that-it-only-contains-the-comprehension-question-asking-who-the-agent-is.-name-your-new-object-by_trim02." class="section level2">
+<h2>3. Inspect <code>trial_item</code>. Filter the data so that it only contains the comprehension question asking who the agent is. Name your new object <code>by_trim02</code>.</h2>
+<pre class="r"><code>summary(as.factor(by_trim01$trial_item))</code></pre>
+<pre><code>##    agent_question location_question             story temporal_question 
+##              1470              1470              1470              1470</code></pre>
+<pre class="r"><code>by_trim02 &lt;- by_trim01 %&gt;%
+  dplyr::filter(trial_item == &#39;agent_question&#39;)
+
+# by_trim02 &lt;- by_trim01[grep(&quot;agent_question&quot;, by_trim01$trial_item),]</code></pre>
+<pre class="r"><code>summary(as.factor(by_trim02$button_cresp))</code></pre>
+<pre><code>##  AL  LA 
+## 742 728</code></pre>
+<pre class="r"><code>summary(as.factor(by_trim02$button_pressed))</code></pre>
+<pre><code>##   0   1 
+## 757 713</code></pre>
+</div>
+<div id="inspect-button_cresp-and-button_pressed." class="section level2">
+<h2>4. Inspect <code>button_cresp</code> and <code>button_pressed</code>.</h2>
+<pre><code>button_cresp you the order in which the two options appeared:
+1. `LA` = LOCATIVE | AGENT
+2. `AL` = AGENT | LOCATIVE
+
+button_pressed tells you which button was pressed:
+
+1. 0 = first option
+2. 1 = second option</code></pre>
+</div>
+<div id="create-a-new-object-by_trim03.-create-a-new-column-bp_choice-which-has-a-value-of-agentive-or-locative-depending-on-how-the-participant-answered-the-agentive-question." class="section level2">
+<h2>Create a new object <code>by_trim03</code>. Create a new column <code>bp_choice</code> which has a value of <code>agentive</code> or <code>locative</code>, depending on how the participant answered the agentive question.</h2>
+<pre class="r"><code>by_trim03 &lt;- by_trim02 %&gt;%
+  dplyr::mutate(bp_choice = case_when(button_cresp == &#39;AL&#39; &amp; button_pressed == 0 ~ &#39;agentive&#39;,
+                                      button_cresp == &#39;LA&#39; &amp; button_pressed == 1 ~ &#39;agentive&#39;,
+                                      button_cresp == &#39;AL&#39; &amp; button_pressed == 1 ~ &#39;locative&#39;,
+                                      button_cresp == &#39;LA&#39; &amp; button_pressed == 0 ~ &#39;locative&#39;))</code></pre>
+</div>
+<div id="recreate-the-following-ggplot-from-by_trim03" class="section level2">
+<h2>5. Recreate the following ggplot from <code>by_trim03</code>:</h2>
+<pre class="r"><code>summary(as.factor(by_trim03$stim_id))</code></pre>
+<pre><code>## S01 S02 S03 S04 S05 S06 S07 S08 S09 S10 S11 S12 S13 S14 S15 S16 S17 S18 S19 S20 
+##  73  75  74  72  73  75  74  72  73  75  74  72  73  75  74  72  73  75  74  72</code></pre>
+<pre class="r"><code># x = story_condition
+# y = bp_choice
+# data = by_trim03
+
+ggplot(data = by_trim03, aes(x = story_condition, y = bp_choice, color = bp_choice)) +
+  facet_wrap(. ~ stim_id) + 
+  labs(x = &#39;&#39;, y = &#39;&#39;) + 
+  #geom_point()
+  #geom_point(position = &#39;jitter&#39;)
+  geom_jitter(alpha = .5) +
+  theme_bw()</code></pre>
+<p><img src="nesbp_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="create-a-new-object-named-by_rt-from-by_raw.-select-the-following-columns-and-filter-the-data-to-only-inlcude-the-two-values-of-story_condition-we-care-about." class="section level2">
+<h2>6. Create a new object named <code>by_rt</code> from <code>by_raw</code>. Select the following columns and filter the data to only inlcude the two values of <code>story_condition</code> we care about.<br />
+</h2>
+<pre class="r"><code>by_rt &lt;- by_raw %&gt;%
+  dplyr::select(subject, stim_id, story_condition, rt30, rt31, rt32) %&gt;%
+  dplyr::filter(story_condition == &#39;BP.L&#39; | story_condition == &#39;BP.A&#39;)</code></pre>
+</div>
+<div id="inspect-the-data.-find-a-way-to-remove-the-rows-that-do-not-have-reading-time-data.-save-your-new-object-as-by_rt01" class="section level2">
+<h2>7. Inspect the data. Find a way to remove the rows that do not have reading time data. Save your new object as by_rt01<br />
+</h2>
+<pre class="r"><code>by_rt01 &lt;- by_rt %&gt;%
+  dplyr::filter(rt30 != &#39;&quot;&#39;)</code></pre>
+<pre><code>1. in each story, the 30th word was `by` (rt30)
+2. for stim id 1-12, `rt31` = `the`, `rt32` = `noun` (e.g., &#39;the woman&#39;)
+3. for stim id 13-20, rt31 = NP</code></pre>
+</div>
+<div id="create-a-new-variable-after_by-which-contains-the-rt-for-the-np-immediately-after-by-with-the-following-contraints.-name-your-new-object-by_rt02" class="section level2">
+<h2>8. Create a new variable <code>after_by</code> which contains the RT for the NP immediately after <code>by</code>, with the following contraints. Name your new object by_rt02<br />
+</h2>
+<pre><code>1. in each story, the 30th word was `by` (rt30)
+2. for stim id 1-12, `rt31` = `the`, `rt32` = `noun` (e.g., &#39;the woman&#39;)
+3. for stim id 13-20, rt31 = NP</code></pre>
+<p>Your <code>after_by</code> variable should be set to the value of <code>rt31</code> for stim_id 13:20 and to the mean of <code>rt31</code> and <code>rt32</code> for stim_id 1:12. Make sure you convert <code>rt30, rt31</code>, and <code>rt32</code> to numeric. Don’t use <code>mean()</code>.</p>
+<p>Filter <code>after_by</code> to only contains values &lt; 2000.<br />
+</p>
+<pre class="r"><code># there are smarter ways to do it - this is quite lazy
+object_stories = c(&#39;S13&#39;, &#39;S14&#39;, &#39;S15&#39;, &#39;S16&#39;, &#39;S17&#39;, &#39;S18&#39;, &#39;S19&#39;, &#39;S20&#39;)
+
+by_rt02 &lt;- by_rt01 %&gt;%
+  mutate_at(vars(rt30, rt31, rt32), as.numeric) %&gt;%
+  filter(as.numeric(rt31) &lt; 2000) %&gt;%
+  filter(as.numeric(rt32) &lt; 2000) %&gt;% 
+  dplyr::mutate(after_by = if_else(stim_id %in% object_stories, as.numeric(rt31), ((as.numeric(rt31)+as.numeric(rt32))/2))) </code></pre>
+</div>
+<div id="recreate-the-following-plot" class="section level2">
+<h2>9. Recreate the following plot:</h2>
+<pre class="r"><code>ggplot(by_rt02, aes(x = story_condition, y = after_by, fill = story_condition)) +
+  geom_violin(alpha = .5) +
+  geom_jitter(alpha = .5, width = .1) +
+  labs(x = &#39;&#39; , y = &#39;Reading times for NP after by&#39;) +
+  theme_bw()</code></pre>
+<p><img src="nesbp_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
+<div id="interpret-the-results-in-light-of-these-questions" class="section level2">
+<h2>10. Interpret the results in light of these questions:<br />
+</h2>
+<ul>
+<li>Do native speakers of English attend to agentive and locative uses of the preposition <code>by</code>?<br />
+</li>
+<li>Which meaning of <code>by</code> causes the least confusion among nes?</li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

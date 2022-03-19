@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+<meta name="date" content="2021-09-06" />
+
+<title>if_else &amp; case_when()</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore"><code>if_else</code> &amp; <code>case_when()</code></h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">09/06/2021</h4>
+
+</div>
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<p>Let’s work more with mutate.</p>
+<ol style="list-style-type: decimal">
+<li><p>Download the same <code>metaphor data.csv</code> file from <a href="https://osf.io/qrc6b/" class="uri">https://osf.io/qrc6b/</a><br />
+</p></li>
+<li><p>Create a new object named <code>met.data</code> which is the results of calling <code>read_csv()</code> on the metaphor data.<br />
+</p></li>
+</ol>
+<pre class="r"><code>met.data &lt;- read_csv(&#39;metaphor data.csv&#39;)</code></pre>
+<pre><code>## Rows: 1304 Columns: 28
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (6): metaphor_id, response, met_type, sex, hand, language_group
+## dbl (22): subject, conceptual, nm, trial_order, met_stim, met_RT, age, colle...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using a single pipe, make a new object called <code>met.data.2</code> from <code>met.data</code>. Add a <code>select()</code> call to your pipe so that <code>met.data.2</code> only has the following columns: subject, age, englishAgeofOnset, and collegeYear. Finally, use the <code>unique()</code> function so that each subject only has one row.<br />
+</li>
+</ol>
+<pre class="r"><code>met.data.2 &lt;- met.data %&gt;%
+  dplyr::select(subject, age, collegeYear, englishAgeofOnset) %&gt;%
+  unique()</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Let’s look at the variable <code>englishAgeofOnset</code> first. This is the age that participants began learning English. Look at a <code>summary()</code> of the variable - what do you notice?</li>
+</ol>
+<pre class="r"><code># there are zeros - what could that mean?
+summary(met.data.2$englishAgeofOnset)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.000   0.000   2.000   4.262   9.000  17.000</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>To remind ourselves what <code>mutate</code> does, lets use it to calculate a new variable. We want to get an idea of how long someone has been learning/using English, even if they are native speakers. Using the existing variables in <code>met.data.2</code>, how could we do that? (Create a new object named <code>met.data.3</code> from <code>met.data.2</code>, then use <code>mutate()</code> to create a new variable in <code>met.data.3</code> named <code>totalEnglish</code> which is a measure of the total number of years each participant has been learning/using English.)</li>
+</ol>
+<pre class="r"><code>met.data.3 &lt;- met.data.2 %&gt;%
+  mutate(totalEnglish = age - englishAgeofOnset)</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Okay, not bad. Let’s now try to turn this number into a percentage. Create a new object named <code>met.data.4</code> from <code>met.data.3</code>, and then use <code>mutate()</code> to create a new variable named <code>englishPercent</code> which is a percentage of one’s total life spent using/learning English. The resulting variable should be represented as percentages (i.e., numbers from 0.00 to 100.00), rather than decimals (e.g.,), 0.1, .5, 1.0, etc.)</li>
+</ol>
+<pre class="r"><code>met.data.4 &lt;- met.data.3 %&gt;%
+  mutate(englishPercent = (totalEnglish/age)*100)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Hopefully you have figured out what these values say about the participants now. Let’s go ahead and create a new variable which marks participants as either native or non-native English speakers. Create a new object named <code>met.data.5</code> from <code>met.data.4</code>, and then use <code>mutate()</code> to create a new variable named <code>ENG_Group</code>. Use <code>if_else()</code> within your mutate call to assign participants to one of two groups: “NES” or “NNES”. You’ll need to choose which variable and condition you want to use in your <code>if_else()</code> function!</li>
+</ol>
+<pre class="r"><code>met.data.5 &lt;- met.data.4 %&gt;%
+  mutate(ENG_Group = if_else(englishPercent == 100, &#39;NES&#39;, &#39;NNES&#39;))</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>You should now be able to say something about the NNES group - what is their average percentage of English learning/using? Create a new object named <code>nnes.summary</code> from <code>met.data.5</code>. Then use <code>summarise()</code> to provide some descriptive statistics about the NNES. Get the mean and SD of relevant values, as well as the max and min.</li>
+</ol>
+<pre class="r"><code>nnes.summary &lt;- met.data.5 %&gt;%
+  group_by(ENG_Group) %&gt;%
+  summarise(mean.english = mean(englishPercent), 
+            sd.english = sd(englishPercent),
+            min.english = min(englishPercent),
+            max.english = max(englishPercent))</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li><code>if_else()</code> is really handy for things like this, but it only allows for two possibilities - whether something is true or false. What if we have a lot of different values we’d like to create that depend on multiple conditions? Among the many options, we can use <code>case_when()</code>. This function is similar to <code>if_else()</code> in that it evaluates whether a cell meets a certain condition and then acts, but differs in that unlike <code>if_else()</code>, <code>case_when()</code> only acts when the condition is true. In this way, you can chain a series of <code>case_when()</code> functions together to make many different changes.</li>
+</ol>
+<p>The syntax is also different. For <code>case_when()</code>: the syntax uses what is called formula notation, and is in the form of <code>case_when(condition ~ result)</code>. For example, if you wanted to turn all values of <code>NA</code> into <code>0</code>, you could use <code>case_when(variable == NA ~ 0)</code>. You can put multiple conditions and results inside a single <code>case_when()</code> function: <code>case_when(variable == NA ~ 0, variable == 1 ~ NA, etc...)</code>.</p>
+<p>Your condition can also include more than one variable: <code>case_when(variable1 == value &amp; variable2 != value ~ result)</code></p>
+<p>Create a new object named <code>met.data.6</code> from <code>met.data.5</code>. Then, create a new variable named <code>age_group</code> and assign the following values using <code>mutate()</code> and <code>case_when()</code>:<br />
+</p>
+<ul>
+<li>subjects under 21 are called ‘lower’</li>
+<li>subjects between 21 and 40 are called ‘middle’</li>
+<li>subjects older than 40 are called ‘higher’</li>
+</ul>
+<pre class="r"><code>met.data.6 &lt;- met.data.5 %&gt;%
+  mutate(age_group = case_when(age &lt; 21 ~ &#39;lower&#39;, age &gt; 20 &amp; age &lt; 41 ~ &#39;middle&#39;, age &gt; 40 ~ &#39;higher&#39;))</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>How many people are in each age group? Hint: <code>as.factor()</code> is a quick way to check this.</li>
+</ol>
+<pre class="r"><code>summary(as.factor(met.data.6$age_group))</code></pre>
+<pre><code>## higher  lower middle 
+##      3     20     38</code></pre>
+<ol start="11" style="list-style-type: decimal">
+<li>Okay, now that you have some practice, time to work on the final variable: <code>collegeYear</code>. The numbers in <code>collegeYear</code> correspond to answers on a demographic survey:<br />
+</li>
+</ol>
+<ul>
+<li><code>1: First-year undergraduate</code><br />
+</li>
+<li><code>2: Second-year undergraduate</code><br />
+</li>
+<li><code>3: Third-year undergraduate</code><br />
+</li>
+<li><code>4: Fourth-year undergraduate</code><br />
+</li>
+<li><code>5: Fifth-year undergraduate</code><br />
+</li>
+<li><code>6: MA Student</code>  </li>
+<li><code>7: PhD Student</code> </li>
+</ul>
+<p>You can see why numbers are easier to write in the data! Well, let’s imagine we want to create some smaller categories. Create a new object named <code>met.data.7</code> from <code>met.data.6</code> and then use <code>mutate()</code> with <code>case_when()</code> to create a new variable named <code>studentLevel</code> . Group the subjects into three categories: “early UG”, “late UG”, and “PG” based on their college year.</p>
+<pre class="r"><code>met.data.7 &lt;- met.data.6 %&gt;%
+  mutate(studentLevel = case_when(collegeYear &lt; 3 ~ &#39;early UG&#39;, collegeYear &gt; 2 &amp; collegeYear &lt; 6 ~ &#39;late UG&#39;, collegeYear &gt; 5 ~ &#39;PG&#39; ))</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Finally, create a new object named <code>met.data.8</code> from <code>met.data.7</code>. Then use a pipe to create a new variable named <code>super.status</code>. This variable will assign participants to a category based on two features:<br />
+</li>
+</ol>
+<ul>
+<li>Whether participants are NES/NNES</li>
+<li>Whether participants are UG/PG<br />
+</li>
+</ul>
+<p>There are four values for <code>super.status</code>: <code>NNES-UG</code>, <code>NES-UG</code>, <code>NNES-PG</code>, <code>NES-PG</code><br />
+</p>
+<p>Use <code>mutate()</code>, <code>case_when()</code>, and your new variables.</p>
+<pre class="r"><code>met.data.8 &lt;- met.data.7 %&gt;%
+  mutate(super.status = case_when(ENG_Group == &#39;NES&#39; &amp; studentLevel == &#39;early UG&#39; ~ &#39;NES-UG&#39;,
+                                  ENG_Group == &#39;NES&#39; &amp; studentLevel == &#39;late UG&#39; ~ &#39;NES-UG&#39;,
+                                  ENG_Group == &#39;NES&#39; &amp; studentLevel == &#39;PG&#39; ~ &#39;NES-PG&#39;,
+                                  ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;early UG&#39; ~ &#39;NNES-UG&#39;,
+                                  ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;late UG&#39; ~ &#39;NNES-UG&#39;,
+                                  ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;PG&#39; ~ &#39;NNES-PG&#39;))</code></pre>
+<p>The way I did this was silly - using the <code>collegeYear</code> variable means you could do this in four lines instead of six - but still works!<br />
+</p>
+<ol start="13" style="list-style-type: decimal">
+<li>What else can we do with this data? Any other mutates or transformations you would like to try?</li>
+</ol>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

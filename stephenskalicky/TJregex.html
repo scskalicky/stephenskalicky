@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+
+<title>first encounters with regular expressions</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">first encounters with regular expressions</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">28/06/2021</h4>
+
+</div>
+
+
+<div id="june-2021---grep-sub-regular-expressions" class="section level1">
+<h1>22 June 2021 - grep, sub, regular expressions</h1>
+<div id="lesson-designed-by-tj-boutorwick" class="section level3">
+<h3>lesson designed by TJ Boutorwick</h3>
+<div id="some-explanations-modified-by-stephen" class="section level4">
+<h4>some explanations modified by Stephen</h4>
+</div>
+</div>
+<div id="finding-text-in-r-with-grep" class="section level2">
+<h2>Finding text in R with grep</h2>
+<p>R can be used to manipulate text. It has built-in functions for this, notably <code>grep</code>and <code>sub</code>. Examples of <code>grep</code>: </p>
+<pre class="r"><code>strings &lt;- c(&quot;Hello&quot;, &quot;where are you going&quot;, &quot;goiing?&quot;, &quot;goi9ng&quot;)
+
+# the output indicates one instance was found
+grep(&quot;Hello&quot;, strings)</code></pre>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="replacing-text-in-r-with-sub" class="section level2">
+<h2>Replacing text in R with sub </h2>
+<p><code>sub</code> is used to find and replace text in a string. Some examples of <code>sub</code> are below. </p>
+<pre class="r"><code>strings_changed &lt;- sub(&quot;Hello&quot;, &quot;hi&quot;, strings)
+# notice &quot;Hello&quot; has changed to &quot;hi&quot;
+strings_changed</code></pre>
+<pre><code>## [1] &quot;hi&quot;                  &quot;where are you going&quot; &quot;goiing?&quot;            
+## [4] &quot;goi9ng&quot;</code></pre>
+<pre class="r"><code>strings_changed2 &lt;- sub(&quot;goiing&quot;, &quot;going&quot;, strings)
+
+# notice change to &quot;goiing&quot;
+strings_changed2</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;             
+## [4] &quot;goi9ng&quot;</code></pre>
+</div>
+<div id="regular-expressions" class="section level2">
+<h2>Regular expressions</h2>
+<p>In the previous example, we knew that the word “goiing” (with two i’s) existed and it was easy to change. However, sometimes you may not know what the misspelling is. In this case, regular expressions are convenient. These can be though of as placeholders that represent different characters. Here is a way to replace any character in ‘goiing’:</p>
+<pre class="r"><code>strings_changed3 &lt;- sub(&quot;goi.ng&quot;, &quot;going&quot;, strings)
+
+# the `.` means &quot;match anything&quot; so it has matched the extra &quot;i&quot;
+strings_changed3</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;going?&quot;             
+## [4] &quot;going&quot;</code></pre>
+<p>Often times you may want to see what the character was that was replaced. You can do that by using brackets and this <code>\\1</code>:</p>
+<pre class="r"><code>strings_changed4 &lt;- sub(&quot;goi(.)ng&quot;, &quot;\\1&quot;, strings)
+
+# what is different here? Now the results are the thing that was matched (and subsequently used to replace the original string)
+strings_changed4</code></pre>
+<pre><code>## [1] &quot;Hello&quot;               &quot;where are you going&quot; &quot;i?&quot;                 
+## [4] &quot;9&quot;</code></pre>
+<p>This should be all we need to start looking at some data (for now). </p>
+</div>
+<div id="course-learning-objectives" class="section level2">
+<h2>Course Learning Objectives</h2>
+<p>The dataset we are looking at is comprised of CLO data for all courses in FHSS. The courses were those offered in the first trimester of 2021.</p>
+<p>The question we are focusing on is:: To what extent is Bloom’s taxonomy present in the CLOs? In a nutshell, we want to make a frequency list of all occurrences of Bloom’s taxonomy levels.</p>
+<ol style="list-style-type: decimal">
+<li>First, import the data into a variable called <code>dat</code>. NOTE: the file is tab separated. </li>
+</ol>
+<p>(you can download the data here <a href="https://www.stephenskalicky.com/r_data/closDataset.csv">FHSS CLOs</a>)</p>
+<pre class="r"><code>## import whole dataset
+dat &lt;- read.csv(&quot;closDataset.csv&quot;, sep=&quot;\t&quot;)
+
+# note how the course code is entered - the last three digits are the number, where the first of these three digits tells us the level of the course (i.e., 1 = first year, 2 = second year, etc.).
+dat$COURSE[1:10]</code></pre>
+<pre><code>##  [1] &quot;ALIN591&quot; &quot;ALIN592&quot; &quot;ALIN690&quot; &quot;ANTH100&quot; &quot;ANTH101&quot; &quot;ANTH102&quot; &quot;ANTH200&quot;
+##  [8] &quot;ANTH201&quot; &quot;ANTH204&quot; &quot;ANTH208&quot;</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>We will need to create a new variable <code>year</code> so we know which year a course is. Examine the <code>COURSE</code> variable and see what it looks like. You should see four characters followed by a series of numbers. We want to get the first number after the four letters. How can we do that? (Remember that the ‘.’ matches any character)</li>
+</ol>
+<pre class="r"><code># create new column that looks for something six characters long and captures the fifth character
+dat$year &lt;- sub(&quot;....(.)..&quot;, &quot;\\1&quot;, dat$COURSE)
+
+# compare this to the dat$COURSE output above - we are capturing the fifth character from every course name. 
+dat$year[1:10]</code></pre>
+<pre><code>##  [1] &quot;5&quot; &quot;5&quot; &quot;6&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot; &quot;2&quot;</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>It may be good to compare between undergraduate and postgraduate courses. Let’s create a new variable <code>level</code> and have it be “UG” if the <code>year</code> is less than 4, and “PG” otherwise. First convert <code>year</code> to a number.</li>
+</ol>
+<pre class="r"><code># convert the column to an integer
+dat$year &lt;- as.numeric(dat$year)</code></pre>
+<p>Use <code>ifelse</code> to make a new column (bonus - how could you do this with <code>mutate</code> and a <code>tidyverse</code> approach?)</p>
+<pre class="r"><code># create the ifelse function - note this is different than tidyverse ifelse but functions almost the same. 
+dat$level &lt;- ifelse(dat$year &lt; 4, &quot;UG&quot;, &quot;PG&quot;)
+
+# seems to be working
+dat$level[1:10]</code></pre>
+<pre><code>##  [1] &quot;PG&quot; &quot;PG&quot; &quot;PG&quot; &quot;UG&quot; &quot;UG&quot; &quot;UG&quot; &quot;UG&quot; &quot;UG&quot; &quot;UG&quot; &quot;UG&quot;</code></pre>
+<pre class="r"><code>dat$year[1:10]</code></pre>
+<pre><code>##  [1] 5 5 6 1 1 1 2 2 2 2</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Now we can move on to the CLOs. The first thing to do is to split each word up and format them to be lowercase. The “\W” regular expression is used to match any non-word characters in a string - this means it will match things like whitespace but will not match letters, numbers, punctuation, etc. The <code>strsplit</code> function splits strings based on a defined criteria - if we use “” we are telling <code>strsplit</code> to separate words based on non-word characters. In other words, we are effectively asking to split words based on whitespace.</li>
+</ol>
+<pre class="r"><code>## separate CLOs into their own list
+
+# we need to put an extra &quot;\&quot; in front of the &quot;\W&quot; so that R knows not to run the regex literally
+clos &lt;- strsplit(dat$CLO, &quot;\\W&quot;)
+
+# check one - note that &quot;Undertake&quot; is captialized
+clos[5]</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;1&quot;               &quot;Identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;Undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;Explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
+<p>Let’s change all of the words to lowercase using <code>lappy</code> - this function will take a single function and “apply” it to a list of things. This means we will “apply” the function <code>tolower</code> to everything in the list <code>clos</code></p>
+<pre class="r"><code>clos &lt;- lapply(clos, tolower)
+
+# what happened to &quot;Undertake&quot;?
+clos[5]</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Using what we know about, we can create stop-lists for each level of Bloom’s taxonomy. There is a guide from the university about writing CLOs. It includes a table at the bottom of common words for each level of Bloom’s taxonomy:</li>
+</ol>
+<p><a href="https://www.wgtn.ac.nz/learning-teaching/support/course-design/objectives/writing">Bloom’s Taxonomy</a></p>
+<p>Generate a set of vectors which include key words associated with each level of Bloom’s taxonomy. The <code>^</code> is a regex which means “start of a string” and the <code>|</code> means OR.</p>
+<p>So each vector is a list of string patterns we can use to search for using regex, and because we have the <code>|</code> (or) operator, we can search through them all more efficiently.</p>
+<pre class="r"><code>know &lt;- &quot;^write|^list|^label|^name|^state|^define|^recognise|^characterise|^correct|^establish|^identify|^infer|^match&quot;
+
+comprehend &lt;- &quot;^explain|^summarise|^paraphrase|^describe|^illustrate|^interpret|^classify&quot;
+
+apply &lt;- &quot;^use|^compute|^solve|^demonstrate|^construct|^execute|^implement&quot;
+
+analyse &lt;- &quot;^categorise|^compare|^contrast|^separate|^differentiate|^organise|^attribute&quot;
+
+synthesise &lt;- &quot;^plan|^integrate|^formulate|^theorise|^design|^build&quot;
+
+evaluate &lt;-&quot;^judge|^recommend|^critique|^justify|^check&quot;</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Using these stop-lists, we can now apply them to the list of clos to change all of the words to Bloom’s taxonomy levels. It introduces a couple of new(is) concepts. First look at the fifth clo in <code>clos</code> - notice that the second word is “identify” which is part of the <code>know</code> object above.</li>
+</ol>
+<pre class="r"><code>clos[5]</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;1&quot;               &quot;identify&quot;        &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
+<p>Write a function again using <code>lapply</code> to “apply” a single function to a lot of things. In this case, we are using an <code>anonymous function</code> which is a function that does not have a name and is not saved permanently. Below, we apply the anonymous function which says to use <code>gsub</code> on every element of x, where x = clos. The pattern to search for is the object <code>know</code> (see above), and the replacement is the word <code>know</code>.</p>
+<pre class="r"><code>## apply each of the above to the clos, changing the words
+clos &lt;- lapply(clos, function(x) gsub(know, &quot;know&quot;, x))
+
+# identify has been changed to know
+clos[5]</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;1&quot;               &quot;know&quot;            &quot;and&quot;             &quot;analyse&quot;        
+##  [5] &quot;fundamental&quot;     &quot;ideas&quot;           &quot;&quot;                &quot;concepts&quot;       
+##  [9] &quot;&quot;                &quot;and&quot;             &quot;research&quot;        &quot;practices&quot;      
+## [13] &quot;of&quot;              &quot;contemporary&quot;    &quot;social&quot;          &quot;and&quot;            
+## [17] &quot;cultural&quot;        &quot;anthropology&quot;    &quot;&quot;                &quot;&quot;               
+## [21] &quot;2&quot;               &quot;undertake&quot;       &quot;research&quot;        &quot;utilising&quot;      
+## [25] &quot;an&quot;              &quot;anthropological&quot; &quot;perspective&quot;     &quot;and&quot;            
+## [29] &quot;communicate&quot;     &quot;your&quot;            &quot;findings&quot;        &quot;in&quot;             
+## [33] &quot;verbal&quot;          &quot;and&quot;             &quot;written&quot;         &quot;form&quot;           
+## [37] &quot;&quot;                &quot;&quot;                &quot;3&quot;               &quot;explain&quot;        
+## [41] &quot;how&quot;             &quot;different&quot;       &quot;aspects&quot;         &quot;of&quot;             
+## [45] &quot;culture&quot;         &quot;relate&quot;          &quot;to&quot;              &quot;one&quot;            
+## [49] &quot;another&quot;         &quot;and&quot;             &quot;are&quot;             &quot;integrated&quot;     
+## [53] &quot;in&quot;              &quot;a&quot;               &quot;cultural&quot;        &quot;system&quot;</code></pre>
+<p>Repeat this for each list representing a level of Bloom’s Taxonomy</p>
+<pre class="r"><code>clos &lt;- lapply(clos, function(x) gsub(comprehend, &quot;comprehend&quot;, x))
+clos &lt;- lapply(clos, function(x) gsub(apply, &quot;apply&quot;, x))
+clos &lt;- lapply(clos, function(x) gsub(analyse, &quot;analyse&quot;, x))
+clos &lt;- lapply(clos, function(x) gsub(synthesise, &quot;syntehsise&quot;, x))
+clos &lt;- lapply(clos, function(x) gsub(evaluate, &quot;evaluate&quot;, x))</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Now that we know which words we want to keep, we can create a variable <code>keep_words</code> which will contain them. We know that we have changed all of the words in each level to just one word, so we can search for just those words.</li>
+</ol>
+<pre class="r"><code>keep_words &lt;- &quot;^know$|^comprehend$|^apply$|^analyse$|^synthesise$|^evaluate$&quot;
+keep_words</code></pre>
+<pre><code>## [1] &quot;^know$|^comprehend$|^apply$|^analyse$|^synthesise$|^evaluate$&quot;</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Next, we simply have to keep the words in clos that are in <code>keep_words</code>.</li>
+</ol>
+<pre class="r"><code>clos &lt;- lapply(clos, function(x) grep(keep_words, x, value = T))
+
+clos[5]</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;know&quot;       &quot;analyse&quot;    &quot;comprehend&quot;</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>Finally, let’s view the results in table form after saving it to a variable <code>clos_freq</code>.</li>
+</ol>
+<pre class="r"><code>clos_freq &lt;- table(unlist(clos))
+
+clos_freq</code></pre>
+<pre><code>## 
+##    analyse      apply comprehend   evaluate       know synthesise 
+##        614       1579        548        453        667         36</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

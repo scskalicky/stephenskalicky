@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Stephen Skalicky" />
+
+<meta name="date" content="2021-06-07" />
+
+<title>functions are fun</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M60CX325VZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-M60CX325VZ');
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="academic-position.html">Academic Position</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Research Topics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="satire.html">Satire and figurative language</a>
+    </li>
+    <li>
+      <a href="computational-modelling.html">Computational modelling of humour, figurative language, and more</a>
+    </li>
+    <li>
+      <a href="sla.html">Second language acquisition and representation</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    LALS VUW R
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="getting-started.html">Getting Started with R</a>
+    </li>
+    <li>
+      <a href="pipes-and-functions.html">01: Pipes and Functions</a>
+    </li>
+    <li>
+      <a href="simulating-data.html">02: Simulating Data</a>
+    </li>
+    <li>
+      <a href="descriptives-part-02.html">03: Descriptive and summary statistics</a>
+    </li>
+    <li>
+      <a href="pivoting-data.html">04: Pivoting data wider and longer</a>
+    </li>
+    <li>
+      <a href="joins.html">05: Using joins, basic plots</a>
+    </li>
+    <li>
+      <a href="recreating-plot.html">06: Recreating a plot about metaphor</a>
+    </li>
+    <li>
+      <a href="if-else-and-case-when.html">07: Comparing if_else() and case_when()</a>
+    </li>
+    <li>
+      <a href="TJregex.html">08: Introduction to regular expressions</a>
+    </li>
+    <li>
+      <a href="functions-part-01.html">09: Introduction to function building</a>
+    </li>
+    <li>
+      <a href="plausibility-data.html">10: Plotting Plausibility</a>
+    </li>
+    <li>
+      <a href="for-loops.html">11: For Loops</a>
+    </li>
+    <li>
+      <a href="zed-scores.html">12: Zed scores</a>
+    </li>
+    <li>
+      <a href="vst-cleaning.html">13: Data Cleaning VST Scores</a>
+    </li>
+    <li>
+      <a href="dee-prime.html">14: Dprime and signal detection theory</a>
+    </li>
+    <li>
+      <a href="nesbp.html">15: messing with prepositions</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">functions are fun</h1>
+<h4 class="author">Stephen Skalicky</h4>
+<h4 class="date">06/07/2021</h4>
+
+</div>
+
+
+<div id="creating-a-simple-function" class="section level3">
+<h3>1. Creating a simple function </h3>
+<p>In R, everything is either an object or a function. We have experimented with data simulation and data creation, so we have created our own objects. However, we have not yet created our own functions. In this session, we will explore the basics of creating our own functions in R. </p>
+<p>To create a function in R, you create a new function by assigning a name to a <code>function()</code> call, and then defining the function arguments and telling the function what to do.</p>
+<p>The basic structure of a function is this:</p>
+<pre class="r"><code>function_name &lt;- function(){
+  # stuff the function does goes in here
+}</code></pre>
+<p>Note the two curly braces: “{” and “}” - these define the start and the end of the function and what it will do. You can include anything you want inside the function, including creating objects and using other functions.</p>
+</div>
+<div id="create-code" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Using the framework above, create a function named <code>hello.world</code> that will print “Hello World” to the console when run.<br />
+</p>
+<pre class="r"><code>hello.world &lt;- function(){
+  print(&quot;Hello World&quot;)
+}</code></pre>
+<p>To run your function, you need to include the brackets at the end, just like any other function.</p>
+<pre class="r"><code>hello.world()</code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+</div>
+<div id="adding-arguments-to-your-function" class="section level3">
+<h3>2. Adding arguments to your function</h3>
+<p>The <code>hello.world</code> function above does not have any arguments, but we can change that. When you define your function, you can also define the number of arguments it takes, their names, and whether they have default values.</p>
+<pre class="r"><code>function_name &lt;- function(argument1 = default, argument2){
+  # stuff the function does goes in here
+}</code></pre>
+</div>
+<div id="create-code-1" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Make a function named <code>printer</code> which takes one argument named <code>input</code> with the default value “need input”.  Inside your function, ask it to print <code>input</code>.</p>
+<pre class="r"><code>printer &lt;- function(words = &quot;need input&quot;){
+  print(words)
+}</code></pre>
+<p>Call your <code>printer</code> function without supplying an argument. What happens?</p>
+<pre class="r"><code>printer()</code></pre>
+<pre><code>## [1] &quot;need input&quot;</code></pre>
+<p>Now call <code>printer</code>, but this time give it some input for the <code>words</code> argument. </p>
+<pre class="r"><code>printer(words = &#39;Hello World&#39;)</code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+<pre class="r"><code>printer(1234)</code></pre>
+<pre><code>## [1] 1234</code></pre>
+</div>
+<div id="conditional-logic-inside-functions" class="section level3">
+<h3>3. Conditional logic inside functions </h3>
+<p>Our printer function is not very special or even very smart to make, because the <code>print()</code> command already exists - we are just reinventing the wheel. However, we can use functions to define conditional logic suited to our needs.<br />
+</p>
+<p>For instance, let’s say we only wanted to print something if a certain condition is met. We can do that by using <code>if</code> and <code>else</code> statements inside of a function.<br />
+</p>
+<p>For example, the following function takes two arguments, checks to see if they are equal, and if they are equal, sends a message to the console indicating a match was found.</p>
+<pre class="r"><code>match.finder &lt;- function(argument1, argument2){
+  if(argument1 == argument2){
+    message(&#39;match found&#39;)
+  }
+}</code></pre>
+<p>Let’s try it out:</p>
+<pre class="r"><code>match.finder(1,2)</code></pre>
+<pre class="r"><code>match.finder(1,1)</code></pre>
+<pre><code>## match found</code></pre>
+<p>Note that the <code>if</code> statement inside <code>match.finder</code> included its own set of curly brackets, which define the scope of that particular <code>if</code> statement. At this point it is crucial to note that the brackets must always match (open and close) where you want them to match, or else your conditionals may not work (or more likely, you function will just not run properly).</p>
+</div>
+<div id="expand-match.finder" class="section level3">
+<h3>4. Expand <code>match.finder</code><br />
+</h3>
+</div>
+<div id="create-code-2" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Add a second <code>if</code> statement to <code>match.finder</code> which will send a message to the console if a match is not found. Then run the function with a match and without a match. You can put the second <code>if</code> statement below the first, but make sure the second <code>if</code> is not inside the curly brackets of the first <code>if</code>.</p>
+<pre class="r"><code>match.finder &lt;- function(argument1, argument2){
+  if(argument1 == argument2){
+    message(&#39;match found&#39;)
+  }
+  if (argument1 != argument2){
+    message(&#39;match not found&#39;)
+  }
+}</code></pre>
+<p>Let’s try it out:</p>
+<pre class="r"><code>match.finder(1,2)</code></pre>
+<pre><code>## match not found</code></pre>
+<pre class="r"><code>match.finder(1,1)</code></pre>
+<pre><code>## match found</code></pre>
+</div>
+<div id="what-else" class="section level3">
+<h3>5. What else?<br />
+</h3>
+<p>The function above works but is pretty lazy and prone to breaking if we expand it. Our function only has a binary decision to make (do the arguments match, yes or no) so it is not necessary to have two separate <code>if</code> statements. We can do the same thing above using <code>else</code>. The benefit is that using <code>else()</code> means we don’t need to specify the condition to be met - <code>else()</code> will automatically trigger if the first <code>if</code> returns <code>FALSE</code>. This is exactly how <code>if_else()</code> and <code>ifelse()</code> worked, from our prior sessions.</p>
+<pre class="r"><code># a much more elegant version of match.finder()
+
+match.finder2 &lt;- function(argument1, argument2){
+  if(argument1 == argument2){
+    message(&#39;match found&#39;)
+  } else {
+    message(&#39;match not found&#39;)
+  }
+}</code></pre>
+<p>Let’s try it out:</p>
+<pre class="r"><code>match.finder2(1,2)</code></pre>
+<pre><code>## match not found</code></pre>
+<pre class="r"><code>match.finder2(1,1)</code></pre>
+<pre><code>## match found</code></pre>
+</div>
+<div id="if-inception" class="section level3">
+<h3>6. If inception</h3>
+<p>We can put <code>if</code> statements within <code>if</code> statements to have conditional logic trigger based on other conditional logic. For example, we could have a function first check if two numbers match. If they match, the function then checks to see if their sum is greater than 10, if so, it prints a message. (Note again how the curly brackets must be nested.)</p>
+<pre class="r"><code>useless.function &lt;- function(num1, num2) {
+  if(num1 == num2){
+    if(num1 + num2 &gt; 10){
+      message(&#39;numbers match and sum is greater than ten&#39;)
+    }
+  }
+}</code></pre>
+<p>Try it</p>
+<pre class="r"><code>useless.function(1,2)</code></pre>
+<pre class="r"><code>useless.function(6,6)</code></pre>
+<pre><code>## numbers match and sum is greater than ten</code></pre>
+<pre class="r"><code>useless.function(100,200)</code></pre>
+</div>
+<div id="create-code-3" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Our <code>useless.function</code> is pretty useless, and it only tells us something if the numbers match! Add a new <code>else</code> statement to <code>useless.function</code> which prints a message when the numbers do not match. you should put your <code>else</code> statement after the second last bracket.</p>
+<pre class="r"><code>useless.function &lt;- function(num1, num2) {
+  if(num1 == num2){
+    if(num1 + num2 &gt; 10) {
+      message(&#39;numbers match and sum is greater than ten&#39;)
+    }
+  } else {
+    message(&#39;numbers do not match&#39;)
+  }
+}</code></pre>
+<pre class="r"><code>useless.function(6,6)</code></pre>
+<pre><code>## numbers match and sum is greater than ten</code></pre>
+<pre class="r"><code>useless.function(4,5)</code></pre>
+<pre><code>## numbers do not match</code></pre>
+</div>
+<div id="else-inception" class="section level3">
+<h3>7. Else inception<br />
+</h3>
+</div>
+<div id="create-code-4" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Now add an <code>else</code> statement so that the user is informed when the numbers match but are not greater than ten. You will want to add your <code>else</code> statement after the bracket that comes after your message which triggers when the numbers are greater than ten.</p>
+<pre class="r"><code>useless.function &lt;- function(num1, num2) {
+  if(num1 == num2){
+    if(num1 + num2 &gt; 10) {
+      message(&#39;numbers match and sum is greater than ten&#39;)
+    } else {
+      message(&#39;numbers match but sum is not greater than ten&#39;)
+    }
+  } else {
+    message(&#39;numbers do not match&#39;)
+  }
+}</code></pre>
+<pre class="r"><code>useless.function(6,6)</code></pre>
+<pre><code>## numbers match and sum is greater than ten</code></pre>
+<pre class="r"><code>useless.function(4,4)</code></pre>
+<pre><code>## numbers match but sum is not greater than ten</code></pre>
+<pre class="r"><code>useless.function(4,5)</code></pre>
+<pre><code>## numbers do not match</code></pre>
+</div>
+<div id="make-it-stop" class="section level3">
+<h3>8. Make it stop<br />
+</h3>
+</div>
+<div id="create-code-5" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Finally, modify <code>useless.function</code> so that it also checks whether a number is greater than ten when the numbers do not match. You should have four possible messages: </p>
+<ul>
+<li>when the numbers match and are greater than ten</li>
+<li>when they numbers match and are not greater than ten</li>
+<li>when the numbers do not match and are greater than ten</li>
+<li>when the numbers do not match and are not greater than ten</li>
+</ul>
+<pre class="r"><code># don&#39;t show.
+useless.function &lt;- function(num1, num2) {
+  if(num1 == num2){
+    if(num1 + num2 &gt; 10) {
+      message(&#39;numbers match and sum is greater than ten&#39;)
+    } else {
+      message(&#39;numbers match but sum is not greater than ten&#39;)
+    }
+  } else {
+    if(num1 + num2 &gt; 10) {
+    message(&#39;numbers do not match and sum is greater than ten&#39;)
+  } else {
+    message(&#39;numbers do not match and sum is not greater than ten&#39;)
+    }
+  }
+}</code></pre>
+<pre class="r"><code>useless.function(6,6)</code></pre>
+<pre><code>## numbers match and sum is greater than ten</code></pre>
+<pre class="r"><code>useless.function(4,4)</code></pre>
+<pre><code>## numbers match but sum is not greater than ten</code></pre>
+<pre class="r"><code>useless.function(100,120)</code></pre>
+<pre><code>## numbers do not match and sum is greater than ten</code></pre>
+<pre class="r"><code>useless.function(1,2)</code></pre>
+<pre><code>## numbers do not match and sum is not greater than ten</code></pre>
+</div>
+<div id="local-variables-inside-functions" class="section level3">
+<h3>9. local variables inside functions<br />
+</h3>
+<p>Maybe we could perform the tests first, and then use those results in subsequent conditions? We can save local variables within our function, check it out:</p>
+<pre class="r"><code># the space in message is just for readability
+more.useless.function &lt;- function(num1, num2){
+  check.match &lt;- num1 == num2
+  check.sum &lt;- ((num1 + num2) &gt; 10)
+  message(check.match, &#39; &#39;, check.sum)
+}</code></pre>
+<pre class="r"><code>more.useless.function(6,6)</code></pre>
+<pre><code>## TRUE TRUE</code></pre>
+<pre class="r"><code>more.useless.function(7,5)</code></pre>
+<pre><code>## FALSE TRUE</code></pre>
+</div>
+<div id="create-code-6" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Modify <code>more.useless.function</code> to output the same messages as <code>useless.function</code>, but use the saved variables <code>check.match</code> and <code>check.sum</code> within the <code>more.useless.function</code></p>
+<pre class="r"><code># do not show
+# the space in message is just for readability
+more.useless.function &lt;- function(num1, num2){
+  check.match &lt;- num1 == num2
+  check.sum &lt;- ((num1 + num2) &gt; 10)
+  
+  if(check.match == TRUE) {
+    if(check.sum == TRUE){
+      message(&#39;numbers match and sum is greater than ten&#39;)
+    } else {
+      message(&#39;numbers match and sum is not greater than ten&#39;)
+    } 
+    
+    } else {
+      if(check.sum == TRUE){
+      message(&#39;numbers do not match and sum is greater than ten&#39;)
+    } else {
+      message(&#39;numbers do not match and sum is not greater than ten&#39;)
+      }
+    } 
+  }</code></pre>
+<p>test it:</p>
+<pre class="r"><code>more.useless.function(1,1)</code></pre>
+<pre><code>## numbers match and sum is not greater than ten</code></pre>
+<pre class="r"><code>more.useless.function(6,6)</code></pre>
+<pre><code>## numbers match and sum is greater than ten</code></pre>
+<pre class="r"><code>more.useless.function(7,9)</code></pre>
+<pre><code>## numbers do not match and sum is greater than ten</code></pre>
+<pre class="r"><code>more.useless.function(1,2)</code></pre>
+<pre><code>## numbers do not match and sum is not greater than ten</code></pre>
+</div>
+<div id="else-if" class="section level3">
+<h3>10. else if<br />
+</h3>
+<p>Let’s add one more final thing here: <code>else if</code>. We have been doing that above, although poorly. The <code>else if</code> allows us to continue checking multiple conditions through a function, whereas <code>else</code> only fires if one other condition is not met, and anything afterwards does not work unless we nest a bunch more if statements..</p>
+<p>See below, we could add an many <code>else if</code> conditions as we wanted to check for a variety of conditions.</p>
+<pre class="r"><code>else.if.example &lt;- function(x){
+  if(x &lt; 2){
+    message(&#39;x is less than 2&#39;)
+  } else if(x &gt; 2){
+    message(&#39;x is greater than 2&#39;)
+  } else {
+    message(&#39;x must be equal to 2&#39;)
+  }
+}</code></pre>
+<pre class="r"><code>else.if.example(2)</code></pre>
+<pre><code>## x must be equal to 2</code></pre>
+</div>
+<div id="are-we-done-yet" class="section level3">
+<h3>11. are we done yet?</h3>
+</div>
+<div id="create-code-7" class="section level3">
+<h3><strong>CREATE CODE:</strong></h3>
+<p>Create a function named <code>check.string.length</code> with a single argument <code>input</code>. Your function should produce three different messages, depending on the input: </p>
+<ul>
+<li>if the size of the input is &lt;= 5, message “small string” and the size</li>
+<li>if the size of the input is between 6 and 10, message “medium string” and the size</li>
+<li>if the size of the input is greater than 10, message “large string” and the size</li>
+</ul>
+<p>I want you to use <code>length()</code> to check the size, so that you can check numbers and strings. To save us a headache, you should include this as the first line within the function:</p>
+<p><code>effect &lt;- sapply(strsplit(as.character(input), ''), length)</code></p>
+<p>The above line will allow us to count the length of the word when split into separate characters - otherwise we would always get a length of 1 for any word we put into the function. In the function, use <code>effect</code> to control your conditional statements.</p>
+<pre class="r"><code># don&#39;t show
+check.length &lt;- function(input){
+  effect &lt;- sapply(strsplit(as.character(input), &#39;&#39;), length)
+  if(effect &lt;= 5) {
+    message(effect, &#39;: small effect&#39;)
+  } else if(effect &gt; 5 &amp; effect &lt; 11){
+    message(effect, &#39;: medium effect&#39;)
+  } else if(effect &gt; 10){
+    message(effect, &#39;: large effect&#39;)
+  }
+}</code></pre>
+<p>Now, I want you to figure out how to get <code>check.length</code> to output a small effect, a medium effect, and a small effect.</p>
+<pre class="r"><code>check.length(1)</code></pre>
+<pre><code>## 1: small effect</code></pre>
+<pre class="r"><code>check.length(&#39;cat&#39;)</code></pre>
+<pre><code>## 3: small effect</code></pre>
+<pre class="r"><code>check.length(&#39;banana&#39;)</code></pre>
+<pre><code>## 6: medium effect</code></pre>
+<pre class="r"><code>check.length(12345678987654321)</code></pre>
+<pre><code>## 17: large effect</code></pre>
+<pre class="r"><code>check.length(&#39;New Zealand&#39;)</code></pre>
+<pre><code>## 11: large effect</code></pre>
+<pre class="r"><code>check.length(&#39;United States of America&#39;)</code></pre>
+<pre><code>## 24: large effect</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
