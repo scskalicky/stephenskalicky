@@ -1,0 +1,55 @@
+name: "my-website"
+
+output:
+  html_document:
+      includes:
+          in_header: analytics.html
+navbar:
+  title: "SCS"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Academic Position"
+      href: academic-position.html
+    - text: 'Research Topics'
+      menu: 
+          - text: 'Satire and figurative language'
+            href: satire.html
+          - text: 'Computational modelling of humour, figurative language, and more'
+            href: computational-modelling.html
+          - text: 'Second language acquisition and representation'
+            href: sla.html
+    - text: "LALS VUW R"
+      menu: 
+          - text: 'Getting Started with R'
+            href: getting-started.html
+          - text: '01: Pipes and Functions'
+            href: pipes-and-functions.html
+          - text: '02: Simulating Data'
+            href: simulating-data.html
+          - text: '03: Descriptive and summary statistics'
+            href: descriptives-part-02.html
+          - text: '04: Pivoting data wider and longer'
+            href: pivoting-data.html
+          - text: '05: Using joins, basic plots'
+            href: joins.html
+          - text: '06: Recreating a plot about metaphor'
+            href: recreating-plot.html
+          - text: '07: Comparing if_else() and case_when()'
+            href: if-else-and-case-when.html
+          - text: '08: Introduction to regular expressions'
+            href: TJregex.html
+          - text: '09: Introduction to function building'
+            href: functions-part-01.html
+          - text: '10: Plotting Plausibility'  
+            href: plausibility-data.html
+          - text: '11: For Loops'
+            href: for-loops.html
+          - text: '12: Zed scores'
+            href: zed-scores.html
+          - text: '13: Data Cleaning VST Scores'
+            href: vst-cleaning.html
+          - text: '14: Dprime and signal detection theory'
+            href: dee-prime.html
+          - text: '15: messing with prepositions'
+            href: nesbp.html
