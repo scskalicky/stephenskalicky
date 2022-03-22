@@ -20,7 +20,13 @@ navbar:
             href: computational-modelling.html
           - text: 'Second language acquisition and representation'
             href: sla.html
-    - text: "LALS VUW R"
+    - text: Tutorials and Extras
+      menu:
+        - text: 'LexTALE working in JsPsych v7.+'
+          href: https://github.com/scskalicky/LexTALE_jsPsych
+        - text: 'Using Zotero in R Studio to Write Academic Papers'
+          href: https://github.com/scskalicky/zotero_tutorial/blob/main/zotero_and_Rstudio.md
+    - text: "R Workshop Tutorials (from 2021)"
       menu: 
           - text: 'Getting Started with R'
             href: getting-started.html
