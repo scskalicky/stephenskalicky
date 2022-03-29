@@ -9,7 +9,7 @@ navbar:
   title: SCS
 
   right: 
-    - icon: fa-regular fa-envelope-open fa-lg
+    - text: "Email Me"
       href: mailto:<scskalicky@gmail.com>
 
   left:
