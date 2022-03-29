@@ -7,11 +7,11 @@ output:
           in_header: analytics.html
 navbar:
   title: SCS
-  
+
   right: 
     - icon: fa-envelope fa-lg
       href: mailto:<scskalicky@gmail.com>
-      
+
   left:
     - text: "Home"
       href: index.html
