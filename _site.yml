@@ -17,6 +17,8 @@ navbar:
       href: index.html
     - text: "Academic Position"
       href: academic-position.html
+    - text: "Publications"
+      href: publications.html
     - text: 'Research Topics'
       menu: 
           - text: 'Satire and figurative language'
