@@ -19,14 +19,14 @@ navbar:
       href: academic-position.html
     - text: "Publications"
       href: publications.html
-    - text: 'Research Topics'
-      menu: 
-          - text: 'Satire and figurative language'
-            href: satire.html
-          - text: 'Computational modelling of humour, figurative language, and more'
-            href: computational-modelling.html
-          - text: 'Second language acquisition and representation'
-            href: sla.html
+   # - text: 'Research Topics'
+    #  menu: 
+    #      - text: 'Satire and figurative language'
+     #       href: satire.html
+    #      - text: 'Computational modelling of humour, figurative language, and more'
+     #       href: computational-modelling.html
+    #      - text: 'Second language acquisition and representation'
+    #        href: sla.html
     - text: Tutorials and Extras
       menu:
         - text: 'LexTALE working in JsPsych v7.+'
