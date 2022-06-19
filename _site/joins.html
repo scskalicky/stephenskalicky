@@ -357,11 +357,17 @@ $(document).ready(function () {
 </div>
 
 
-<div id="combining-data-from-two-different-sources-using-joins" class="section level3">
+<div id="combining-data-from-two-different-sources-using-joins"
+class="section level3">
 <h3>Combining data from two different sources using joins</h3>
-<p>When working with long data, where participants have multiple observations in multiple rows, you will find that a lot of data is repeated. For instance, demographic features such as participant age and sex or experimental conditions will stay the same for each observation.<br />
+<p>When working with long data, where participants have multiple
+observations in multiple rows, you will find that a lot of data is
+repeated. For instance, demographic features such as participant age and
+sex or experimental conditions will stay the same for each
+observation.<br />
 </p>
-<p>Sometimes you will want to add or manipulate data and join it with this repeated measures data. For example:</p>
+<p>Sometimes you will want to add or manipulate data and join it with
+this repeated measures data. For example:</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <p>Long data</p>
 <pre class="r"><code>tibble(subject = c(rep(&#39;one&#39;,5), rep(&#39;two&#39;, 5)), 
@@ -386,7 +392,8 @@ $(document).ready(function () {
 ##   &lt;chr&gt;   &lt;dbl&gt;
 ## 1 one        42
 ## 2 two        79</code></pre>
-<p>How can you form a single tibble which has both the score and ages in long format?</p>
+<p>How can you form a single tibble which has both the score and ages in
+long format?</p>
 <pre class="r"><code>tibble(subject = c(rep(&#39;one&#39;,5), rep(&#39;two&#39;, 5)), 
        score = (c(1:5, 10:6)),
        age = c(rep(42,5), rep(79,5)))</code></pre>
@@ -403,18 +410,25 @@ $(document).ready(function () {
 ##  8 two         8    79
 ##  9 two         7    79
 ## 10 two         6    79</code></pre>
-<p>We could manually sort and join the two objects, but we would prefer a method more precise. This is where joins come in.</p>
+<p>We could manually sort and join the two objects, but we would prefer
+a method more precise. This is where joins come in.</p>
 </div>
 <div id="using-left_join" class="section level3">
 <h3>1. Using <code>left_join()</code></h3>
-<p>There are several ways to join but we will use <code>left_join()</code>. This function joins the rows of two tibbles into one object. The arguments for <code>left_join()</code> are:<br />
+<p>There are several ways to join but we will use
+<code>left_join()</code>. This function joins the rows of two tibbles
+into one object. The arguments for <code>left_join()</code> are:<br />
 </p>
 <ul>
 <li><code>x</code> - the first tibble</li>
 <li><code>y</code> - the second tibble</li>
-<li><code>by</code> - a column or column(s) shared by both tibbles, used to match values</li>
+<li><code>by</code> - a column or column(s) shared by both tibbles, used
+to match values</li>
 </ul>
-<p><code>left_join()</code> means that the object on the left (<code>x</code>) is the final object to retain. All matches in <code>y</code> that are also in <code>x</code> will be added. For example:<br />
+<p><code>left_join()</code> means that the object on the left
+(<code>x</code>) is the final object to retain. All matches in
+<code>y</code> that are also in <code>x</code> will be added. For
+example:<br />
 </p>
 <pre class="r"><code>one &lt;- tibble(subject = c(rep(1,5), rep(2,5)), score = 1:10)
 one</code></pre>
@@ -438,7 +452,9 @@ two</code></pre>
 ##     &lt;dbl&gt; &lt;dbl&gt;
 ## 1       1    38
 ## 2       2    40</code></pre>
-<p>We can use left join to add age to each row. Notice how it matches each instance of age in <code>y</code> to any matches in <code>x</code>. All rows in <code>x</code> are retained.</p>
+<p>We can use left join to add age to each row. Notice how it matches
+each instance of age in <code>y</code> to any matches in <code>x</code>.
+All rows in <code>x</code> are retained.</p>
 <pre class="r"><code>three &lt;- left_join(one,two, by = &#39;subject&#39;)
 three</code></pre>
 <pre><code>## # A tibble: 10 × 3
@@ -454,10 +470,13 @@ three</code></pre>
 ##  8       2     8    40
 ##  9       2     9    40
 ## 10       2    10    40</code></pre>
-<p>Even if we reverse the order of the data objects, we still sort of get the results we want. This is because:<br />
+<p>Even if we reverse the order of the data objects, we still sort of
+get the results we want. This is because:<br />
 </p>
-<p><em>“If a row in x matches multiple rows in y, all the rows in y will be returned once for each matching row in x.”</em></p>
-<p>Also, note what happens if you do not specify a <code>by</code> argument</p>
+<p><em>“If a row in x matches multiple rows in y, all the rows in y will
+be returned once for each matching row in x.”</em></p>
+<p>Also, note what happens if you do not specify a <code>by</code>
+argument</p>
 <pre class="r"><code>left_join(two,one)</code></pre>
 <pre><code>## Joining, by = &quot;subject&quot;</code></pre>
 <pre><code>## # A tibble: 10 × 3
@@ -474,14 +493,19 @@ three</code></pre>
 ##  9       2    40     9
 ## 10       2    40    10</code></pre>
 </div>
-<div id="create-a-tibble-named-exp.data-which-has-the-following-columns" class="section level3">
-<h3>2. Create a tibble named <code>exp.data</code> which has the following columns:<br />
+<div id="create-a-tibble-named-exp.data-which-has-the-following-columns"
+class="section level3">
+<h3>2. Create a tibble named <code>exp.data</code> which has the
+following columns:<br />
 </h3>
 <ul>
 <li><code>subject</code> - which is the numbers 1 through 10</li>
-<li><code>pre</code> - 10 numbers randomly sampled from a normal distribution with mean = 20, sd = 3</li>
-<li><code>post1</code> - 10 numbers randomly sampled from a normal distribution with mean = 30, sd = 1</li>
-<li><code>post2</code> - 10 numbers randomly sampled from a normal distribution with mean = 15, sd = 5</li>
+<li><code>pre</code> - 10 numbers randomly sampled from a normal
+distribution with mean = 20, sd = 3</li>
+<li><code>post1</code> - 10 numbers randomly sampled from a normal
+distribution with mean = 30, sd = 1</li>
+<li><code>post2</code> - 10 numbers randomly sampled from a normal
+distribution with mean = 15, sd = 5</li>
 <li>use a <code>set.seed</code> of 500</li>
 </ul>
 <p>You should see this:</p>
@@ -505,10 +529,14 @@ exp.data</code></pre>
 ##  9       9  20.1  30.9  7.96
 ## 10      10  20.8  31.5 24.0</code></pre>
 </div>
-<div id="create-a-new-tibble-named-exp.data.long-from-exp.data-using-pivot_longer" class="section level3">
-<h3>3. Create a new tibble named <code>exp.data.long</code> from <code>exp.data</code> using <code>pivot_longer()</code></h3>
+<div
+id="create-a-new-tibble-named-exp.data.long-from-exp.data-using-pivot_longer"
+class="section level3">
+<h3>3. Create a new tibble named <code>exp.data.long</code> from
+<code>exp.data</code> using <code>pivot_longer()</code></h3>
 <ul>
-<li>the new column names should be <code>score</code> and <code>test</code></li>
+<li>the new column names should be <code>score</code> and
+<code>test</code></li>
 </ul>
 <p>You should see this:</p>
 <pre class="r"><code>exp.data.long &lt;- pivot_longer(exp.data, c(pre,post1,post2), values_to = &#39;score&#39;, names_to = &#39;test&#39; )
@@ -528,13 +556,18 @@ exp.data.long</code></pre>
 ## 10       4 pre    20.1
 ## # … with 20 more rows</code></pre>
 </div>
-<div id="create-a-second-tibble-named-demographic.data-with-the-following-columns" class="section level3">
-<h3>4. Create a second tibble named <code>demographic.data</code> with the following columns<br />
+<div
+id="create-a-second-tibble-named-demographic.data-with-the-following-columns"
+class="section level3">
+<h3>4. Create a second tibble named <code>demographic.data</code> with
+the following columns<br />
 </h3>
 <ul>
 <li>subject: the values 1-10</li>
-<li>age: 10 random values from a normal distribution with a mean of 20, sd of .2, set.seed of 100</li>
-<li>condition: the word “high” repeated five times, then the word “low” repeated five times</li>
+<li>age: 10 random values from a normal distribution with a mean of 20,
+sd of .2, set.seed of 100</li>
+<li>condition: the word “high” repeated five times, then the word “low”
+repeated five times</li>
 </ul>
 <p>You should see this:</p>
 <pre class="r"><code>set.seed(100)
@@ -554,8 +587,12 @@ demographic.data</code></pre>
 ##  9       9  19.8 low      
 ## 10      10  19.9 low</code></pre>
 </div>
-<div id="make-a-new-tibble-named-full.data-which-is-the-result-of-using-left_join-on-exp.data.long-and-demographic.data" class="section level3">
-<h3>5. Make a new tibble named <code>full.data</code> which is the result of using <code>left_join()</code> on <code>exp.data.long</code> and <code>demographic.data</code><br />
+<div
+id="make-a-new-tibble-named-full.data-which-is-the-result-of-using-left_join-on-exp.data.long-and-demographic.data"
+class="section level3">
+<h3>5. Make a new tibble named <code>full.data</code> which is the
+result of using <code>left_join()</code> on <code>exp.data.long</code>
+and <code>demographic.data</code><br />
 </h3>
 <pre class="r"><code>full.data &lt;- left_join(exp.data.long, demographic.data)</code></pre>
 <pre><code>## Joining, by = &quot;subject&quot;</code></pre>
@@ -575,8 +612,12 @@ demographic.data</code></pre>
 ## 10       4 pre    20.1  20.2 high     
 ## # … with 20 more rows</code></pre>
 </div>
-<div id="create-a-new-tibble-named-output-which-contains-the-mean-and-sd-of-score-at-each-test-time-separated-by-condition" class="section level3">
-<h3>6. Create a new tibble named <code>output</code> which contains the mean and sd of <code>score</code> at each test time, separated by condition<br />
+<div
+id="create-a-new-tibble-named-output-which-contains-the-mean-and-sd-of-score-at-each-test-time-separated-by-condition"
+class="section level3">
+<h3>6. Create a new tibble named <code>output</code> which contains the
+mean and sd of <code>score</code> at each test time, separated by
+condition<br />
 </h3>
 <p>You should see this:</p>
 <pre class="r"><code>output &lt;- full.data %&gt;%
@@ -596,32 +637,50 @@ demographic.data</code></pre>
 ## 5 pre   high            22.9    2.06 
 ## 6 pre   low             20.6    1.56</code></pre>
 </div>
-<div id="now-let-us-do-some-simple-visualization-using-ggplot" class="section level3">
-<h3>7. Now let us do some <em>simple</em> visualization using <code>ggplot</code><br />
+<div id="now-let-us-do-some-simple-visualization-using-ggplot"
+class="section level3">
+<h3>7. Now let us do some <em>simple</em> visualization using
+<code>ggplot</code><br />
 </h3>
-<p><code>ggplot</code> is a function to plot data and is usually what you see when people show r plots. The function is more complicated than other functions, but we can learn the basics for now.</p>
-<p>ggplot needs to know the data it is using, as well as what to define the x and y axis with. This is done with the following syntax:</p>
+<p><code>ggplot</code> is a function to plot data and is usually what
+you see when people show r plots. The function is more complicated than
+other functions, but we can learn the basics for now.</p>
+<p>ggplot needs to know the data it is using, as well as what to define
+the x and y axis with. This is done with the following syntax:</p>
 <p><code>ggplot(data, aes(x = column1, y = column2))</code></p>
-<p>Can you make a ggplot from <code>output</code> in which <code>mean.score</code> is the y axis and <code>test</code> is the x axis?</p>
+<p>Can you make a ggplot from <code>output</code> in which
+<code>mean.score</code> is the y axis and <code>test</code> is the x
+axis?</p>
 <p>You will want to see something like this:</p>
 <pre class="r"><code>ggplot(output, aes(y = mean.score, x = test))</code></pre>
 <p><img src="joins_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<p>What’s wrong with our plot so far? The order of “test” is wonky. This is because R will auto-sort alphabetically.</p>
-<p>use the <code>summary()</code> function on <code>output$test</code> - what do you see?</p>
+<p>What’s wrong with our plot so far? The order of “test” is wonky. This
+is because R will auto-sort alphabetically.</p>
+<p>use the <code>summary()</code> function on <code>output$test</code> -
+what do you see?</p>
 </div>
 <div id="reordering-a-factor" class="section level3">
 <h3>8. Reordering a factor</h3>
-<p>Create a new value named <code>test2</code> which is the result of calling <code>as.factor()</code> on <code>output$test</code>. Then call a <code>summary()</code> on <code>test2</code>, then call the function <code>levels()</code> on <code>test2</code> - what does this tell us?</p>
+<p>Create a new value named <code>test2</code> which is the result of
+calling <code>as.factor()</code> on <code>output$test</code>. Then call
+a <code>summary()</code> on <code>test2</code>, then call the function
+<code>levels()</code> on <code>test2</code> - what does this tell
+us?</p>
 <pre class="r"><code>test2 &lt;- as.factor(output$test)
 summary(test2)</code></pre>
 <pre><code>## post1 post2   pre 
 ##     2     2     2</code></pre>
 <pre class="r"><code>levels(test2)</code></pre>
 <pre><code>## [1] &quot;post1&quot; &quot;post2&quot; &quot;pre&quot;</code></pre>
-<p>We can use <code>relevel()</code> to set a new baseline level for our factor, but we might want more control than this.</p>
+<p>We can use <code>relevel()</code> to set a new baseline level for our
+factor, but we might want more control than this.</p>
 <pre class="r"><code>levels(relevel(test2, ref = &#39;pre&#39;))</code></pre>
 <pre><code>## [1] &quot;pre&quot;   &quot;post1&quot; &quot;post2&quot;</code></pre>
-<p>The <code>factor()</code> function allows us to define the <code>levels</code> and the <code>labels</code> of our factor. The <code>levels</code> argument should match what it already in the data, and the <code>labels</code> can be used to give prettier text labels (e.g., for plotting</p>
+<p>The <code>factor()</code> function allows us to define the
+<code>levels</code> and the <code>labels</code> of our factor. The
+<code>levels</code> argument should match what it already in the data,
+and the <code>labels</code> can be used to give prettier text labels
+(e.g., for plotting</p>
 <pre class="r"><code>factor(test2, levels = c(&#39;pre&#39;,&#39;post1&#39;, &#39;post2&#39;))</code></pre>
 <pre><code>## [1] post1 post1 post2 post2 pre   pre  
 ## Levels: pre post1 post2</code></pre>
@@ -629,9 +688,15 @@ summary(test2)</code></pre>
 <pre><code>## [1] Post 1 Post 1 Post 2 Post 2 Pre    Pre   
 ## Levels: Pre Post 1 Post 2</code></pre>
 </div>
-<div id="your-turn-please-change-the-value-of-outputtest-to-be-a-factor-with-levels-and-labels-matching-test2.-you-can-do-this-by-assigning-a-value-to-itself-outputtest-factor" class="section level3">
-<h3>9. your turn: Please change the value of <code>output$test</code> to be a factor, with levels and labels matching <code>test2</code>. You can do this by assigning a value to itself: <code>output$test = factor()</code></h3>
-<p>afterwards run <code>summary()</code> and <code>levels()</code> on <code>output$test</code>. you should see this:</p>
+<div
+id="your-turn-please-change-the-value-of-outputtest-to-be-a-factor-with-levels-and-labels-matching-test2.-you-can-do-this-by-assigning-a-value-to-itself-outputtest-factor"
+class="section level3">
+<h3>9. your turn: Please change the value of <code>output$test</code> to
+be a factor, with levels and labels matching <code>test2</code>. You can
+do this by assigning a value to itself:
+<code>output$test = factor()</code></h3>
+<p>afterwards run <code>summary()</code> and <code>levels()</code> on
+<code>output$test</code>. you should see this:</p>
 <pre class="r"><code>output$test &lt;- factor(output$test, levels = c(&#39;pre&#39;, &#39;post1&#39;, &#39;post2&#39;), labels = c(&#39;Pre&#39;, &#39;Post 1&#39;, &#39;Post 2&#39;))
 levels(output$test)</code></pre>
 <pre><code>## [1] &quot;Pre&quot;    &quot;Post 1&quot; &quot;Post 2&quot;</code></pre>
@@ -639,20 +704,32 @@ levels(output$test)</code></pre>
 <pre><code>##    Pre Post 1 Post 2 
 ##      2      2      2</code></pre>
 </div>
-<div id="plot-the-same-plot-again-but-this-time-save-it-as-an-object-named-my.plot.-call-the-plot-by-typing-the-name---this-time-your-x-axis-should-look-better" class="section level3">
-<h3>10. Plot the same plot again, but this time save it as an object named <code>my.plot</code>. call the plot by typing the name - this time your x-axis should look better</h3>
+<div
+id="plot-the-same-plot-again-but-this-time-save-it-as-an-object-named-my.plot.-call-the-plot-by-typing-the-name---this-time-your-x-axis-should-look-better"
+class="section level3">
+<h3>10. Plot the same plot again, but this time save it as an object
+named <code>my.plot</code>. call the plot by typing the name - this time
+your x-axis should look better</h3>
 <pre class="r"><code>my.plot &lt;- ggplot(output, aes(x = test, y = mean.score))
 my.plot</code></pre>
 <p><img src="joins_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<p>We want to add actual points to the plot, to do so we add <code>geoms</code> to the ggplot, which are different geometric objects. These geoms can also take their own <code>aes</code> arguments, making ggplot very powerful (but also confusing at times). Also, instead of a pipe <code>%&gt;%</code>, you use a <code>+</code> to link geoms. add a <code>geom_col()</code> to the plot</p>
+<p>We want to add actual points to the plot, to do so we add
+<code>geoms</code> to the ggplot, which are different geometric objects.
+These geoms can also take their own <code>aes</code> arguments, making
+ggplot very powerful (but also confusing at times). Also, instead of a
+pipe <code>%&gt;%</code>, you use a <code>+</code> to link geoms. add a
+<code>geom_col()</code> to the plot</p>
 <pre class="r"><code>my.plot + 
   geom_col()</code></pre>
 <p><img src="joins_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<p>Now add an <code>aes</code> function inside <code>geom_col</code> and set <code>fill</code> to equal <code>condition</code></p>
+<p>Now add an <code>aes</code> function inside <code>geom_col</code> and
+set <code>fill</code> to equal <code>condition</code></p>
 <pre class="r"><code>my.plot + 
   geom_col(aes(fill = condition))</code></pre>
 <p><img src="joins_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<p>Now, let’s “dodge” the stacked columns so that they are side by side. Add the argument <code>position</code> inside <code>geom_col</code> but not inside <code>aes</code> and set it equal to <code>'dodge'</code></p>
+<p>Now, let’s “dodge” the stacked columns so that they are side by side.
+Add the argument <code>position</code> inside <code>geom_col</code> but
+not inside <code>aes</code> and set it equal to <code>'dodge'</code></p>
 <pre class="r"><code>my.plot + 
   geom_col(aes(fill = condition), position = &#39;dodge&#39;)</code></pre>
 <p><img src="joins_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>

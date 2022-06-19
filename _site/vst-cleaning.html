@@ -357,16 +357,27 @@ $(document).ready(function () {
 </div>
 
 
-<div id="thanks-to-tj-for-providing-the-data-and-guiding-us-through-the-discussion" class="section level3">
-<h3>Thanks to TJ for providing the data and guiding us through the discussion!</h3>
-<p>The goal of this lesson is to practice data wrangling and exploration with less scaffolding. TJ has provided a data set and what that final data set should look like.</p>
+<div
+id="thanks-to-tj-for-providing-the-data-and-guiding-us-through-the-discussion"
+class="section level3">
+<h3>Thanks to TJ for providing the data and guiding us through the
+discussion!</h3>
+<p>The goal of this lesson is to practice data wrangling and exploration
+with less scaffolding. TJ has provided a data set and what that final
+data set should look like.</p>
 </div>
 <div id="loading-and-observing-the-dataset" class="section level2">
 <h2>Loading and observing the dataset</h2>
-<p>More often than not, raw data looks very different to data that appears in a publication. This means that a lot of time is spent cleaning the data. In this exercise, we will practice the process of cleaning up data. The first thing we need to do is import the data and look at it.</p>
-<p>You can download the data from <a href="https://www.stephenskalicky.com/r_data/testData.csv">here</a>.<br />
+<p>More often than not, raw data looks very different to data that
+appears in a publication. This means that a lot of time is spent
+cleaning the data. In this exercise, we will practice the process of
+cleaning up data. The first thing we need to do is import the data and
+look at it.</p>
+<p>You can download the data from <a
+href="https://www.stephenskalicky.com/r_data/testData.csv">here</a>.<br />
 </p>
-<p>Or you can pass the URL directly to <code>read_csv</code> to get the data into R.</p>
+<p>Or you can pass the URL directly to <code>read_csv</code> to get the
+data into R.</p>
 <pre class="r"><code>dat &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/testData.csv&#39;)</code></pre>
 <pre><code>## Rows: 19 Columns: 109
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -375,18 +386,29 @@ $(document).ready(function () {
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>Examine the data. What does each row represent? What are the column names?</p>
+<p>Examine the data. What does each row represent? What are the column
+names?</p>
 </div>
 <div id="main-task" class="section level1">
 <h1>Main task</h1>
-<div id="what-is-the-score-for-each-participant-and-what-is-their-vocabulary-size" class="section level2">
-<h2>What is the score for each participant, and what is their vocabulary size?<br />
+<div
+id="what-is-the-score-for-each-participant-and-what-is-their-vocabulary-size"
+class="section level2">
+<h2>What is the score for each participant, and what is their vocabulary
+size?<br />
 </h2>
-<p>In order to answer these questions we need to do a variety of things.<br />
+<p>In order to answer these questions we need to do a variety of
+things.<br />
 </p>
-<p>In the session, we decided it would be fun to compare and contrast the tidyverse and base r methods to answer these questions. The objects with <code>tv</code> at the end are the tidyverse methods, while the objects with <code>b</code> at the end are base R.</p>
-<div id="the-first-task-is-to-get-only-the-vst-data-dont-need-anything-related-to-levels-age-etc.." class="section level3">
-<h3>the first task is to get only the VST data (don’t need anything related to levels, age, etc.).</h3>
+<p>In the session, we decided it would be fun to compare and contrast
+the tidyverse and base r methods to answer these questions. The objects
+with <code>tv</code> at the end are the tidyverse methods, while the
+objects with <code>b</code> at the end are base R.</p>
+<div
+id="the-first-task-is-to-get-only-the-vst-data-dont-need-anything-related-to-levels-age-etc.."
+class="section level3">
+<h3>the first task is to get only the VST data (don’t need anything
+related to levels, age, etc.).</h3>
 <pre class="r"><code># subset VST data (so we want ID + all of the columns with vst.qX in the name)
 
 # pipe using tidyverse
@@ -399,7 +421,8 @@ vst_data_b &lt;- subset(dat, select = grep(&quot;ID|vst.&quot;, names(dat), valu
 identical(vst_data_tv, vst_data_b)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="the-next-task-is-to-remove-anyone-who-has-na-for-a-vst-test" class="section level3">
+<div id="the-next-task-is-to-remove-anyone-who-has-na-for-a-vst-test"
+class="section level3">
 <h3>the next task is to remove anyone who has NA for a vst test</h3>
 <pre class="r"><code># remove NAs (n should = 16) (any row that has an NA anywhere)
 
@@ -411,12 +434,19 @@ vst_data_tv1 &lt;- vst_data_tv %&gt;%
 # Slicing is a technique used by other programming language (with different syntax) - so it can be a useful method but harder to read
 vst_data_b1 &lt;- vst_data_b[!is.na(vst_data_b[,2]),]</code></pre>
 </div>
-<div id="in-case-you-want-to-go-through-some-potentially-redundant-steps-here-they-are" class="section level3">
-<h3>in case you want to go through some potentially redundant steps here they are</h3>
-<p><code>compute sums for each ten questions that make up a 1k freq band</code> <code>rename datvst_summed_by_level's columns to appropriate names</code></p>
+<div
+id="in-case-you-want-to-go-through-some-potentially-redundant-steps-here-they-are"
+class="section level3">
+<h3>in case you want to go through some potentially redundant steps here
+they are</h3>
+<p><code>compute sums for each ten questions that make up a 1k freq band</code>
+<code>rename datvst_summed_by_level's columns to appropriate names</code></p>
 </div>
-<div id="the-next-step-is-to-create-a-tabledftibble-with-three-columns-person-total-score-vst-and-total-vocabulary-vsize" class="section level3">
-<h3>the next step is to create a table/df/tibble with three columns: person, total score (VST), and total vocabulary (Vsize)</h3>
+<div
+id="the-next-step-is-to-create-a-tabledftibble-with-three-columns-person-total-score-vst-and-total-vocabulary-vsize"
+class="section level3">
+<h3>the next step is to create a table/df/tibble with three columns:
+person, total score (VST), and total vocabulary (Vsize)</h3>
 <pre class="r"><code># create a table of person, total score, total vocab size
 # the vst ranges from 0 - 100. let&#39;s calculate each subject&#39;s score on the vst.
 
@@ -445,8 +475,11 @@ finalResults_b &lt;- data.frame(person = vst_data_b1$ID, VST = vst_data_b2, Vsiz
      mutate(person = ID, VST = rowSums (select(., contains (&#39;vst&#39;))), Vsize = VST * 200) %&gt;%
      select(person, VST, Vsize)</code></pre>
 </div>
-<div id="add-vsize-this-is-also-done-above---we-adjusted-the-above-code-after-doing-the-below.-this-shows-you-that-vsize-was-just-vst200." class="section level3">
-<h3>add Vsize (this is also done above - we adjusted the above code after doing the below). This shows you that Vsize was just VST*200.</h3>
+<div
+id="add-vsize-this-is-also-done-above---we-adjusted-the-above-code-after-doing-the-below.-this-shows-you-that-vsize-was-just-vst200."
+class="section level3">
+<h3>add Vsize (this is also done above - we adjusted the above code
+after doing the below). This shows you that Vsize was just VST*200.</h3>
 <pre class="r"><code># add one more column which is vsize
 # what is vsize? Well, it looks like each correct answer is indicative of 200 words or something like that
 # so we can easily create a new column by multiplying VST*200
@@ -465,10 +498,14 @@ finalResults_b$Vsize &lt;- finalResults_b[,&#39;VST&#39;] * 200</code></pre>
 <pre class="r"><code>ggplot(finalResults_b, aes(x = VST, y = Vsize)) +
   #geom_point() + 
   geom_text(aes(label = person))</code></pre>
-<p><img src="vst-cleaning_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <!-- * convert datvst_summed_by_level to words (Each 1k level represents 200 words, so multiply each cell by 200) --> <!-- * Sum each level by participant to get total word size (out of 20k) --> <!-- * create a dataframe with three columns: person, VST, and Vsize. Each row should be one participant --></p>
+<p><img src="vst-cleaning_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<!-- * convert datvst_summed_by_level to words (Each 1k level represents 200 words, so multiply each cell by 200) -->
+<!-- * Sum each level by participant to get total word size (out of 20k) -->
+<!-- * create a dataframe with three columns: person, VST, and Vsize. Each row should be one participant --></p>
 </div>
 </div>
-<div id="your-final-dataframe-should-look-like-this" class="section level2">
+<div id="your-final-dataframe-should-look-like-this"
+class="section level2">
 <h2>Your final dataframe should look like this:</h2>
 <pre><code>person  VST     Vsize
 01         79     15800

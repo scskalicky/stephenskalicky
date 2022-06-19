@@ -358,8 +358,11 @@ $(document).ready(function () {
 
 
 <ol style="list-style-type: decimal">
-<li>Download the <code>metaphor data.csv</code> file from <a href="https://osf.io/qrc6b/" class="uri">https://osf.io/qrc6b/</a></li>
-<li>Create a new object in R named <code>metaphor</code> which is the result of calling <code>read_csv()</code> on <code>metaphor data.csv</code></li>
+<li>Download the <code>metaphor data.csv</code> file from <a
+href="https://osf.io/qrc6b/" class="uri">https://osf.io/qrc6b/</a></li>
+<li>Create a new object in R named <code>metaphor</code> which is the
+result of calling <code>read_csv()</code> on
+<code>metaphor data.csv</code></li>
 </ol>
 <pre class="r"><code>library(tidyverse)
 metaphor &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_data.csv&#39;)</code></pre>
@@ -372,7 +375,9 @@ metaphor &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_dat
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Using a pipe, make a new object called <code>met.small</code> from <code>metaphor</code>. Using <code>dplyr::select()</code>, choose the following columns:<br />
+<li>Using a pipe, make a new object called <code>met.small</code> from
+<code>metaphor</code>. Using <code>dplyr::select()</code>, choose the
+following columns:<br />
 </li>
 </ol>
 <ul>
@@ -385,38 +390,65 @@ metaphor &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_dat
 </ol>
 <p><img src="met%20violin.png" /></p>
 <ol start="5" style="list-style-type: decimal">
-<li>First we need to <code>mutate</code> the RT (the time spent writing the metaphor) into seconds. The current measurement is in milliseconds, and we want seconds. Therefore we need to divide <code>met_RT</code> by 1000. Using <code>mutate</code>, create a new variable in <code>met.small</code> named RT, which is the result of dividing <code>met_RT</code> by 1000. (Note that I am going to extend the pipe from the original creation of <code>met.small</code> each time).</li>
+<li>First we need to <code>mutate</code> the RT (the time spent writing
+the metaphor) into seconds. The current measurement is in milliseconds,
+and we want seconds. Therefore we need to divide <code>met_RT</code> by
+1000. Using <code>mutate</code>, create a new variable in
+<code>met.small</code> named RT, which is the result of dividing
+<code>met_RT</code> by 1000. (Note that I am going to extend the pipe
+from the original creation of <code>met.small</code> each time).</li>
 </ol>
 <pre class="r"><code>met.small &lt;- metaphor %&gt;%
   dplyr::select(subject, met_type, met_RT, conceptual, nm, NFC) %&gt;%
   mutate(RT = met_RT/1000)</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li><p>Next, we need to remove outliers. We will define an outlier as someone who spent longer than 2.5 standard deviations writing their metaphor. We will use z-scores to help us with this (don’t worry if you do not know what that is).</p></li>
-<li><p>Using mutate, create a new variable in <code>met.small</code> named <code>zRT</code>, which is the result of calling the function <code>scale</code> on <code>met_RT</code>.</p></li>
+<li><p>Next, we need to remove outliers. We will define an outlier as
+someone who spent longer than 2.5 standard deviations writing their
+metaphor. We will use z-scores to help us with this (don’t worry if you
+do not know what that is).</p></li>
+<li><p>Using mutate, create a new variable in <code>met.small</code>
+named <code>zRT</code>, which is the result of calling the function
+<code>scale</code> on <code>met_RT</code>.</p></li>
 </ol>
 <pre class="r"><code>met.small &lt;- metaphor %&gt;%
   dplyr::select(subject, met_type, met_RT, conceptual, nm, NFC) %&gt;%
   mutate(RT = met_RT/1000) %&gt;%
   mutate(zRT = scale(met_RT))</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li>Then, extend the pipe to a new <code>mutate</code> call which creates a new variable named <code>outliers</code>. The value of <code>outliers</code> will be a <code>1</code> if <code>zRT</code> is &gt;= to 2.5, otherwise it will be a <code>0</code>. To do this, we can use the <code>if_else</code> function in our <code>mutate</code> call (we could also use the <code>case_when</code> function).</li>
+<li>Then, extend the pipe to a new <code>mutate</code> call which
+creates a new variable named <code>outliers</code>. The value of
+<code>outliers</code> will be a <code>1</code> if <code>zRT</code> is
+&gt;= to 2.5, otherwise it will be a <code>0</code>. To do this, we can
+use the <code>if_else</code> function in our <code>mutate</code> call
+(we could also use the <code>case_when</code> function).</li>
 </ol>
-<p>The basic syntax for <code>if_else</code> is <code>if_else(condition, A, B)</code>, where if condition = TRUE, do A, otherwise, do B. You can write your mutate call like this:</p>
+<p>The basic syntax for <code>if_else</code> is
+<code>if_else(condition, A, B)</code>, where if condition = TRUE, do A,
+otherwise, do B. You can write your mutate call like this:</p>
 <p><code>mutate(outliers = if_else(condition, A, B))</code></p>
-<p>It is up to you to write the correct values for <code>condition</code>, <code>A</code>, and <code>B</code>.</p>
-<p>Below is the final pipe will all the previous commands in one pipe. This is again why pipes are cool - you can add each line, step-by-step, as part of your data cleaning / wrangling process. You could easily put all the mutate functions into one call to <code>mutate()</code>, but this method has the advantage of being a bit more easy to read and see how steps link to one another.</p>
+<p>It is up to you to write the correct values for
+<code>condition</code>, <code>A</code>, and <code>B</code>.</p>
+<p>Below is the final pipe will all the previous commands in one pipe.
+This is again why pipes are cool - you can add each line, step-by-step,
+as part of your data cleaning / wrangling process. You could easily put
+all the mutate functions into one call to <code>mutate()</code>, but
+this method has the advantage of being a bit more easy to read and see
+how steps link to one another.</p>
 <pre class="r"><code>met.small &lt;- metaphor %&gt;%
   dplyr::select(subject, met_type, met_RT, conceptual, nm, NFC) %&gt;%
   mutate(RT = met_RT/1000) %&gt;%
   mutate(zRT = scale(met_RT)) %&gt;%
   mutate(outliers = if_else(zRT &gt;= 2.5, 1, 0))</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li>How many outliers are there? How can you easily find out using one R function applied to <code>met.small</code>?</li>
+<li>How many outliers are there? How can you easily find out using one R
+function applied to <code>met.small</code>?</li>
 </ol>
 <pre class="r"><code>sum(met.small$outliers)</code></pre>
 <pre><code>## [1] 34</code></pre>
 <ol start="10" style="list-style-type: decimal">
-<li>Create a new object named <code>met.trim</code> which is the result of removing the outliers from <code>met.small</code>. Use the <code>filter()</code> function.</li>
+<li>Create a new object named <code>met.trim</code> which is the result
+of removing the outliers from <code>met.small</code>. Use the
+<code>filter()</code> function.</li>
 </ol>
 <pre class="r"><code>met.trim &lt;- met.small %&gt;%
   dplyr::filter(outliers == 0)
@@ -425,7 +457,14 @@ metaphor &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_dat
 sum(met.trim$outliers)</code></pre>
 <pre><code>## [1] 0</code></pre>
 <ol start="11" style="list-style-type: decimal">
-<li>Create a new object named <code>met.violin</code> which is the result of calling the <code>ggplot()</code> function. Inside the <code>ggplot()</code> call, set the <code>data</code> argument to <code>met.trim</code>, and make a <code>aes()</code> call with the correct x and y axis in order to replicate the chart above. View your plot by running the name of the object (i.e., run <code>met.violin</code> by itself). Compare your Figure to the one above - is it correct? What else are we missing?</li>
+<li>Create a new object named <code>met.violin</code> which is the
+result of calling the <code>ggplot()</code> function. Inside the
+<code>ggplot()</code> call, set the <code>data</code> argument to
+<code>met.trim</code>, and make a <code>aes()</code> call with the
+correct x and y axis in order to replicate the chart above. View your
+plot by running the name of the object (i.e., run
+<code>met.violin</code> by itself). Compare your Figure to the one above
+- is it correct? What else are we missing?</li>
 </ol>
 <pre class="r"><code>met.violin &lt;- ggplot(data = met.trim, aes(x = met_type, y = RT)) +
   geom_violin()
@@ -433,16 +472,30 @@ sum(met.trim$outliers)</code></pre>
 met.violin</code></pre>
 <p><img src="recreating-plot_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <ol start="12" style="list-style-type: decimal">
-<li>Add the necessary ggplot information (go through this list one-at-a-time)<br />
+<li>Add the necessary ggplot information (go through this list
+one-at-a-time)<br />
 </li>
 </ol>
 <ul>
-<li>before your call to <code>geom_violin</code>, add a new line with only the function <code>theme_base()</code> - you will need the package <code>ggthemes()</code> to do this</li>
-<li>in your <code>geom_violin()</code> function, add <code>aes(fill = met_type)</code></li>
-<li>use a <code>+</code> sign to add a new function to your ggplot which is <code>scale_x_discrete()</code>. This function can rename the values on your x axis using the <code>labels()</code> function. Use the template <code>scale_x_discrete(labels = c())</code> to rename the values of <code>met_type</code> to match the Figure above.</li>
-<li>use a <code>+</code> sign to add a new function to your ggplot which is <code>labs</code>. This function will renamed your axes and figure. Use <code>x =</code>,<code>y =</code>, and <code>title =</code> inside <code>labs</code> to create new labels. We want NO label for the x axis, what can you type to make that happen?</li>
-<li>remove the legend using <code>theme(legend.position = 'none')</code></li>
-<li>add a final <code>geom_jitter()</code> call. Using this information, what do violin plots show us? How can you interpret this data?</li>
+<li>before your call to <code>geom_violin</code>, add a new line with
+only the function <code>theme_base()</code> - you will need the package
+<code>ggthemes()</code> to do this</li>
+<li>in your <code>geom_violin()</code> function, add
+<code>aes(fill = met_type)</code></li>
+<li>use a <code>+</code> sign to add a new function to your ggplot which
+is <code>scale_x_discrete()</code>. This function can rename the values
+on your x axis using the <code>labels()</code> function. Use the
+template <code>scale_x_discrete(labels = c())</code> to rename the
+values of <code>met_type</code> to match the Figure above.</li>
+<li>use a <code>+</code> sign to add a new function to your ggplot which
+is <code>labs</code>. This function will renamed your axes and figure.
+Use <code>x =</code>,<code>y =</code>, and <code>title =</code> inside
+<code>labs</code> to create new labels. We want NO label for the x axis,
+what can you type to make that happen?</li>
+<li>remove the legend using
+<code>theme(legend.position = 'none')</code></li>
+<li>add a final <code>geom_jitter()</code> call. Using this information,
+what do violin plots show us? How can you interpret this data?</li>
 </ul>
 <pre class="r"><code>library(ggthemes)
 
@@ -458,7 +511,9 @@ met.violin &lt;- ggplot(data = met.trim, aes(x = met_type, y = RT)) +
 met.violin</code></pre>
 <p><img src="recreating-plot_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <ol start="13" style="list-style-type: decimal">
-<li>Using this information, can you make a new ggplot object named <code>ratings</code> which matches the right panel of the figure above?</li>
+<li>Using this information, can you make a new ggplot object named
+<code>ratings</code> which matches the right panel of the figure
+above?</li>
 </ol>
 <pre class="r"><code>ratings &lt;- ggplot(data = met.trim, aes(x = met_type, y = nm)) +
   theme_base() +
@@ -470,7 +525,9 @@ met.violin</code></pre>
 ratings</code></pre>
 <p><img src="recreating-plot_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <ol start="14" style="list-style-type: decimal">
-<li>Do you want to glue the figures together? You can by using the package <code>gridExtra</code>. Install the package and then use the <code>grid.arrange()</code> function to join the two figures.</li>
+<li>Do you want to glue the figures together? You can by using the
+package <code>gridExtra</code>. Install the package and then use the
+<code>grid.arrange()</code> function to join the two figures.</li>
 </ol>
 <pre class="r"><code>gridExtra::grid.arrange(met.violin, ratings, nrow = 1)</code></pre>
 <p><img src="recreating-plot_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>

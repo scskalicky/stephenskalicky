@@ -351,7 +351,8 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore"><code>if_else</code> &amp; <code>case_when()</code></h1>
+<h1 class="title toc-ignore"><code>if_else</code> &amp;
+<code>case_when()</code></h1>
 <h4 class="author">Stephen Skalicky</h4>
 <h4 class="date">09/06/2021</h4>
 
@@ -361,9 +362,11 @@ $(document).ready(function () {
 <pre class="r"><code>library(tidyverse)</code></pre>
 <p>Let’s work more with mutate.</p>
 <ol style="list-style-type: decimal">
-<li><p>Download the same <code>metaphor data.csv</code> file from <a href="https://osf.io/qrc6b/" class="uri">https://osf.io/qrc6b/</a><br />
+<li><p>Download the same <code>metaphor data.csv</code> file from <a
+href="https://osf.io/qrc6b/" class="uri">https://osf.io/qrc6b/</a><br />
 </p></li>
-<li><p>Create a new object named <code>met.data</code> which is the results of calling <code>read_csv()</code> on the metaphor data.<br />
+<li><p>Create a new object named <code>met.data</code> which is the
+results of calling <code>read_csv()</code> on the metaphor data.<br />
 </p></li>
 </ol>
 <pre class="r"><code>met.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_data.csv&#39;)</code></pre>
@@ -376,36 +379,70 @@ $(document).ready(function () {
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Using a single pipe, make a new object called <code>met.data.2</code> from <code>met.data</code>. Add a <code>select()</code> call to your pipe so that <code>met.data.2</code> only has the following columns: subject, age, englishAgeofOnset, and collegeYear. Finally, use the <code>unique()</code> function so that each subject only has one row.<br />
+<li>Using a single pipe, make a new object called
+<code>met.data.2</code> from <code>met.data</code>. Add a
+<code>select()</code> call to your pipe so that <code>met.data.2</code>
+only has the following columns: subject, age, englishAgeofOnset, and
+collegeYear. Finally, use the <code>unique()</code> function so that
+each subject only has one row.<br />
 </li>
 </ol>
 <pre class="r"><code>met.data.2 &lt;- met.data %&gt;%
   dplyr::select(subject, age, collegeYear, englishAgeofOnset) %&gt;%
   unique()</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Let’s look at the variable <code>englishAgeofOnset</code> first. This is the age that participants began learning English. Look at a <code>summary()</code> of the variable - what do you notice?</li>
+<li>Let’s look at the variable <code>englishAgeofOnset</code> first.
+This is the age that participants began learning English. Look at a
+<code>summary()</code> of the variable - what do you notice?</li>
 </ol>
 <pre class="r"><code># there are zeros - what could that mean?
 summary(met.data.2$englishAgeofOnset)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   0.000   2.000   4.262   9.000  17.000</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>To remind ourselves what <code>mutate</code> does, lets use it to calculate a new variable. We want to get an idea of how long someone has been learning/using English, even if they are native speakers. Using the existing variables in <code>met.data.2</code>, how could we do that? (Create a new object named <code>met.data.3</code> from <code>met.data.2</code>, then use <code>mutate()</code> to create a new variable in <code>met.data.3</code> named <code>totalEnglish</code> which is a measure of the total number of years each participant has been learning/using English.)</li>
+<li>To remind ourselves what <code>mutate</code> does, lets use it to
+calculate a new variable. We want to get an idea of how long someone has
+been learning/using English, even if they are native speakers. Using the
+existing variables in <code>met.data.2</code>, how could we do that?
+(Create a new object named <code>met.data.3</code> from
+<code>met.data.2</code>, then use <code>mutate()</code> to create a new
+variable in <code>met.data.3</code> named <code>totalEnglish</code>
+which is a measure of the total number of years each participant has
+been learning/using English.)</li>
 </ol>
 <pre class="r"><code>met.data.3 &lt;- met.data.2 %&gt;%
   mutate(totalEnglish = age - englishAgeofOnset)</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li>Okay, not bad. Let’s now try to turn this number into a percentage. Create a new object named <code>met.data.4</code> from <code>met.data.3</code>, and then use <code>mutate()</code> to create a new variable named <code>englishPercent</code> which is a percentage of one’s total life spent using/learning English. The resulting variable should be represented as percentages (i.e., numbers from 0.00 to 100.00), rather than decimals (e.g.,), 0.1, .5, 1.0, etc.)</li>
+<li>Okay, not bad. Let’s now try to turn this number into a percentage.
+Create a new object named <code>met.data.4</code> from
+<code>met.data.3</code>, and then use <code>mutate()</code> to create a
+new variable named <code>englishPercent</code> which is a percentage of
+one’s total life spent using/learning English. The resulting variable
+should be represented as percentages (i.e., numbers from 0.00 to
+100.00), rather than decimals (e.g.,), 0.1, .5, 1.0, etc.)</li>
 </ol>
 <pre class="r"><code>met.data.4 &lt;- met.data.3 %&gt;%
   mutate(englishPercent = (totalEnglish/age)*100)</code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>Hopefully you have figured out what these values say about the participants now. Let’s go ahead and create a new variable which marks participants as either native or non-native English speakers. Create a new object named <code>met.data.5</code> from <code>met.data.4</code>, and then use <code>mutate()</code> to create a new variable named <code>ENG_Group</code>. Use <code>if_else()</code> within your mutate call to assign participants to one of two groups: “NES” or “NNES”. You’ll need to choose which variable and condition you want to use in your <code>if_else()</code> function!</li>
+<li>Hopefully you have figured out what these values say about the
+participants now. Let’s go ahead and create a new variable which marks
+participants as either native or non-native English speakers. Create a
+new object named <code>met.data.5</code> from <code>met.data.4</code>,
+and then use <code>mutate()</code> to create a new variable named
+<code>ENG_Group</code>. Use <code>if_else()</code> within your mutate
+call to assign participants to one of two groups: “NES” or “NNES”.
+You’ll need to choose which variable and condition you want to use in
+your <code>if_else()</code> function!</li>
 </ol>
 <pre class="r"><code>met.data.5 &lt;- met.data.4 %&gt;%
   mutate(ENG_Group = if_else(englishPercent == 100, &#39;NES&#39;, &#39;NNES&#39;))</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li>You should now be able to say something about the NNES group - what is their average percentage of English learning/using? Create a new object named <code>nnes.summary</code> from <code>met.data.5</code>. Then use <code>summarise()</code> to provide some descriptive statistics about the NNES. Get the mean and SD of relevant values, as well as the max and min.</li>
+<li>You should now be able to say something about the NNES group - what
+is their average percentage of English learning/using? Create a new
+object named <code>nnes.summary</code> from <code>met.data.5</code>.
+Then use <code>summarise()</code> to provide some descriptive statistics
+about the NNES. Get the mean and SD of relevant values, as well as the
+max and min.</li>
 </ol>
 <pre class="r"><code>nnes.summary &lt;- met.data.5 %&gt;%
   group_by(ENG_Group) %&gt;%
@@ -414,11 +451,32 @@ summary(met.data.2$englishAgeofOnset)</code></pre>
             min.english = min(englishPercent),
             max.english = max(englishPercent))</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li><code>if_else()</code> is really handy for things like this, but it only allows for two possibilities - whether something is true or false. What if we have a lot of different values we’d like to create that depend on multiple conditions? Among the many options, we can use <code>case_when()</code>. This function is similar to <code>if_else()</code> in that it evaluates whether a cell meets a certain condition and then acts, but differs in that unlike <code>if_else()</code>, <code>case_when()</code> only acts when the condition is true. In this way, you can chain a series of <code>case_when()</code> functions together to make many different changes.</li>
+<li><code>if_else()</code> is really handy for things like this, but it
+only allows for two possibilities - whether something is true or false.
+What if we have a lot of different values we’d like to create that
+depend on multiple conditions? Among the many options, we can use
+<code>case_when()</code>. This function is similar to
+<code>if_else()</code> in that it evaluates whether a cell meets a
+certain condition and then acts, but differs in that unlike
+<code>if_else()</code>, <code>case_when()</code> only acts when the
+condition is true. In this way, you can chain a series of
+<code>case_when()</code> functions together to make many different
+changes.</li>
 </ol>
-<p>The syntax is also different. For <code>case_when()</code>: the syntax uses what is called formula notation, and is in the form of <code>case_when(condition ~ result)</code>. For example, if you wanted to turn all values of <code>NA</code> into <code>0</code>, you could use <code>case_when(variable == NA ~ 0)</code>. You can put multiple conditions and results inside a single <code>case_when()</code> function: <code>case_when(variable == NA ~ 0, variable == 1 ~ NA, etc...)</code>.</p>
-<p>Your condition can also include more than one variable: <code>case_when(variable1 == value &amp; variable2 != value ~ result)</code></p>
-<p>Create a new object named <code>met.data.6</code> from <code>met.data.5</code>. Then, create a new variable named <code>age_group</code> and assign the following values using <code>mutate()</code> and <code>case_when()</code>:<br />
+<p>The syntax is also different. For <code>case_when()</code>: the
+syntax uses what is called formula notation, and is in the form of
+<code>case_when(condition ~ result)</code>. For example, if you wanted
+to turn all values of <code>NA</code> into <code>0</code>, you could use
+<code>case_when(variable == NA ~ 0)</code>. You can put multiple
+conditions and results inside a single <code>case_when()</code>
+function:
+<code>case_when(variable == NA ~ 0, variable == 1 ~ NA, etc...)</code>.</p>
+<p>Your condition can also include more than one variable:
+<code>case_when(variable1 == value &amp; variable2 != value ~ result)</code></p>
+<p>Create a new object named <code>met.data.6</code> from
+<code>met.data.5</code>. Then, create a new variable named
+<code>age_group</code> and assign the following values using
+<code>mutate()</code> and <code>case_when()</code>:<br />
 </p>
 <ul>
 <li>subjects under 21 are called ‘lower’</li>
@@ -428,13 +486,17 @@ summary(met.data.2$englishAgeofOnset)</code></pre>
 <pre class="r"><code>met.data.6 &lt;- met.data.5 %&gt;%
   mutate(age_group = case_when(age &lt; 21 ~ &#39;lower&#39;, age &gt; 20 &amp; age &lt; 41 ~ &#39;middle&#39;, age &gt; 40 ~ &#39;higher&#39;))</code></pre>
 <ol start="10" style="list-style-type: decimal">
-<li>How many people are in each age group? Hint: <code>as.factor()</code> is a quick way to check this.</li>
+<li>How many people are in each age group? Hint:
+<code>as.factor()</code> is a quick way to check this.</li>
 </ol>
 <pre class="r"><code>summary(as.factor(met.data.6$age_group))</code></pre>
 <pre><code>## higher  lower middle 
 ##      3     20     38</code></pre>
 <ol start="11" style="list-style-type: decimal">
-<li>Okay, now that you have some practice, time to work on the final variable: <code>collegeYear</code>. The numbers in <code>collegeYear</code> correspond to answers on a demographic survey:<br />
+<li>Okay, now that you have some practice, time to work on the final
+variable: <code>collegeYear</code>. The numbers in
+<code>collegeYear</code> correspond to answers on a demographic
+survey:<br />
 </li>
 </ol>
 <ul>
@@ -451,11 +513,20 @@ summary(met.data.2$englishAgeofOnset)</code></pre>
 <li><code>6: MA Student</code>  </li>
 <li><code>7: PhD Student</code> </li>
 </ul>
-<p>You can see why numbers are easier to write in the data! Well, let’s imagine we want to create some smaller categories. Create a new object named <code>met.data.7</code> from <code>met.data.6</code> and then use <code>mutate()</code> with <code>case_when()</code> to create a new variable named <code>studentLevel</code> . Group the subjects into three categories: “early UG”, “late UG”, and “PG” based on their college year.</p>
+<p>You can see why numbers are easier to write in the data! Well, let’s
+imagine we want to create some smaller categories. Create a new object
+named <code>met.data.7</code> from <code>met.data.6</code> and then use
+<code>mutate()</code> with <code>case_when()</code> to create a new
+variable named <code>studentLevel</code> . Group the subjects into three
+categories: “early UG”, “late UG”, and “PG” based on their college
+year.</p>
 <pre class="r"><code>met.data.7 &lt;- met.data.6 %&gt;%
   mutate(studentLevel = case_when(collegeYear &lt; 3 ~ &#39;early UG&#39;, collegeYear &gt; 2 &amp; collegeYear &lt; 6 ~ &#39;late UG&#39;, collegeYear &gt; 5 ~ &#39;PG&#39; ))</code></pre>
 <ol start="12" style="list-style-type: decimal">
-<li>Finally, create a new object named <code>met.data.8</code> from <code>met.data.7</code>. Then use a pipe to create a new variable named <code>super.status</code>. This variable will assign participants to a category based on two features:<br />
+<li>Finally, create a new object named <code>met.data.8</code> from
+<code>met.data.7</code>. Then use a pipe to create a new variable named
+<code>super.status</code>. This variable will assign participants to a
+category based on two features:<br />
 </li>
 </ol>
 <ul>
@@ -463,9 +534,12 @@ summary(met.data.2$englishAgeofOnset)</code></pre>
 <li>Whether participants are UG/PG<br />
 </li>
 </ul>
-<p>There are four values for <code>super.status</code>: <code>NNES-UG</code>, <code>NES-UG</code>, <code>NNES-PG</code>, <code>NES-PG</code><br />
+<p>There are four values for <code>super.status</code>:
+<code>NNES-UG</code>, <code>NES-UG</code>, <code>NNES-PG</code>,
+<code>NES-PG</code><br />
 </p>
-<p>Use <code>mutate()</code>, <code>case_when()</code>, and your new variables.</p>
+<p>Use <code>mutate()</code>, <code>case_when()</code>, and your new
+variables.</p>
 <pre class="r"><code>met.data.8 &lt;- met.data.7 %&gt;%
   mutate(super.status = case_when(ENG_Group == &#39;NES&#39; &amp; studentLevel == &#39;early UG&#39; ~ &#39;NES-UG&#39;,
                                   ENG_Group == &#39;NES&#39; &amp; studentLevel == &#39;late UG&#39; ~ &#39;NES-UG&#39;,
@@ -473,10 +547,13 @@ summary(met.data.2$englishAgeofOnset)</code></pre>
                                   ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;early UG&#39; ~ &#39;NNES-UG&#39;,
                                   ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;late UG&#39; ~ &#39;NNES-UG&#39;,
                                   ENG_Group == &#39;NNES&#39; &amp; studentLevel == &#39;PG&#39; ~ &#39;NNES-PG&#39;))</code></pre>
-<p>The way I did this was silly - using the <code>collegeYear</code> variable means you could do this in four lines instead of six - but still works!<br />
+<p>The way I did this was silly - using the <code>collegeYear</code>
+variable means you could do this in four lines instead of six - but
+still works!<br />
 </p>
 <ol start="13" style="list-style-type: decimal">
-<li>What else can we do with this data? Any other mutates or transformations you would like to try?</li>
+<li>What else can we do with this data? Any other mutates or
+transformations you would like to try?</li>
 </ol>
 
 
