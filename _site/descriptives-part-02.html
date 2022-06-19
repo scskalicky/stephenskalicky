@@ -359,14 +359,19 @@ $(document).ready(function () {
 </div>
 
 
-<div id="goal-report-common-descriptive-statistics-such-as-mean-and-standard-deviation" class="section level3">
-<h3>Goal: report common descriptive statistics, such as mean and standard deviation</h3>
+<div
+id="goal-report-common-descriptive-statistics-such-as-mean-and-standard-deviation"
+class="section level3">
+<h3>Goal: report common descriptive statistics, such as mean and
+standard deviation</h3>
 <p>Let’s simulate similar data from last session.</p>
 <p>You should:<br />
 1. Open R-Studio<br />
-2. Create a new project, give it a name, and save it somewhere easy to find (File –&gt; New Project)<br />
+2. Create a new project, give it a name, and save it somewhere easy to
+find (File –&gt; New Project)<br />
 3. Create a new R script (File –&gt; New File –&gt; New R Script<br />
-4. Go through this handout and type in your code in the prompted areas.<br />
+4. Go through this handout and type in your code in the prompted
+areas.<br />
 </p>
 </div>
 <div id="part-1." class="section level3">
@@ -375,9 +380,12 @@ $(document).ready(function () {
 </p>
 <ul>
 <li><code>subject</code> which is the numbers 1 through 10</li>
-<li><code>age</code> which is 10 random values from <code>rnorm()</code> with a mean of 28 and sd of 5, using a <code>set.seed()</code> of 42</li>
+<li><code>age</code> which is 10 random values from <code>rnorm()</code>
+with a mean of 28 and sd of 5, using a <code>set.seed()</code> of
+42</li>
 </ul>
-<p>Use the <code>tibble()</code> function. (you also need to load <code>tidyverse</code>)</p>
+<p>Use the <code>tibble()</code> function. (you also need to load
+<code>tidyverse</code>)</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre class="r"><code>set.seed(42)
 base &lt;- tibble(subject = 1:10, age = rnorm(10, 28, 5)) </code></pre>
@@ -395,26 +403,36 @@ base &lt;- tibble(subject = 1:10, age = rnorm(10, 28, 5)) </code></pre>
 ##  8       8  27.5
 ##  9       9  38.1
 ## 10      10  27.7</code></pre>
-<p>Create a new tibble named <code>base02</code> which is <code>base</code> repeated twice (20 rows instead of 10).<br />
+<p>Create a new tibble named <code>base02</code> which is
+<code>base</code> repeated twice (20 rows instead of 10).<br />
 Use a single pipe with<code>rbind()</code>.</p>
 <pre class="r"><code>base02 &lt;- base %&gt;%
   rbind(base)</code></pre>
-<p>Run the <code>str()</code> function on <code>base02</code> and you should see this:</p>
+<p>Run the <code>str()</code> function on <code>base02</code> and you
+should see this:</p>
 <pre class="r"><code>str(base02)</code></pre>
 <pre><code>## tibble [20 × 2] (S3: tbl_df/tbl/data.frame)
 ##  $ subject: int [1:20] 1 2 3 4 5 6 7 8 9 10 ...
 ##  $ age    : num [1:20] 34.9 25.2 29.8 31.2 30 ...</code></pre>
 <p>Create a tibble named <code>test.data</code> with these columns:</p>
 <ul>
-<li><code>test</code> which is the word ‘pre’ ten times followed by the word ‘post’ ten times</li>
-<li><code>score</code> which is 10 random values from <code>rnorm()</code> with a mean of 50 and a sd of 10 followed by 10 more random values from <code>rnorm()</code> with a mean of 70 and an sd of 5 using a <code>set.seed()</code> of 43<br />
+<li><code>test</code> which is the word ‘pre’ ten times followed by the
+word ‘post’ ten times</li>
+<li><code>score</code> which is 10 random values from
+<code>rnorm()</code> with a mean of 50 and a sd of 10 followed by 10
+more random values from <code>rnorm()</code> with a mean of 70 and an sd
+of 5 using a <code>set.seed()</code> of 43<br />
 </li>
-<li>do this all in two lines: the first line for <code>set.seed()</code> and then the second line making <code>test.data</code>.</li>
-<li>You can use <code>c()</code> to chain multiple calls to <code>rep()</code> and <code>rnorm()</code> in your <code>tibble()</code> function.</li>
+<li>do this all in two lines: the first line for <code>set.seed()</code>
+and then the second line making <code>test.data</code>.</li>
+<li>You can use <code>c()</code> to chain multiple calls to
+<code>rep()</code> and <code>rnorm()</code> in your
+<code>tibble()</code> function.</li>
 </ul>
 <pre class="r"><code>set.seed(43)
 test.data &lt;- tibble(test = c(rep(&#39;pre&#39;,10),rep(&#39;post&#39;, 10)), score = c(rnorm(10,50,10), rnorm(10,70,5)))</code></pre>
-<p>Your version of <code>test.data</code> should look like this using <code>str()</code></p>
+<p>Your version of <code>test.data</code> should look like this using
+<code>str()</code></p>
 <pre class="r"><code>str(test.data)</code></pre>
 <pre><code>## tibble [20 × 2] (S3: tbl_df/tbl/data.frame)
 ##  $ test : chr [1:20] &quot;pre&quot; &quot;pre&quot; &quot;pre&quot; &quot;pre&quot; ...
@@ -422,10 +440,13 @@ test.data &lt;- tibble(test = c(rep(&#39;pre&#39;,10),rep(&#39;post&#39;, 10)), 
 </div>
 <div id="part-2." class="section level3">
 <h3>Part 2.</h3>
-<p>Create a new tibble named <code>data</code> which is the result of combining <code>base02</code> and <code>test.data</code>. Use the <code>cbind()</code> function in a single pipe.</p>
+<p>Create a new tibble named <code>data</code> which is the result of
+combining <code>base02</code> and <code>test.data</code>. Use the
+<code>cbind()</code> function in a single pipe.</p>
 <pre class="r"><code>data &lt;- base02 %&gt;%
   cbind(test.data)</code></pre>
-<p>Your version of <code>data</code> should look like this using <code>str()</code><br />
+<p>Your version of <code>data</code> should look like this using
+<code>str()</code><br />
 </p>
 <pre class="r"><code>str(data)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    20 obs. of  4 variables:
@@ -433,7 +454,8 @@ test.data &lt;- tibble(test = c(rep(&#39;pre&#39;,10),rep(&#39;post&#39;, 10)), 
 ##  $ age    : num  34.9 25.2 29.8 31.2 30 ...
 ##  $ test   : chr  &quot;pre&quot; &quot;pre&quot; &quot;pre&quot; &quot;pre&quot; ...
 ##  $ score  : num  49.6 34.3 45.1 54.7 41 ...</code></pre>
-<p><strong>Q: Why did <code>data</code> turn into a data.frame when it was made from joining two tibbles?</strong><br />
+<p><strong>Q: Why did <code>data</code> turn into a data.frame when it
+was made from joining two tibbles?</strong><br />
 <br />
 <br />
 Create a summary of <code>data</code> using <code>summary()</code>:</p>
@@ -448,11 +470,16 @@ Create a summary of <code>data</code> using <code>summary()</code>:</p>
 </div>
 <div id="part-3." class="section level3">
 <h3>Part 3.</h3>
-<div id="now-that-we-have-our-data-we-want-to-generate-descriptive-statistics-mean-sd-etc-for-different-values." class="section level4">
-<h4>Now that we have our data, we want to generate descriptive statistics (Mean, SD, etc) for different values.</h4>
-<p>Recall from the summary of our data above, we have to be careful about generating descriptive statistics</p>
+<div
+id="now-that-we-have-our-data-we-want-to-generate-descriptive-statistics-mean-sd-etc-for-different-values."
+class="section level4">
+<h4>Now that we have our data, we want to generate descriptive
+statistics (Mean, SD, etc) for different values.</h4>
+<p>Recall from the summary of our data above, we have to be careful
+about generating descriptive statistics</p>
 <ul>
-<li>Because our data is in long format, our <code>age</code> value is doubled and would affect the standard deviation</li>
+<li>Because our data is in long format, our <code>age</code> value is
+doubled and would affect the standard deviation</li>
 <li>we want mean and sd for test scores, but also split by test<br />
 </li>
 </ul>
@@ -461,9 +488,13 @@ Create a summary of <code>data</code> using <code>summary()</code>:</p>
 <div id="using-filter-from-tidyverse" class="section level3">
 <h3><strong>Using <code>filter()</code> from tidyverse</strong><br />
 </h3>
-<p>The <code>filter()</code> function will apply a <em>conditional argument</em> to a specified column in a dataframe/tibble. It will do this test for <em>each row</em> in the data.<br />
+<p>The <code>filter()</code> function will apply a <em>conditional
+argument</em> to a specified column in a dataframe/tibble. It will do
+this test for <em>each row</em> in the data.<br />
 </p>
-<p>Conditional arguments are written using symbols such as <code>==</code>, <code>&lt;</code>, <code>&gt;</code>. See below for a list:<br />
+<p>Conditional arguments are written using symbols such as
+<code>==</code>, <code>&lt;</code>, <code>&gt;</code>. See below for a
+list:<br />
 </p>
 <table>
 <tbody>
@@ -493,9 +524,13 @@ Create a summary of <code>data</code> using <code>summary()</code>:</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Q: Why do we need to use <code>==</code> for <code>equals to</code>?</strong><br />
-<strong>Q: Which of these symbols can be used for numeric data? How about text/string data?</strong></p>
-<p>Try comparing ‘a’ and ‘b’ using <code>==</code>, <code>&lt;</code>, and <code>!=</code>. Then do the same with <code>1</code> and <code>2</code></p>
+<p><strong>Q: Why do we need to use <code>==</code> for
+<code>equals to</code>?</strong><br />
+<strong>Q: Which of these symbols can be used for numeric data? How
+about text/string data?</strong></p>
+<p>Try comparing ‘a’ and ‘b’ using <code>==</code>, <code>&lt;</code>,
+and <code>!=</code>. Then do the same with <code>1</code> and
+<code>2</code></p>
 <pre class="r"><code>&#39;a&#39; == &#39;b&#39;</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>&#39;a&#39; &lt; &#39;b&#39;</code></pre>
@@ -508,8 +543,13 @@ Create a summary of <code>data</code> using <code>summary()</code>:</p>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code>1 != 2</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>This helps us understand how the <code>filter()</code> command works - it will keep (or return) anything that results in <code>TRUE</code> from the condition that you specify. Let’s try it out.</p>
-<p>Run <code>filter()</code> on <code>data</code> to remove anyone older than 30. The arguments for <code>filter</code> include the data object your are filtering and the condition that you are specifying. (do not save it to any object - just run the function)<br />
+<p>This helps us understand how the <code>filter()</code> command works
+- it will keep (or return) anything that results in <code>TRUE</code>
+from the condition that you specify. Let’s try it out.</p>
+<p>Run <code>filter()</code> on <code>data</code> to remove anyone older
+than 30. The arguments for <code>filter</code> include the data object
+your are filtering and the condition that you are specifying. (do not
+save it to any object - just run the function)<br />
 </p>
 <p>How many subjects are equal to or younger than 30?</p>
 <p>Your output should look like this:</p>
@@ -519,9 +559,14 @@ Create a summary of <code>data</code> using <code>summary()</code>:</p>
 {"columns":[{"label":["subject"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["test"],"name":[3],"type":["chr"],"align":["left"]},{"label":["score"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"25.17651","3":"pre","4":"34.25396"},{"1":"3","2":"29.81564","3":"pre","4":"45.14032"},{"1":"6","2":"27.46938","3":"pre","4":"47.22567"},{"1":"8","2":"27.52670","3":"pre","4":"49.39596"},{"1":"10","2":"27.68643","3":"pre","4":"30.93863"},{"1":"2","2":"25.17651","3":"post","4":"65.16564"},{"1":"3","2":"29.81564","3":"post","4":"68.23441"},{"1":"6","2":"27.46938","3":"post","4":"80.32154"},{"1":"8","2":"27.52670","3":"post","4":"61.74250"},{"1":"10","2":"27.68643","3":"post","4":"66.39510"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>It should be simple for us to use this method to create two versions of the data: one for the pre-test and one for the post-test.<br />
+<p>It should be simple for us to use this method to create two versions
+of the data: one for the pre-test and one for the post-test.<br />
 </p>
-<p>Create a tibble named <code>pre.test</code> and a tibble named <code>post.test</code>. For both, create a pipe from <code>data</code> and use the <code>filter()</code> function to extract only pre-test or only post-test data. Your condition will be applied to the <code>test</code> column in <code>data</code>.</p>
+<p>Create a tibble named <code>pre.test</code> and a tibble named
+<code>post.test</code>. For both, create a pipe from <code>data</code>
+and use the <code>filter()</code> function to extract only pre-test or
+only post-test data. Your condition will be applied to the
+<code>test</code> column in <code>data</code>.</p>
 <pre class="r"><code>pre.test &lt;- data %&gt;%
   filter(test == &#39;pre&#39;)
 
@@ -541,15 +586,22 @@ post.test &lt;- data %&gt;%
 {"columns":[{"label":["subject"],"name":[1],"type":["int"],"align":["right"]},{"label":["age"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["test"],"name":[3],"type":["chr"],"align":["left"]},{"label":["score"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"34.85479","3":"post","4":"79.01880"},{"1":"2","2":"25.17651","3":"post","4":"65.16564"},{"1":"3","2":"29.81564","3":"post","4":"68.23441"},{"1":"4","2":"31.16431","3":"post","4":"75.53469"},{"1":"5","2":"30.02134","3":"post","4":"72.83162"},{"1":"6","2":"27.46938","3":"post","4":"80.32154"},{"1":"7","2":"35.55761","3":"post","4":"77.34639"},{"1":"8","2":"27.52670","3":"post","4":"61.74250"},{"1":"9","2":"38.09212","3":"post","4":"71.01318"},{"1":"10","2":"27.68643","3":"post","4":"66.39510"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Great - now we can correctly generate summary statistics of our data!</p>
-<p>Create a tibble named <code>data.summary</code> with three columns:<br />
+<p>Great - now we can correctly generate summary statistics of our
+data!</p>
+<p>Create a tibble named <code>data.summary</code> with three
+columns:<br />
 </p>
 <ul>
-<li><code>test</code> which is the word “pre” followed by the word “post”</li>
-<li><code>mean</code> which is the mean of <code>score</code> for pre and post</li>
-<li><code>sd</code> which is the standard deviation of <code>score</code> for pre and post</li>
+<li><code>test</code> which is the word “pre” followed by the word
+“post”</li>
+<li><code>mean</code> which is the mean of <code>score</code> for pre
+and post</li>
+<li><code>sd</code> which is the standard deviation of
+<code>score</code> for pre and post</li>
 </ul>
-<p>You will need to use the <code>mean</code> and <code>sd</code> function on <code>score</code> from our the <code>pre.test</code> and <code>post.test</code> objects<br />
+<p>You will need to use the <code>mean</code> and <code>sd</code>
+function on <code>score</code> from our the <code>pre.test</code> and
+<code>post.test</code> objects<br />
 Try to do this without creating any other variables<br />
 </p>
 <pre class="r"><code>data.summary &lt;- tibble(test = c(&#39;Pre&#39;, &#39;Post&#39;), 
@@ -563,11 +615,22 @@ Try to do this without creating any other variables<br />
 {"columns":[{"label":["test"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Pre","2":"44.91928","3":"7.819863"},{"1":"Post","2":"71.76039","3":"6.308726"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>We can also get a summary of our <code>age</code> variable using either the <code>pre.test</code> or <code>post.test</code> objects (because each of these objects only have one age value per subject)<br />
+<p>We can also get a summary of our <code>age</code> variable using
+either the <code>pre.test</code> or <code>post.test</code> objects
+(because each of these objects only have one age value per
+subject)<br />
 </p>
-<p>What is the <code>mean()</code> and <code>sd()</code> of <code>age</code> in either <code>pre.test</code> or <code>post.test</code> compared to <code>data</code>? The mean is not affected but the standard deviation is, this is because part of the formula to compute a standard deviation is to subtract 1 from the total population (n)<br />
+<p>What is the <code>mean()</code> and <code>sd()</code> of
+<code>age</code> in either <code>pre.test</code> or
+<code>post.test</code> compared to <code>data</code>? The mean is not
+affected but the standard deviation is, this is because part of the
+formula to compute a standard deviation is to subtract 1 from the total
+population (n)<br />
 </p>
-<p><code>sd()</code> thinks the total population of <code>data</code> is 20 because there are 20 rows. However our total population is only 10. This is a reminder to always be careful about calculating summary statistics of your data in all situations.</p>
+<p><code>sd()</code> thinks the total population of <code>data</code> is
+20 because there are 20 rows. However our total population is only 10.
+This is a reminder to always be careful about calculating summary
+statistics of your data in all situations.</p>
 <pre class="r"><code>mean(pre.test$age)</code></pre>
 <pre><code>## [1] 30.73648</code></pre>
 <pre class="r"><code>sd(pre.test$age)</code></pre>
@@ -577,16 +640,38 @@ Try to do this without creating any other variables<br />
 <pre class="r"><code>sd(data$age)</code></pre>
 <pre><code>## [1] 4.065831</code></pre>
 </div>
-<div id="using-group_by-and-summarise-to-do-the-same-thing" class="section level3">
-<h3><strong>Using <code>group_by()</code> and <code>summarise()</code> to do the same thing</strong><br />
+<div id="using-group_by-and-summarise-to-do-the-same-thing"
+class="section level3">
+<h3><strong>Using <code>group_by()</code> and <code>summarise()</code>
+to do the same thing</strong><br />
 </h3>
-<p>The above method works, but we can do better. Tidyverse includes the <code>group_by()</code> function, which allows for any computations you ask for to be conducted on a per-group basis. This is nice because we do not need to create new objects using filter like we did above.<br />
+<p>The above method works, but we can do better. Tidyverse includes the
+<code>group_by()</code> function, which allows for any computations you
+ask for to be conducted on a per-group basis. This is nice because we do
+not need to create new objects using filter like we did above.<br />
 </p>
-<p>We can use <code>group_by()</code> on our <code>test</code> column to ask R to compute the <code>mean</code> and <code>sd</code> of <code>score</code> for each version of the test. To do so we will also use the <code>summarise()</code> function. The <code>summarise()</code> function is used to create <em>new</em> variables which are summaries of larger data. It will return to results of a computation (such as <code>mean</code>) and store it as a new variable. The power of this method is that we can do this multiple times in one pipe to achieve a data.frame/tibble which includes a summary of a larger data object, in a similar manner to the <code>data.summary</code> object that we created above.<br />
+<p>We can use <code>group_by()</code> on our <code>test</code> column to
+ask R to compute the <code>mean</code> and <code>sd</code> of
+<code>score</code> for each version of the test. To do so we will also
+use the <code>summarise()</code> function. The <code>summarise()</code>
+function is used to create <em>new</em> variables which are summaries of
+larger data. It will return to results of a computation (such as
+<code>mean</code>) and store it as a new variable. The power of this
+method is that we can do this multiple times in one pipe to achieve a
+data.frame/tibble which includes a summary of a larger data object, in a
+similar manner to the <code>data.summary</code> object that we created
+above.<br />
 </p>
-<p>As an example, look what happens when I run <code>summarise()</code> to compute the <code>mean</code> and <code>sd</code> of <code>age</code> in the <code>post.test</code> object.<br />
+<p>As an example, look what happens when I run <code>summarise()</code>
+to compute the <code>mean</code> and <code>sd</code> of <code>age</code>
+in the <code>post.test</code> object.<br />
 </p>
-<p>Notice that I only ran the function without saving it to an object, so this data was not saved anywhere. However, <em>within</em> the <code>summarise()</code> call I made two new variables (columns) = <code>mAge</code> and <code>sdAge</code> which were the result of running <code>mean()</code> and <code>sd()</code> on <code>age</code> in <code>post.test</code><br />
+<p>Notice that I only ran the function without saving it to an object,
+so this data was not saved anywhere. However, <em>within</em> the
+<code>summarise()</code> call I made two new variables (columns) =
+<code>mAge</code> and <code>sdAge</code> which were the result of
+running <code>mean()</code> and <code>sd()</code> on <code>age</code> in
+<code>post.test</code><br />
 </p>
 <pre class="r"><code>dplyr::summarise(post.test, mAge = mean(age), sdAge = sd(age))</code></pre>
 <div data-pagedtable="false">
@@ -594,31 +679,53 @@ Try to do this without creating any other variables<br />
 {"columns":[{"label":["mAge"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["sdAge"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"30.73648","2":"4.177244"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Let’s use <code>group_by()</code> and <code>summarise()</code> in a pipe.</p>
-<p>Create a new object named <code>data02</code> from the <code>data</code> object.<br />
-Then, with a pipe, use <code>group_by()</code> on <code>test</code><br />
-Then, with another pipe, use <code>summarise()</code> to create two new variables: <code>mScore</code> and <code>sdScore</code> which are the result of calling <code>mean()</code> and <code>sd()</code> on <code>score</code></p>
+<p>Let’s use <code>group_by()</code> and <code>summarise()</code> in a
+pipe.</p>
+<p>Create a new object named <code>data02</code> from the
+<code>data</code> object.<br />
+Then, with a pipe, use <code>group_by()</code> on
+<code>test</code><br />
+Then, with another pipe, use <code>summarise()</code> to create two new
+variables: <code>mScore</code> and <code>sdScore</code> which are the
+result of calling <code>mean()</code> and <code>sd()</code> on
+<code>score</code></p>
 <pre class="r"><code>data02 &lt;- data %&gt;%
   group_by(test) %&gt;%
   summarise(mScore = mean(score), sdScore = sd(score))</code></pre>
-<p>Your <code>data02</code> object should look like this - and the values here should be identical to those in <code>data.summary</code></p>
+<p>Your <code>data02</code> object should look like this - and the
+values here should be identical to those in
+<code>data.summary</code></p>
 <pre class="r"><code>print(data02)</code></pre>
 <pre><code>## # A tibble: 2 × 3
 ##   test  mScore sdScore
 ##   &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 post    71.8    6.31
 ## 2 pre     44.9    7.82</code></pre>
-<p>Hrmm, this still doesn’t solve our problem for <code>age</code> - we don’t want to group by <code>age</code> or by <code>subject</code>. We can use the <code>unique()</code> function to help with this. The <code>unique()</code> function will return only unique rows from a data.frame/tibble - in other words it removes any duplicate rows (but only if the value for each column is the same.)<br />
+<p>Hrmm, this still doesn’t solve our problem for <code>age</code> - we
+don’t want to group by <code>age</code> or by <code>subject</code>. We
+can use the <code>unique()</code> function to help with this. The
+<code>unique()</code> function will return only unique rows from a
+data.frame/tibble - in other words it removes any duplicate rows (but
+only if the value for each column is the same.)<br />
 </p>
-<p>Let’s try it out - create a new object named <code>unique.age</code> from the <code>data</code> object<br />
-Then, make a pipe which uses the <code>select()</code> function to select only <code>subject</code> and <code>age</code> (<code>select()</code> is like <code>filter()</code>, but instead it chooses entire columns and is not based on conditions but rather what you ask for.)<br />
-Then, make a second pipe which calls the function <code>unique()</code> with no arguments.</p>
+<p>Let’s try it out - create a new object named <code>unique.age</code>
+from the <code>data</code> object<br />
+Then, make a pipe which uses the <code>select()</code> function to
+select only <code>subject</code> and <code>age</code>
+(<code>select()</code> is like <code>filter()</code>, but instead it
+chooses entire columns and is not based on conditions but rather what
+you ask for.)<br />
+Then, make a second pipe which calls the function <code>unique()</code>
+with no arguments.</p>
 <pre class="r"><code>unique.age &lt;- data %&gt;%
   select(subject, age) %&gt;%
   unique()</code></pre>
-<p>You should see a tibble with two columns, subject and age, such as below<br />
-Note that this only works because we filtered for unique values based on combinations of both subjects <em>and</em> age<br />
-We would never want to run <code>unique()</code> on just age because that would delete any duplicate ages among our subjects.</p>
+<p>You should see a tibble with two columns, subject and age, such as
+below<br />
+Note that this only works because we filtered for unique values based on
+combinations of both subjects <em>and</em> age<br />
+We would never want to run <code>unique()</code> on just age because
+that would delete any duplicate ages among our subjects.</p>
 <pre class="r"><code>print(unique.age)</code></pre>
 <pre><code>##    subject      age
 ## 1        1 34.85479
@@ -631,9 +738,14 @@ We would never want to run <code>unique()</code> on just age because that would 
 ## 8        8 27.52670
 ## 9        9 38.09212
 ## 10      10 27.68643</code></pre>
-<p>Now, extend <code>unique.age</code> with a final pipe calling <code>summarise()</code> to generate the data we want (mean and SD)<br />
-Make an object named <code>unique.age</code> which is the same as the above but includes a final pipe to <code>summarise()</code><br />
-In the <code>summarise()</code> function, create <code>mAge</code> and <code>sdAge</code> and apply the <code>mean()</code> and <code>sd()</code> functions<br />
+<p>Now, extend <code>unique.age</code> with a final pipe calling
+<code>summarise()</code> to generate the data we want (mean and
+SD)<br />
+Make an object named <code>unique.age</code> which is the same as the
+above but includes a final pipe to <code>summarise()</code><br />
+In the <code>summarise()</code> function, create <code>mAge</code> and
+<code>sdAge</code> and apply the <code>mean()</code> and
+<code>sd()</code> functions<br />
 </p>
 <pre class="r"><code>unique.age &lt;- data %&gt;%
   select(subject, age) %&gt;%
@@ -644,9 +756,14 @@ In the <code>summarise()</code> function, create <code>mAge</code> and <code>sdA
 <pre class="r"><code>print(unique.age)</code></pre>
 <pre><code>##       mAge    sdAge
 ## 1 30.73648 4.177244</code></pre>
-<p>If we wanted to, we could do all of this within one set of pipes<br />
-Can you create a new object named <code>final.data</code> from <code>data</code> which includes the mean and sd for <code>score</code> and <code>age</code> grouped by test?<br />
-All you need to do is add more arguments to the <code>summarise()</code> function we used when making <code>data02</code> - you don’t need to do anything with <code>unique()</code></p>
+<p>If we wanted to, we could do all of this within one set of
+pipes<br />
+Can you create a new object named <code>final.data</code> from
+<code>data</code> which includes the mean and sd for <code>score</code>
+and <code>age</code> grouped by test?<br />
+All you need to do is add more arguments to the <code>summarise()</code>
+function we used when making <code>data02</code> - you don’t need to do
+anything with <code>unique()</code></p>
 <pre class="r"><code>final.data &lt;- data %&gt;%
   group_by(test) %&gt;%
   summarise(mScore = mean(score), sdScore = sd(score)) %&gt;%
@@ -658,13 +775,21 @@ All you need to do is add more arguments to the <code>summarise()</code> functio
 <pre><code>##   test   mScore  sdScore     mAge    sdAge
 ## 1 post 71.76039 6.308726 30.73648 4.177244
 ## 2  pre 44.91928 7.819863 30.73648 4.177244</code></pre>
-<p><strong>Q: Is there anything odd about how <code>age</code> has been put into the data.frame? What caused this?</strong><br />
+<p><strong>Q: Is there anything odd about how <code>age</code> has been
+put into the data.frame? What caused this?</strong><br />
 </p>
-<p>Finally, while we <em>could</em> copy and paste from R, we could also ask R to give us a spreadsheet with this information. The <code>write_csv()</code> function is very handy for this. The arguments for <code>write_csv()</code> include the name of the object you want to write and the name you want the output to be.<br />
+<p>Finally, while we <em>could</em> copy and paste from R, we could also
+ask R to give us a spreadsheet with this information. The
+<code>write_csv()</code> function is very handy for this. The arguments
+for <code>write_csv()</code> include the name of the object you want to
+write and the name you want the output to be.<br />
 </p>
 <ul>
-<li>Write our final data to a .csv file - note that you will OVERWRITE the file each time you run this, be careful :)</li>
-<li>Also, be sure to add the file extension that you want, for example if you do not type the .csv the file may look weird on your computer (or it may not know how to open it properly)</li>
+<li>Write our final data to a .csv file - note that you will OVERWRITE
+the file each time you run this, be careful :)</li>
+<li>Also, be sure to add the file extension that you want, for example
+if you do not type the .csv the file may look weird on your computer (or
+it may not know how to open it properly)</li>
 </ul>
 <pre class="r"><code>write_csv(final.data, &#39;final-data.csv&#39;)</code></pre>
 </div>

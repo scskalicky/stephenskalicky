@@ -357,9 +357,13 @@ $(document).ready(function () {
 </div>
 
 
-<p>Let’s work on cleaning some more real data from a project currently being conducted by Stephen and Victoria.</p>
+<p>Let’s work on cleaning some more real data from a project currently
+being conducted by Stephen and Victoria.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<p>In this study, participants read short stories, word-by-word,. The stories tested whether people attributed AGENTIVE or LOCATIVE meanings to the preposition <code>by</code>. We used past-tense passivised verbs to test this.<br />
+<p>In this study, participants read short stories, word-by-word,. The
+stories tested whether people attributed AGENTIVE or LOCATIVE meanings
+to the preposition <code>by</code>. We used past-tense passivised verbs
+to test this.<br />
 </p>
 <p>There are two formats for the stories:<br />
 </p>
@@ -377,16 +381,20 @@ $(document).ready(function () {
 
 1. PERSON_C        2. PERSON_B / PERSON_A</code></pre>
 <ul>
-<li>If story was BP.A - the “by” was associated with an agentive interpretation - choosing PERSON_C is expected</li>
-<li>If story was BP.L - the “by” was associated with an locative interpretation - choosing PERSON_A/PERSON_B is expected</li>
+<li>If story was BP.A - the “by” was associated with an agentive
+interpretation - choosing PERSON_C is expected</li>
+<li>If story was BP.L - the “by” was associated with an locative
+interpretation - choosing PERSON_A/PERSON_B is expected</li>
 </ul>
 <p><strong>For each person, we need to calculate</strong><br />
 </p>
 <ol style="list-style-type: decimal">
-<li>Whether their choice reflects locative or agentive interpretation</li>
+<li>Whether their choice reflects locative or agentive
+interpretation</li>
 <li>Reading time for the words immediately after <code>by</code></li>
 </ol>
-<p>Load in the data from <a href="https://www.stephenskalicky.com/r_data/nes_byphrase_raw.csv">here</a><br />
+<p>Load in the data from <a
+href="https://www.stephenskalicky.com/r_data/nes_byphrase_raw.csv">here</a><br />
 </p>
 <pre class="r"><code>by_raw &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/nes_byphrase_raw.csv&#39;)</code></pre>
 <pre><code>## Rows: 13527 Columns: 56
@@ -397,8 +405,11 @@ $(document).ready(function () {
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div id="create-an-object-by_trim-from-by_raw-which-contains-these-columns" class="section level2">
-<h2>1. create an object <code>by_trim</code> from <code>by_raw</code> which contains these columns:<br />
+<div
+id="create-an-object-by_trim-from-by_raw-which-contains-these-columns"
+class="section level2">
+<h2>1. create an object <code>by_trim</code> from <code>by_raw</code>
+which contains these columns:<br />
 </h2>
 <ul>
 <li>subject,</li>
@@ -413,8 +424,12 @@ $(document).ready(function () {
 <pre class="r"><code>by_trim &lt;- by_raw %&gt;%
   dplyr::select(subject, button_pressed, stim_id, story_condition, trial_item, button_cresp, comp_answer, button_order)</code></pre>
 </div>
-<div id="inspect-story_condition.-filter-the-data-so-that-it-only-contains-the-two-conditions-we-need.-name-your-new-object-by_trim01" class="section level2">
-<h2>2. Inspect <code>story_condition</code>. Filter the data so that it only contains the two conditions we need. Name your new object <code>by_trim01</code></h2>
+<div
+id="inspect-story_condition.-filter-the-data-so-that-it-only-contains-the-two-conditions-we-need.-name-your-new-object-by_trim01"
+class="section level2">
+<h2>2. Inspect <code>story_condition</code>. Filter the data so that it
+only contains the two conditions we need. Name your new object
+<code>by_trim01</code></h2>
 <pre class="r"><code>summary(as.factor(by_trim$story_condition))</code></pre>
 <pre><code>## BP.A BP.L    L PRAC    T NA&#39;s 
 ## 2940 2940 2940 1764 2940    3</code></pre>
@@ -424,8 +439,12 @@ $(document).ready(function () {
 # str_detect()
 # by_trim[grep(&quot;BP&quot;, by_trim$story_condition),]</code></pre>
 </div>
-<div id="inspect-trial_item.-filter-the-data-so-that-it-only-contains-the-comprehension-question-asking-who-the-agent-is.-name-your-new-object-by_trim02." class="section level2">
-<h2>3. Inspect <code>trial_item</code>. Filter the data so that it only contains the comprehension question asking who the agent is. Name your new object <code>by_trim02</code>.</h2>
+<div
+id="inspect-trial_item.-filter-the-data-so-that-it-only-contains-the-comprehension-question-asking-who-the-agent-is.-name-your-new-object-by_trim02."
+class="section level2">
+<h2>3. Inspect <code>trial_item</code>. Filter the data so that it only
+contains the comprehension question asking who the agent is. Name your
+new object <code>by_trim02</code>.</h2>
 <pre class="r"><code>summary(as.factor(by_trim01$trial_item))</code></pre>
 <pre><code>##    agent_question location_question             story temporal_question 
 ##              1470              1470              1470              1470</code></pre>
@@ -440,8 +459,10 @@ $(document).ready(function () {
 <pre><code>##   0   1 
 ## 757 713</code></pre>
 </div>
-<div id="inspect-button_cresp-and-button_pressed." class="section level2">
-<h2>4. Inspect <code>button_cresp</code> and <code>button_pressed</code>.</h2>
+<div id="inspect-button_cresp-and-button_pressed."
+class="section level2">
+<h2>4. Inspect <code>button_cresp</code> and
+<code>button_pressed</code>.</h2>
 <pre><code>button_cresp you the order in which the two options appeared:
 1. `LA` = LOCATIVE | AGENT
 2. `AL` = AGENT | LOCATIVE
@@ -451,15 +472,21 @@ button_pressed tells you which button was pressed:
 1. 0 = first option
 2. 1 = second option</code></pre>
 </div>
-<div id="create-a-new-object-by_trim03.-create-a-new-column-bp_choice-which-has-a-value-of-agentive-or-locative-depending-on-how-the-participant-answered-the-agentive-question." class="section level2">
-<h2>Create a new object <code>by_trim03</code>. Create a new column <code>bp_choice</code> which has a value of <code>agentive</code> or <code>locative</code>, depending on how the participant answered the agentive question.</h2>
+<div
+id="create-a-new-object-by_trim03.-create-a-new-column-bp_choice-which-has-a-value-of-agentive-or-locative-depending-on-how-the-participant-answered-the-agentive-question."
+class="section level2">
+<h2>Create a new object <code>by_trim03</code>. Create a new column
+<code>bp_choice</code> which has a value of <code>agentive</code> or
+<code>locative</code>, depending on how the participant answered the
+agentive question.</h2>
 <pre class="r"><code>by_trim03 &lt;- by_trim02 %&gt;%
   dplyr::mutate(bp_choice = case_when(button_cresp == &#39;AL&#39; &amp; button_pressed == 0 ~ &#39;agentive&#39;,
                                       button_cresp == &#39;LA&#39; &amp; button_pressed == 1 ~ &#39;agentive&#39;,
                                       button_cresp == &#39;AL&#39; &amp; button_pressed == 1 ~ &#39;locative&#39;,
                                       button_cresp == &#39;LA&#39; &amp; button_pressed == 0 ~ &#39;locative&#39;))</code></pre>
 </div>
-<div id="recreate-the-following-ggplot-from-by_trim03" class="section level2">
+<div id="recreate-the-following-ggplot-from-by_trim03"
+class="section level2">
 <h2>5. Recreate the following ggplot from <code>by_trim03</code>:</h2>
 <pre class="r"><code>summary(as.factor(by_trim03$stim_id))</code></pre>
 <pre><code>## S01 S02 S03 S04 S05 S06 S07 S08 S09 S10 S11 S12 S13 S14 S15 S16 S17 S18 S19 S20 
@@ -477,15 +504,23 @@ ggplot(data = by_trim03, aes(x = story_condition, y = bp_choice, color = bp_choi
   theme_bw()</code></pre>
 <p><img src="nesbp_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
-<div id="create-a-new-object-named-by_rt-from-by_raw.-select-the-following-columns-and-filter-the-data-to-only-inlcude-the-two-values-of-story_condition-we-care-about." class="section level2">
-<h2>6. Create a new object named <code>by_rt</code> from <code>by_raw</code>. Select the following columns and filter the data to only inlcude the two values of <code>story_condition</code> we care about.<br />
+<div
+id="create-a-new-object-named-by_rt-from-by_raw.-select-the-following-columns-and-filter-the-data-to-only-inlcude-the-two-values-of-story_condition-we-care-about."
+class="section level2">
+<h2>6. Create a new object named <code>by_rt</code> from
+<code>by_raw</code>. Select the following columns and filter the data to
+only inlcude the two values of <code>story_condition</code> we care
+about.<br />
 </h2>
 <pre class="r"><code>by_rt &lt;- by_raw %&gt;%
   dplyr::select(subject, stim_id, story_condition, rt30, rt31, rt32) %&gt;%
   dplyr::filter(story_condition == &#39;BP.L&#39; | story_condition == &#39;BP.A&#39;)</code></pre>
 </div>
-<div id="inspect-the-data.-find-a-way-to-remove-the-rows-that-do-not-have-reading-time-data.-save-your-new-object-as-by_rt01" class="section level2">
-<h2>7. Inspect the data. Find a way to remove the rows that do not have reading time data. Save your new object as by_rt01<br />
+<div
+id="inspect-the-data.-find-a-way-to-remove-the-rows-that-do-not-have-reading-time-data.-save-your-new-object-as-by_rt01"
+class="section level2">
+<h2>7. Inspect the data. Find a way to remove the rows that do not have
+reading time data. Save your new object as by_rt01<br />
 </h2>
 <pre class="r"><code>by_rt01 &lt;- by_rt %&gt;%
   dplyr::filter(rt30 != &#39;&quot;&#39;)</code></pre>
@@ -493,13 +528,21 @@ ggplot(data = by_trim03, aes(x = story_condition, y = bp_choice, color = bp_choi
 2. for stim id 1-12, `rt31` = `the`, `rt32` = `noun` (e.g., &#39;the woman&#39;)
 3. for stim id 13-20, rt31 = NP</code></pre>
 </div>
-<div id="create-a-new-variable-after_by-which-contains-the-rt-for-the-np-immediately-after-by-with-the-following-contraints.-name-your-new-object-by_rt02" class="section level2">
-<h2>8. Create a new variable <code>after_by</code> which contains the RT for the NP immediately after <code>by</code>, with the following contraints. Name your new object by_rt02<br />
+<div
+id="create-a-new-variable-after_by-which-contains-the-rt-for-the-np-immediately-after-by-with-the-following-contraints.-name-your-new-object-by_rt02"
+class="section level2">
+<h2>8. Create a new variable <code>after_by</code> which contains the RT
+for the NP immediately after <code>by</code>, with the following
+contraints. Name your new object by_rt02<br />
 </h2>
 <pre><code>1. in each story, the 30th word was `by` (rt30)
 2. for stim id 1-12, `rt31` = `the`, `rt32` = `noun` (e.g., &#39;the woman&#39;)
 3. for stim id 13-20, rt31 = NP</code></pre>
-<p>Your <code>after_by</code> variable should be set to the value of <code>rt31</code> for stim_id 13:20 and to the mean of <code>rt31</code> and <code>rt32</code> for stim_id 1:12. Make sure you convert <code>rt30, rt31</code>, and <code>rt32</code> to numeric. Don’t use <code>mean()</code>.</p>
+<p>Your <code>after_by</code> variable should be set to the value of
+<code>rt31</code> for stim_id 13:20 and to the mean of <code>rt31</code>
+and <code>rt32</code> for stim_id 1:12. Make sure you convert
+<code>rt30, rt31</code>, and <code>rt32</code> to numeric. Don’t use
+<code>mean()</code>.</p>
 <p>Filter <code>after_by</code> to only contains values &lt; 2000.<br />
 </p>
 <pre class="r"><code># there are smarter ways to do it - this is quite lazy
@@ -520,13 +563,16 @@ by_rt02 &lt;- by_rt01 %&gt;%
   theme_bw()</code></pre>
 <p><img src="nesbp_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 </div>
-<div id="interpret-the-results-in-light-of-these-questions" class="section level2">
+<div id="interpret-the-results-in-light-of-these-questions"
+class="section level2">
 <h2>10. Interpret the results in light of these questions:<br />
 </h2>
 <ul>
-<li>Do native speakers of English attend to agentive and locative uses of the preposition <code>by</code>?<br />
+<li>Do native speakers of English attend to agentive and locative uses
+of the preposition <code>by</code>?<br />
 </li>
-<li>Which meaning of <code>by</code> causes the least confusion among nes?</li>
+<li>Which meaning of <code>by</code> causes the least confusion among
+nes?</li>
 </ul>
 </div>
 

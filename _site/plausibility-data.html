@@ -357,10 +357,21 @@ $(document).ready(function () {
 </div>
 
 
-<p>Today we are going to use some real data collected just a few days ago. This data is a series of plausbility ratings provided for different short stories in English. Here are the instructions participants received:</p>
-<p><em>Plausibility is a measure of how likely you think something can occur. For example, being full after eating a meal is more plausible than being hungry after eating a meal. However, one could still feel hungry after eating a meal. It is just less plausible when compared to being full." Your task is to rate each story you read on a scale of plausability.The scale ranges from 0 (not at all plausible) to 5 (highly plausible). When making your ratings, please consider all aspects of the story.</em></p>
+<p>Today we are going to use some real data collected just a few days
+ago. This data is a series of plausbility ratings provided for different
+short stories in English. Here are the instructions participants
+received:</p>
+<p><em>Plausibility is a measure of how likely you think something can
+occur. For example, being full after eating a meal is more plausible
+than being hungry after eating a meal. However, one could still feel
+hungry after eating a meal. It is just less plausible when compared to
+being full.” Your task is to rate each story you read on a scale of
+plausability.The scale ranges from 0 (not at all plausible) to 5 (highly
+plausible). When making your ratings, please consider all aspects of the
+story.</em></p>
 <p>The data is in the file <code>plausbility_data.csv</code></p>
-<p>You can download the data <a href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
+<p>You can download the data <a
+href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
 <pre class="r"><code>library(tidyverse)
 p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_data.csv&#39;)</code></pre>
 <pre><code>## Rows: 800 Columns: 6
@@ -392,18 +403,23 @@ p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_d
 ##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
 <div id="part-1-do-you-remember-how-to-do-this" class="section level1">
 <h1>part 1, do you remember how to do this?</h1>
-<p>Using code (i.e., not looking at the data in the viewer), answer the following questions:<br />
+<p>Using code (i.e., not looking at the data in the viewer), answer the
+following questions:<br />
 </p>
 <ol style="list-style-type: decimal">
-<li>How many subjects are there? (hint: you can do this in one line using <code>nrow()</code> and <code>unique()</code><br />
+<li>How many subjects are there? (hint: you can do this in one line
+using <code>nrow()</code> and <code>unique()</code><br />
 </li>
-<li>What is the mean and sd of their age? (do you remember how to use <code>summarise()</code>?)<br />
+<li>What is the mean and sd of their age? (do you remember how to use
+<code>summarise()</code>?)<br />
 </li>
 <li>How many different stories are there?<br />
 </li>
-<li>How many different text conditions are there? (for 3 and 4 you can use <code>lenght()</code> of <code>levels()</code> of a factor)<br />
+<li>How many different text conditions are there? (for 3 and 4 you can
+use <code>lenght()</code> of <code>levels()</code> of a factor)<br />
 </li>
-<li>Which stories occur in which condition(s)? [this is a trick question - use <code>table()</code>]</li>
+<li>Which stories occur in which condition(s)? [this is a trick question
+- use <code>table()</code>]</li>
 </ol>
 <pre class="r"><code># number of subjects 
 nrow(unique(select(p.data, subject)))</code></pre>
@@ -449,11 +465,20 @@ table(p.data$story_id, p.data$condition)</code></pre>
 ##   S18                   11                    9            10            10
 ##   S19                    9                   10            10            11
 ##   S20                   10                   10            11             9</code></pre>
-<p>That was a nice refresher! The point of this data collection was to check whether our manipulation to the stories was effective. Our evidence of this being effective is whether or not one of the conditions received significantly lower plausibility ratings compared to the other three. Specifically, we want to check if stories presented in the <code>by phrase (locative)</code> condition received lower plausbility ratings.</p>
+<p>That was a nice refresher! The point of this data collection was to
+check whether our manipulation to the stories was effective. Our
+evidence of this being effective is whether or not one of the conditions
+received significantly lower plausibility ratings compared to the other
+three. Specifically, we want to check if stories presented in the
+<code>by phrase (locative)</code> condition received lower plausbility
+ratings.</p>
 </div>
 <div id="part-2-return-of-ggplot." class="section level1">
 <h1>part 2, return of ggplot.</h1>
-<p>What is the mean and sd of the plausability ratings in each condition? Make a tibble named <code>p.data2</code> from <code>p.data</code> which reports the mean and sd of the plausibility ratings in each of the four conditions.</p>
+<p>What is the mean and sd of the plausability ratings in each
+condition? Make a tibble named <code>p.data2</code> from
+<code>p.data</code> which reports the mean and sd of the plausibility
+ratings in each of the four conditions.</p>
 <pre class="r"><code>p.data2 &lt;- p.data %&gt;%
   group_by(condition) %&gt;%
   summarise(mean.plaus = mean(rating), sd.plaus = sd(rating))</code></pre>
@@ -466,7 +491,8 @@ table(p.data$story_id, p.data$condition)</code></pre>
 ## 2 by phrase (locative)       1.35     1.19
 ## 3 locative prep              2.58     1.20
 ## 4 temporal prep              2.33     1.17</code></pre>
-<p>Have we answered our question? Maybe we also need to visualize it! Let’s create the following ggplot:</p>
+<p>Have we answered our question? Maybe we also need to visualize it!
+Let’s create the following ggplot:</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
   geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
   ylim(0,4) +
@@ -479,20 +505,29 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code" class="section level1">
 <h1>create code</h1>
-<p>First, create the skeleton of your <code>ggplot</code>. Call <code>ggplot</code> and set the data to <code>p.data2</code>, then within the <code>aes</code> call, choose the correct x and y axes. In case you forgot, our format will be <code>ggplot(data, aes(x = , y = ))</code></p>
+<p>First, create the skeleton of your <code>ggplot</code>. Call
+<code>ggplot</code> and set the data to <code>p.data2</code>, then
+within the <code>aes</code> call, choose the correct x and y axes. In
+case you forgot, our format will be
+<code>ggplot(data, aes(x = , y = ))</code></p>
 <p>You should see something like this:</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus))</code></pre>
 <p><img src="plausibility-data_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="create-code-1" class="section level1">
 <h1>create code</h1>
-<p>Add a third argument to your <code>aes</code> call, which is <code>label</code>. Using <code>round()</code>, set <code>label</code> to equal the mean plausibility rating, rounded to one decimal. Then, using <code>+</code>, add a <code>geom_label()</code> geom to your ggplot.<br />
+<p>Add a third argument to your <code>aes</code> call, which is
+<code>label</code>. Using <code>round()</code>, set <code>label</code>
+to equal the mean plausibility rating, rounded to one decimal. Then,
+using <code>+</code>, add a <code>geom_label()</code> geom to your
+ggplot.<br />
 </p>
 <p>You should see something like this:</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
   geom_label()</code></pre>
 <p><img src="plausibility-data_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Let’s flip the axes so the plot matches our goal - add a <code>coord_flip</code> to your ggplot (using <code>+</code>)</p>
+<p>Let’s flip the axes so the plot matches our goal - add a
+<code>coord_flip</code> to your ggplot (using <code>+</code>)</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
   geom_label() +
   coord_flip()</code></pre>
@@ -500,7 +535,10 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code-2" class="section level1">
 <h1>create code</h1>
-<p>Now let’s fix the y axis to that it covers the entire range of data. The ratings go from 0-4, so that should be the limits of our y axis. Using <code>+</code>, add a <code>ylim()</code> to the ggplot, which includes the range <code>0,4</code>.<br />
+<p>Now let’s fix the y axis to that it covers the entire range of data.
+The ratings go from 0-4, so that should be the limits of our y axis.
+Using <code>+</code>, add a <code>ylim()</code> to the ggplot, which
+includes the range <code>0,4</code>.<br />
 </p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
   geom_label() +
@@ -510,12 +548,21 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code-3" class="section level1">
 <h1>create code</h1>
-<p>We’re almost there - now we are going to add the errorbars. Luckily we can use <code>geom_errorbar</code> for this! Using <code>+</code>, add a <code>geom_errorbar()</code> to your ggplot.<br />
+<p>We’re almost there - now we are going to add the errorbars. Luckily
+we can use <code>geom_errorbar</code> for this! Using <code>+</code>,
+add a <code>geom_errorbar()</code> to your ggplot.<br />
 </p>
-<p>The <code>geom_errorbar</code> will need you to include this information:</p>
+<p>The <code>geom_errorbar</code> will need you to include this
+information:</p>
 <p><code>geom_errorbar(stat = 'identity', aes(ymin = ??, ymax = ??), size = ?, width = ?)</code></p>
-<p>The <code>size</code> and <code>width</code> control the appearance of the errorbars - to set them to match my plot, set <code>size</code> to .5 and <code>width</code> to .2.</p>
-<p>The <code>ymin</code> and <code>ymax</code> delineate the boundaries of our error bar. We want the errors to range from -1 SD from the mean and +1 SD from the mean. Time for some math - you’ll need to use the variables in <code>p.data2</code> to set <code>ymin</code> to -1SD from the mean, and <code>ymax</code> to +1SD from the mean.</p>
+<p>The <code>size</code> and <code>width</code> control the appearance
+of the errorbars - to set them to match my plot, set <code>size</code>
+to .5 and <code>width</code> to .2.</p>
+<p>The <code>ymin</code> and <code>ymax</code> delineate the boundaries
+of our error bar. We want the errors to range from -1 SD from the mean
+and +1 SD from the mean. Time for some math - you’ll need to use the
+variables in <code>p.data2</code> to set <code>ymin</code> to -1SD from
+the mean, and <code>ymax</code> to +1SD from the mean.</p>
 <p>If you are successful, you will see this:</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
   geom_label() +
@@ -526,7 +573,14 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code-4" class="section level1">
 <h1>create code</h1>
-<p>Why do you think the line is covering the label? This gives us insight into how ggplot works - each geom is layered onto the plot in the order that you include it in the code. It kinda sucks having the line go through the number - to fix this, we can adjust our code so that we call <code>geom_label()</code> after we call <code>geom_errorbar()</code>. Move your <code>geom_errorbar()</code> to be the first geom in your ggplot. Make sure you don’t leave a <code>+</code> at the end of your final line!</p>
+<p>Why do you think the line is covering the label? This gives us
+insight into how ggplot works - each geom is layered onto the plot in
+the order that you include it in the code. It kinda sucks having the
+line go through the number - to fix this, we can adjust our code so that
+we call <code>geom_label()</code> after we call
+<code>geom_errorbar()</code>. Move your <code>geom_errorbar()</code> to
+be the first geom in your ggplot. Make sure you don’t leave a
+<code>+</code> at the end of your final line!</p>
 <p>If you are successful, you will see this:</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
     geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
@@ -537,7 +591,9 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code-5" class="section level1">
 <h1>create code</h1>
-<p>The final steps are aesthetic. Use <code>labs()</code> to set x equal to nothing, y equal to nothing, and title = “Mean plausbility ratings with +/-1 SD”</p>
+<p>The final steps are aesthetic. Use <code>labs()</code> to set x equal
+to nothing, y equal to nothing, and title = “Mean plausbility ratings
+with +/-1 SD”</p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
     geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
   geom_label() +
@@ -548,7 +604,8 @@ table(p.data$story_id, p.data$condition)</code></pre>
 </div>
 <div id="create-code-6" class="section level1">
 <h1>create code</h1>
-<p>You can also install the package <code>ggthemes</code> and change the theme in the last line using <code>theme_classic()</code></p>
+<p>You can also install the package <code>ggthemes</code> and change the
+theme in the last line using <code>theme_classic()</code></p>
 <pre class="r"><code>ggplot(p.data2, aes(x = condition, y = mean.plaus, label = round(mean.plaus,1))) +
     geom_errorbar(stat = &#39;identity&#39;, aes(ymin = mean.plaus-sd.plaus, ymax = mean.plaus+sd.plaus), size = .5, width = .2) +
   geom_label() +
@@ -561,7 +618,9 @@ table(p.data$story_id, p.data$condition)</code></pre>
 <div id="part-3-return-of-the-violins" class="section level1">
 <h1>part 3, return of the violins<br />
 </h1>
-<p>Plotting the mean and SD is fine, but it’s also very useful to plot the <em>entire</em> distribution of the data. I want you to recreate this plot:</p>
+<p>Plotting the mean and SD is fine, but it’s also very useful to plot
+the <em>entire</em> distribution of the data. I want you to recreate
+this plot:</p>
 <pre class="r"><code>ggplot(p.data, aes(x = condition, y = rating)) +
   geom_violin(aes(fill = condition)) +
   geom_jitter(alpha = .5) +
@@ -572,17 +631,29 @@ table(p.data$story_id, p.data$condition)</code></pre>
 <div id="create-code-7" class="section level1">
 <h1>create code<br />
 </h1>
-<p>That plot only requires five lines of code. You can do it!! You might want to go one line at a time here.<br />
+<p>That plot only requires five lines of code. You can do it!! You might
+want to go one line at a time here.<br />
 </p>
-<p>Line 1: your call to <code>ggplot</code>, data should be <code>p.data</code>, choose appropriate x and y axes.<br />
-Line 2: add a <code>geom_violin</code> object. It will need an <code>aes</code>, inside of which you will set <code>fill</code> = to condition<br />
-Line 3: add a <code>geom_jitter()</code> object. Inside of it, set <code>alpha</code> to .5.<br />
-Line 4: Use <code>labs()</code> to add the same labels you see in the example<br />
-Line 5: I used <code>theme_bw()</code> from ggthemes to get the final look.</p>
+<p>Line 1: your call to <code>ggplot</code>, data should be
+<code>p.data</code>, choose appropriate x and y axes.<br />
+Line 2: add a <code>geom_violin</code> object. It will need an
+<code>aes</code>, inside of which you will set <code>fill</code> = to
+condition<br />
+Line 3: add a <code>geom_jitter()</code> object. Inside of it, set
+<code>alpha</code> to .5.<br />
+Line 4: Use <code>labs()</code> to add the same labels you see in the
+example<br />
+Line 5: I used <code>theme_bw()</code> from ggthemes to get the final
+look.</p>
 </div>
 <div id="part-4-still-have-energy" class="section level1">
 <h1>part 4, still have energy?</h1>
-<p>We might also want to know the average for each story (rather than each condition). Create a tibble named <code>p.data3</code> from <code>p.data</code> which includes the <code>mean</code> for plausbility ratings, grouped by both story and condition. After your summary call, use <code>arrange()</code> to sort the data by condition, and then by the mean rating.<br />
+<p>We might also want to know the average for each story (rather than
+each condition). Create a tibble named <code>p.data3</code> from
+<code>p.data</code> which includes the <code>mean</code> for plausbility
+ratings, grouped by both story and condition. After your summary call,
+use <code>arrange()</code> to sort the data by condition, and then by
+the mean rating.<br />
 </p>
 <pre class="r"><code>p.data3 &lt;- p.data %&gt;%
   group_by(story_id, condition) %&gt;%
@@ -606,7 +677,9 @@ Line 5: I used <code>theme_bw()</code> from ggthemes to get the final look.</p>
 ##  9 S18      by phrase (agentive)       2.64     1.57
 ## 10 S01      by phrase (agentive)       2.7      1.16
 ## # … with 70 more rows</code></pre>
-<p>The following plot uses that data to create a staircase plot of the stories to visualize their relative rankings in the four different conditions:<br />
+<p>The following plot uses that data to create a staircase plot of the
+stories to visualize their relative rankings in the four different
+conditions:<br />
 </p>
 <pre class="r"><code>ggplot(p.data3, aes(y = 1:nrow(p.data3), x = mean.plaus, label = story_id)) +
   facet_wrap(. ~ condition, scales = &#39;free&#39;) +
@@ -620,19 +693,32 @@ Line 5: I used <code>theme_bw()</code> from ggthemes to get the final look.</p>
 <div id="create-code-8" class="section level1">
 <h1>create code</h1>
 <p>How to make this plot?</p>
-<p>Line 1: call ggplot using <code>p.data3</code>. in <code>aes</code>, set x to the mean ratings, and set y to be a range from 1 to the total length of the data. Also include a third argument, <code>label</code>, which is set to the name of the story.</p>
-<p>Line 2: Add the function <code>facet_wrap()</code>, which will create the four panels (the facets). Inside <code>facet_wrap()</code>, type <code>. ~ condition, scales = 'free')</code>. The <code>. ~ condition</code> says wrap all variables (indicated by the <code>.</code>) by <code>condition</code>. The <code>scales = free</code> means each facet will have its own y and x axes labels/ticks.</p>
-<p>You should see something like this (and if you look at the name of the y axis that should show you how to set the correct y axis length:):  </p>
+<p>Line 1: call ggplot using <code>p.data3</code>. in <code>aes</code>,
+set x to the mean ratings, and set y to be a range from 1 to the total
+length of the data. Also include a third argument, <code>label</code>,
+which is set to the name of the story.</p>
+<p>Line 2: Add the function <code>facet_wrap()</code>, which will create
+the four panels (the facets). Inside <code>facet_wrap()</code>, type
+<code>. ~ condition, scales = 'free')</code>. The
+<code>. ~ condition</code> says wrap all variables (indicated by the
+<code>.</code>) by <code>condition</code>. The
+<code>scales = free</code> means each facet will have its own y and x
+axes labels/ticks.</p>
+<p>You should see something like this (and if you look at the name of
+the y axis that should show you how to set the correct y axis length:):
+ </p>
 <pre class="r"><code>ggplot(p.data3, aes(y = 1:nrow(p.data3), x = mean.plaus, label = story_id)) +
   facet_wrap(. ~ condition, scales = &#39;free&#39;) </code></pre>
 <p><img src="plausibility-data_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>That’s the hard part over. Now, add the following:</p>
 <ul>
 <li>set the y axis limits to be the range of the ratings</li>
-<li>add the appropriate x axis, y axis, and title to match the example</li>
+<li>add the appropriate x axis, y axis, and title to match the
+example</li>
 <li>add a geom_text() geom</li>
 <li>use the theme <code>theme_bw()</code></li>
-<li>delete the y axes ticks and labels using <code>theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())</code></li>
+<li>delete the y axes ticks and labels using
+<code>theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())</code></li>
 </ul>
 </div>
 

@@ -360,42 +360,61 @@ $(document).ready(function () {
 
 <div id="creating-a-simple-function" class="section level3">
 <h3>1. Creating a simple function </h3>
-<p>In R, everything is either an object or a function. We have experimented with data simulation and data creation, so we have created our own objects. However, we have not yet created our own functions. In this session, we will explore the basics of creating our own functions in R. </p>
-<p>To create a function in R, you create a new function by assigning a name to a <code>function()</code> call, and then defining the function arguments and telling the function what to do.</p>
+<p>In R, everything is either an object or a function. We have
+experimented with data simulation and data creation, so we have created
+our own objects. However, we have not yet created our own functions. In
+this session, we will explore the basics of creating our own functions
+in R. </p>
+<p>To create a function in R, you create a new function by assigning a
+name to a <code>function()</code> call, and then defining the function
+arguments and telling the function what to do.</p>
 <p>The basic structure of a function is this:</p>
 <pre class="r"><code>function_name &lt;- function(){
   # stuff the function does goes in here
 }</code></pre>
-<p>Note the two curly braces: “{” and “}” - these define the start and the end of the function and what it will do. You can include anything you want inside the function, including creating objects and using other functions.</p>
+<p>Note the two curly braces: “{” and “}” - these define the start and
+the end of the function and what it will do. You can include anything
+you want inside the function, including creating objects and using other
+functions.</p>
 </div>
 <div id="create-code" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Using the framework above, create a function named <code>hello.world</code> that will print “Hello World” to the console when run.<br />
+<p>Using the framework above, create a function named
+<code>hello.world</code> that will print “Hello World” to the console
+when run.<br />
 </p>
 <pre class="r"><code>hello.world &lt;- function(){
   print(&quot;Hello World&quot;)
 }</code></pre>
-<p>To run your function, you need to include the brackets at the end, just like any other function.</p>
+<p>To run your function, you need to include the brackets at the end,
+just like any other function.</p>
 <pre class="r"><code>hello.world()</code></pre>
 <pre><code>## [1] &quot;Hello World&quot;</code></pre>
 </div>
 <div id="adding-arguments-to-your-function" class="section level3">
 <h3>2. Adding arguments to your function</h3>
-<p>The <code>hello.world</code> function above does not have any arguments, but we can change that. When you define your function, you can also define the number of arguments it takes, their names, and whether they have default values.</p>
+<p>The <code>hello.world</code> function above does not have any
+arguments, but we can change that. When you define your function, you
+can also define the number of arguments it takes, their names, and
+whether they have default values.</p>
 <pre class="r"><code>function_name &lt;- function(argument1 = default, argument2){
   # stuff the function does goes in here
 }</code></pre>
 </div>
 <div id="create-code-1" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Make a function named <code>printer</code> which takes one argument named <code>input</code> with the default value “need input”.  Inside your function, ask it to print <code>input</code>.</p>
+<p>Make a function named <code>printer</code> which takes one argument
+named <code>input</code> with the default value “need input”.  Inside
+your function, ask it to print <code>input</code>.</p>
 <pre class="r"><code>printer &lt;- function(words = &quot;need input&quot;){
   print(words)
 }</code></pre>
-<p>Call your <code>printer</code> function without supplying an argument. What happens?</p>
+<p>Call your <code>printer</code> function without supplying an
+argument. What happens?</p>
 <pre class="r"><code>printer()</code></pre>
 <pre><code>## [1] &quot;need input&quot;</code></pre>
-<p>Now call <code>printer</code>, but this time give it some input for the <code>words</code> argument. </p>
+<p>Now call <code>printer</code>, but this time give it some input for
+the <code>words</code> argument. </p>
 <pre class="r"><code>printer(words = &#39;Hello World&#39;)</code></pre>
 <pre><code>## [1] &quot;Hello World&quot;</code></pre>
 <pre class="r"><code>printer(1234)</code></pre>
@@ -403,11 +422,18 @@ $(document).ready(function () {
 </div>
 <div id="conditional-logic-inside-functions" class="section level3">
 <h3>3. Conditional logic inside functions </h3>
-<p>Our printer function is not very special or even very smart to make, because the <code>print()</code> command already exists - we are just reinventing the wheel. However, we can use functions to define conditional logic suited to our needs.<br />
+<p>Our printer function is not very special or even very smart to make,
+because the <code>print()</code> command already exists - we are just
+reinventing the wheel. However, we can use functions to define
+conditional logic suited to our needs.<br />
 </p>
-<p>For instance, let’s say we only wanted to print something if a certain condition is met. We can do that by using <code>if</code> and <code>else</code> statements inside of a function.<br />
+<p>For instance, let’s say we only wanted to print something if a
+certain condition is met. We can do that by using <code>if</code> and
+<code>else</code> statements inside of a function.<br />
 </p>
-<p>For example, the following function takes two arguments, checks to see if they are equal, and if they are equal, sends a message to the console indicating a match was found.</p>
+<p>For example, the following function takes two arguments, checks to
+see if they are equal, and if they are equal, sends a message to the
+console indicating a match was found.</p>
 <pre class="r"><code>match.finder &lt;- function(argument1, argument2){
   if(argument1 == argument2){
     message(&#39;match found&#39;)
@@ -417,7 +443,12 @@ $(document).ready(function () {
 <pre class="r"><code>match.finder(1,2)</code></pre>
 <pre class="r"><code>match.finder(1,1)</code></pre>
 <pre><code>## match found</code></pre>
-<p>Note that the <code>if</code> statement inside <code>match.finder</code> included its own set of curly brackets, which define the scope of that particular <code>if</code> statement. At this point it is crucial to note that the brackets must always match (open and close) where you want them to match, or else your conditionals may not work (or more likely, you function will just not run properly).</p>
+<p>Note that the <code>if</code> statement inside
+<code>match.finder</code> included its own set of curly brackets, which
+define the scope of that particular <code>if</code> statement. At this
+point it is crucial to note that the brackets must always match (open
+and close) where you want them to match, or else your conditionals may
+not work (or more likely, you function will just not run properly).</p>
 </div>
 <div id="expand-match.finder" class="section level3">
 <h3>4. Expand <code>match.finder</code><br />
@@ -425,7 +456,12 @@ $(document).ready(function () {
 </div>
 <div id="create-code-2" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Add a second <code>if</code> statement to <code>match.finder</code> which will send a message to the console if a match is not found. Then run the function with a match and without a match. You can put the second <code>if</code> statement below the first, but make sure the second <code>if</code> is not inside the curly brackets of the first <code>if</code>.</p>
+<p>Add a second <code>if</code> statement to <code>match.finder</code>
+which will send a message to the console if a match is not found. Then
+run the function with a match and without a match. You can put the
+second <code>if</code> statement below the first, but make sure the
+second <code>if</code> is not inside the curly brackets of the first
+<code>if</code>.</p>
 <pre class="r"><code>match.finder &lt;- function(argument1, argument2){
   if(argument1 == argument2){
     message(&#39;match found&#39;)
@@ -443,7 +479,15 @@ $(document).ready(function () {
 <div id="what-else" class="section level3">
 <h3>5. What else?<br />
 </h3>
-<p>The function above works but is pretty lazy and prone to breaking if we expand it. Our function only has a binary decision to make (do the arguments match, yes or no) so it is not necessary to have two separate <code>if</code> statements. We can do the same thing above using <code>else</code>. The benefit is that using <code>else()</code> means we don’t need to specify the condition to be met - <code>else()</code> will automatically trigger if the first <code>if</code> returns <code>FALSE</code>. This is exactly how <code>if_else()</code> and <code>ifelse()</code> worked, from our prior sessions.</p>
+<p>The function above works but is pretty lazy and prone to breaking if
+we expand it. Our function only has a binary decision to make (do the
+arguments match, yes or no) so it is not necessary to have two separate
+<code>if</code> statements. We can do the same thing above using
+<code>else</code>. The benefit is that using <code>else()</code> means
+we don’t need to specify the condition to be met - <code>else()</code>
+will automatically trigger if the first <code>if</code> returns
+<code>FALSE</code>. This is exactly how <code>if_else()</code> and
+<code>ifelse()</code> worked, from our prior sessions.</p>
 <pre class="r"><code># a much more elegant version of match.finder()
 
 match.finder2 &lt;- function(argument1, argument2){
@@ -461,7 +505,12 @@ match.finder2 &lt;- function(argument1, argument2){
 </div>
 <div id="if-inception" class="section level3">
 <h3>6. If inception</h3>
-<p>We can put <code>if</code> statements within <code>if</code> statements to have conditional logic trigger based on other conditional logic. For example, we could have a function first check if two numbers match. If they match, the function then checks to see if their sum is greater than 10, if so, it prints a message. (Note again how the curly brackets must be nested.)</p>
+<p>We can put <code>if</code> statements within <code>if</code>
+statements to have conditional logic trigger based on other conditional
+logic. For example, we could have a function first check if two numbers
+match. If they match, the function then checks to see if their sum is
+greater than 10, if so, it prints a message. (Note again how the curly
+brackets must be nested.)</p>
 <pre class="r"><code>useless.function &lt;- function(num1, num2) {
   if(num1 == num2){
     if(num1 + num2 &gt; 10){
@@ -477,7 +526,11 @@ match.finder2 &lt;- function(argument1, argument2){
 </div>
 <div id="create-code-3" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Our <code>useless.function</code> is pretty useless, and it only tells us something if the numbers match! Add a new <code>else</code> statement to <code>useless.function</code> which prints a message when the numbers do not match. you should put your <code>else</code> statement after the second last bracket.</p>
+<p>Our <code>useless.function</code> is pretty useless, and it only
+tells us something if the numbers match! Add a new <code>else</code>
+statement to <code>useless.function</code> which prints a message when
+the numbers do not match. you should put your <code>else</code>
+statement after the second last bracket.</p>
 <pre class="r"><code>useless.function &lt;- function(num1, num2) {
   if(num1 == num2){
     if(num1 + num2 &gt; 10) {
@@ -498,7 +551,10 @@ match.finder2 &lt;- function(argument1, argument2){
 </div>
 <div id="create-code-4" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Now add an <code>else</code> statement so that the user is informed when the numbers match but are not greater than ten. You will want to add your <code>else</code> statement after the bracket that comes after your message which triggers when the numbers are greater than ten.</p>
+<p>Now add an <code>else</code> statement so that the user is informed
+when the numbers match but are not greater than ten. You will want to
+add your <code>else</code> statement after the bracket that comes after
+your message which triggers when the numbers are greater than ten.</p>
 <pre class="r"><code>useless.function &lt;- function(num1, num2) {
   if(num1 == num2){
     if(num1 + num2 &gt; 10) {
@@ -523,7 +579,9 @@ match.finder2 &lt;- function(argument1, argument2){
 </div>
 <div id="create-code-5" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Finally, modify <code>useless.function</code> so that it also checks whether a number is greater than ten when the numbers do not match. You should have four possible messages: </p>
+<p>Finally, modify <code>useless.function</code> so that it also checks
+whether a number is greater than ten when the numbers do not match. You
+should have four possible messages: </p>
 <ul>
 <li>when the numbers match and are greater than ten</li>
 <li>when they numbers match and are not greater than ten</li>
@@ -558,7 +616,9 @@ useless.function &lt;- function(num1, num2) {
 <div id="local-variables-inside-functions" class="section level3">
 <h3>9. local variables inside functions<br />
 </h3>
-<p>Maybe we could perform the tests first, and then use those results in subsequent conditions? We can save local variables within our function, check it out:</p>
+<p>Maybe we could perform the tests first, and then use those results in
+subsequent conditions? We can save local variables within our function,
+check it out:</p>
 <pre class="r"><code># the space in message is just for readability
 more.useless.function &lt;- function(num1, num2){
   check.match &lt;- num1 == num2
@@ -572,7 +632,10 @@ more.useless.function &lt;- function(num1, num2){
 </div>
 <div id="create-code-6" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Modify <code>more.useless.function</code> to output the same messages as <code>useless.function</code>, but use the saved variables <code>check.match</code> and <code>check.sum</code> within the <code>more.useless.function</code></p>
+<p>Modify <code>more.useless.function</code> to output the same messages
+as <code>useless.function</code>, but use the saved variables
+<code>check.match</code> and <code>check.sum</code> within the
+<code>more.useless.function</code></p>
 <pre class="r"><code># do not show
 # the space in message is just for readability
 more.useless.function &lt;- function(num1, num2){
@@ -607,8 +670,14 @@ more.useless.function &lt;- function(num1, num2){
 <div id="else-if" class="section level3">
 <h3>10. else if<br />
 </h3>
-<p>Let’s add one more final thing here: <code>else if</code>. We have been doing that above, although poorly. The <code>else if</code> allows us to continue checking multiple conditions through a function, whereas <code>else</code> only fires if one other condition is not met, and anything afterwards does not work unless we nest a bunch more if statements..</p>
-<p>See below, we could add an many <code>else if</code> conditions as we wanted to check for a variety of conditions.</p>
+<p>Let’s add one more final thing here: <code>else if</code>. We have
+been doing that above, although poorly. The <code>else if</code> allows
+us to continue checking multiple conditions through a function, whereas
+<code>else</code> only fires if one other condition is not met, and
+anything afterwards does not work unless we nest a bunch more if
+statements..</p>
+<p>See below, we could add an many <code>else if</code> conditions as we
+wanted to check for a variety of conditions.</p>
 <pre class="r"><code>else.if.example &lt;- function(x){
   if(x &lt; 2){
     message(&#39;x is less than 2&#39;)
@@ -626,15 +695,25 @@ more.useless.function &lt;- function(num1, num2){
 </div>
 <div id="create-code-7" class="section level3">
 <h3><strong>CREATE CODE:</strong></h3>
-<p>Create a function named <code>check.string.length</code> with a single argument <code>input</code>. Your function should produce three different messages, depending on the input: </p>
+<p>Create a function named <code>check.string.length</code> with a
+single argument <code>input</code>. Your function should produce three
+different messages, depending on the input: </p>
 <ul>
-<li>if the size of the input is &lt;= 5, message “small string” and the size</li>
-<li>if the size of the input is between 6 and 10, message “medium string” and the size</li>
-<li>if the size of the input is greater than 10, message “large string” and the size</li>
+<li>if the size of the input is &lt;= 5, message “small string” and the
+size</li>
+<li>if the size of the input is between 6 and 10, message “medium
+string” and the size</li>
+<li>if the size of the input is greater than 10, message “large string”
+and the size</li>
 </ul>
-<p>I want you to use <code>length()</code> to check the size, so that you can check numbers and strings. To save us a headache, you should include this as the first line within the function:</p>
+<p>I want you to use <code>length()</code> to check the size, so that
+you can check numbers and strings. To save us a headache, you should
+include this as the first line within the function:</p>
 <p><code>effect &lt;- sapply(strsplit(as.character(input), ''), length)</code></p>
-<p>The above line will allow us to count the length of the word when split into separate characters - otherwise we would always get a length of 1 for any word we put into the function. In the function, use <code>effect</code> to control your conditional statements.</p>
+<p>The above line will allow us to count the length of the word when
+split into separate characters - otherwise we would always get a length
+of 1 for any word we put into the function. In the function, use
+<code>effect</code> to control your conditional statements.</p>
 <pre class="r"><code># don&#39;t show
 check.length &lt;- function(input){
   effect &lt;- sapply(strsplit(as.character(input), &#39;&#39;), length)
@@ -646,7 +725,8 @@ check.length &lt;- function(input){
     message(effect, &#39;: large effect&#39;)
   }
 }</code></pre>
-<p>Now, I want you to figure out how to get <code>check.length</code> to output a small effect, a medium effect, and a small effect.</p>
+<p>Now, I want you to figure out how to get <code>check.length</code> to
+output a small effect, a medium effect, and a small effect.</p>
 <pre class="r"><code>check.length(1)</code></pre>
 <pre><code>## 1: small effect</code></pre>
 <pre class="r"><code>check.length(&#39;cat&#39;)</code></pre>

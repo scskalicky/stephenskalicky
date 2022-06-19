@@ -359,21 +359,31 @@ $(document).ready(function () {
 
 
 <p>Let’s talk about <code>for loops</code>.</p>
-<p>Sometimes, you want to cycle through your data and do stuff do it, one-at-a-time. R has a lot of methods for doing so.</p>
-<p>One method is using the <code>apply</code> family of functions, and this is generally seen to be a preferred method for many applications.</p>
-<p>However, the point of this session is to teach a <code>for loop</code>, so we will not use those (but maybe sometime in the future?)</p>
+<p>Sometimes, you want to cycle through your data and do stuff do it,
+one-at-a-time. R has a lot of methods for doing so.</p>
+<p>One method is using the <code>apply</code> family of functions, and
+this is generally seen to be a preferred method for many
+applications.</p>
+<p>However, the point of this session is to teach a
+<code>for loop</code>, so we will not use those (but maybe sometime in
+the future?)</p>
 <p><strong>The basic logic of a for loop is:</strong></p>
 <p><em>1. <code>for</code> every something in some range</em><br />
 <em>2. do something until that range is exhausted</em></p>
 <div id="create-a-simple-for-loop" class="section level2">
 <h2>Create a simple <code>for loop</code><br />
 </h2>
-<p>The way to write a for loop is similar to the <code>if</code> and <code>else</code> statements we used earlier in the session on function building, including our friends the brackets. The basic syntax is:<br />
+<p>The way to write a for loop is similar to the <code>if</code> and
+<code>else</code> statements we used earlier in the session on function
+building, including our friends the brackets. The basic syntax is:<br />
 </p>
 <pre><code>for(elements in range){
   do something
 }</code></pre>
-<p>For example, we could ask R to print out each element of a vector. We will use <code>i</code> to represent the items that are being looped through. We could use any arbitrary value because it represents a variable that will stand for each element inside of a loop.</p>
+<p>For example, we could ask R to print out each element of a vector. We
+will use <code>i</code> to represent the items that are being looped
+through. We could use any arbitrary value because it represents a
+variable that will stand for each element inside of a loop.</p>
 <pre class="r"><code># define a vector
 v1 = c(&#39;v&#39;, &#39;u&#39;, &#39;w&#39;)
 
@@ -386,7 +396,8 @@ for(i in v1){
 </div>
 <div id="task-01" class="section level2">
 <h2>Task 01</h2>
-<p>Can you write a <code>for loop</code> that prints out the numbers 0-10 in reverse order?</p>
+<p>Can you write a <code>for loop</code> that prints out the numbers
+0-10 in reverse order?</p>
 <pre class="r"><code>for(i in seq(10, 1, -1)) {
   print(i)
 }</code></pre>
@@ -400,7 +411,8 @@ for(i in v1){
 ## [1] 3
 ## [1] 2
 ## [1] 1</code></pre>
-<p>We can do more than printing within a <code>for loop</code>. For example, this loop performs a mathematical operation on each item:</p>
+<p>We can do more than printing within a <code>for loop</code>. For
+example, this loop performs a mathematical operation on each item:</p>
 <pre class="r"><code>for(i in seq(10000, 1000, -1000)){
   i &lt;- -1000/i
   print(i)
@@ -418,7 +430,8 @@ for(i in v1){
 </div>
 <div id="task-02" class="section level2">
 <h2>Task 02</h2>
-<p>Can you write a <code>for loop</code> which doubles the values between 1 and 10?</p>
+<p>Can you write a <code>for loop</code> which doubles the values
+between 1 and 10?</p>
 <pre class="r"><code>for(number in 1:10){
   number = number*2
   print(number)
@@ -433,7 +446,13 @@ for(i in v1){
 ## [1] 16
 ## [1] 18
 ## [1] 20</code></pre>
-<p>You should now understand the basics of performing an explicitly defined <code>for loop</code>. Let’s add a layer of complexity and add a conditional statement inside of our <code>for loop</code> using an <code>if</code> and <code>else</code> statement. You do this exactly the same way that we learned inside of user-defined functions. For example, this loop prints every number greater than 2 from a vector of numbers:</p>
+<p>You should now understand the basics of performing an explicitly
+defined <code>for loop</code>. Let’s add a layer of complexity and add a
+conditional statement inside of our <code>for loop</code> using an
+<code>if</code> and <code>else</code> statement. You do this exactly the
+same way that we learned inside of user-defined functions. For example,
+this loop prints every number greater than 2 from a vector of
+numbers:</p>
 <pre class="r"><code>for(i in c(1,2.5,1.2, 2.3, 5)){
   if(i &gt; 2){
     print(i)
@@ -442,7 +461,8 @@ for(i in v1){
 <pre><code>## [1] 2.5
 ## [1] 2.3
 ## [1] 5</code></pre>
-<p>You can then add an else statement to do something when the first <code>if</code> does not trigger:</p>
+<p>You can then add an else statement to do something when the first
+<code>if</code> does not trigger:</p>
 <pre class="r"><code>for(i in c(1,2.5,1.2, 2.3, 5, 2)){
   if(i &gt; 2){
     print(i)
@@ -459,9 +479,17 @@ for(i in v1){
 </div>
 <div id="task-03" class="section level2">
 <h2>Task 03</h2>
-<p>Create a variable named <code>countries</code> which contains the strings `New Zealand’, ‘Australia’, and the three countries which are part of North America. Type out the full name of each country - do not use acronyms.</p>
-<p>Then write a <code>for loop</code> which checks whether the name of the country is longer than 6 letters. If it is, print the name of the country and a short <code>message</code> about that country. If the length is less than 6, print the name of the country and the phrase ‘I guess your name is only six letters long.’</p>
-<p>You will have to use <code>length(unlist(strsplit(word, '')))</code> in order to turn each word into letters and check the length.</p>
+<p>Create a variable named <code>countries</code> which contains the
+strings `New Zealand’, ‘Australia’, and the three countries which are
+part of North America. Type out the full name of each country - do not
+use acronyms.</p>
+<p>Then write a <code>for loop</code> which checks whether the name of
+the country is longer than 6 letters. If it is, print the name of the
+country and a short <code>message</code> about that country. If the
+length is less than 6, print the name of the country and the phrase ‘I
+guess your name is only six letters long.’</p>
+<p>You will have to use <code>length(unlist(strsplit(word, '')))</code>
+in order to turn each word into letters and check the length.</p>
 <pre class="r"><code>countries &lt;- c(&#39;New Zealand&#39;, &#39;Australia&#39;, &#39;United States of America&#39;, &#39;Canada&#39;, &#39;Mexico&#39;)
 
 country_output &lt;- function(){
@@ -480,7 +508,11 @@ for(c in countries){
 <pre><code>## The country United States of America seems to have a long name!</code></pre>
 <pre><code>## [1] &quot;Canada I guess your name is only six letters long or less.&quot;
 ## [1] &quot;Mexico I guess your name is only six letters long or less.&quot;</code></pre>
-<p>We can make loops even more intelligent by storing information in a loop as it processes. This information can be checked against future loops and decisions can be made along the way. Importantly, any temporary variable stored within a loop will be reset each time the loop starts. For example, compare these two loops:</p>
+<p>We can make loops even more intelligent by storing information in a
+loop as it processes. This information can be checked against future
+loops and decisions can be made along the way. Importantly, any
+temporary variable stored within a loop will be reset each time the loop
+starts. For example, compare these two loops:</p>
 <pre class="r"><code># x is set to zero at the start of each loop
 for(i in 1:10){
   x = 0
@@ -497,7 +529,8 @@ for(i in 1:10){
 ## [1] 1
 ## [1] 1
 ## [1] 1</code></pre>
-<p>Now look what happens when we set to 0 <em>outside</em> of the for loop</p>
+<p>Now look what happens when we set to 0 <em>outside</em> of the for
+loop</p>
 <pre class="r"><code># x is defined outside of the for loop
 x &lt;- 0
 
@@ -515,7 +548,10 @@ for(i in 1:10){
 ## [1] 8
 ## [1] 9
 ## [1] 10</code></pre>
-<p>As such it’s pretty important to properly scope your variables for a loop - otherwise you might accidentally reset or not reset an important variable each time, which could have negative consequences if you are checking the variable for a reason .</p>
+<p>As such it’s pretty important to properly scope your variables for a
+loop - otherwise you might accidentally reset or not reset an important
+variable each time, which could have negative consequences if you are
+checking the variable for a reason .</p>
 <p>Compare these two for loops - which one is better?</p>
 <pre class="r"><code># temp variable stored outside a loop
 
@@ -555,7 +591,10 @@ for(i in c(1,4,6,3,8,2,2,4,100)){
 ## the current winner is 0</code></pre>
 <pre><code>## the current winner is 4</code></pre>
 <pre><code>## the current winner is 100</code></pre>
-<p>At this point we want to start storing our for loops inside functions so we can control the scope of variables used for any particular loop. If we only keep a variable inside a function, it will not enter our global environment (and thus not cause later issues. )</p>
+<p>At this point we want to start storing our for loops inside functions
+so we can control the scope of variables used for any particular loop.
+If we only keep a variable inside a function, it will not enter our
+global environment (and thus not cause later issues. )</p>
 <pre class="r"><code>loopy &lt;- function(){
   
   # this temporary variable is inside a function but not inside the for loop. 
@@ -580,15 +619,21 @@ loopy()</code></pre>
 ## [1] &quot;r&quot;
 ## [1] &quot;l&quot;
 ## [1] &quot;d&quot;</code></pre>
-<p>What happens when I try to call <code>output</code> from outside of the function?</p>
+<p>What happens when I try to call <code>output</code> from outside of
+the function?</p>
 <pre class="r"><code># output
 # Error: object &#39;output&#39; not found</code></pre>
 </div>
 <div id="task-04" class="section level2">
 <h2>Task 04</h2>
-<p>Create a function named <code>long_name_checker</code> which takes a single argument <code>names</code>.</p>
-<p>Inside the function, check whether each name in a list is longer than 5 letters. If so, it’s a long name. If it’s longer than 8 letters, it’s a super long name. Otherwise it’s a short name. Create some appropriate output messages for each condition.</p>
-<p>Test it with these names: <code>names = c('', 'Jerry', 'Elaine', 'Kramer', 'George', 'Seinfeld', 'Fraser', 'Rumplestiltskin')</code></p>
+<p>Create a function named <code>long_name_checker</code> which takes a
+single argument <code>names</code>.</p>
+<p>Inside the function, check whether each name in a list is longer than
+5 letters. If so, it’s a long name. If it’s longer than 8 letters, it’s
+a super long name. Otherwise it’s a short name. Create some appropriate
+output messages for each condition.</p>
+<p>Test it with these names:
+<code>names = c('', 'Jerry', 'Elaine', 'Kramer', 'George', 'Seinfeld', 'Fraser', 'Rumplestiltskin')</code></p>
 <pre class="r"><code>long_name_checker &lt;- function(list_of_names){
   for(i in list_of_names){
     name_length = length(unlist(strsplit(i, &#39;&#39;)))
@@ -616,8 +661,19 @@ long_name_checker(names)</code></pre>
 </div>
 <div id="task-05" class="section level2">
 <h2>Task 05</h2>
-<p>Make a new function named <code>long_name_checker_02</code> which is a modified version of your function from Task 04 so that it now stores all names that count as super long (which should be two names). At the end of your first for loop, add <strong>another</strong> for loop which then tells you which of the super long names are the longest. Use a message to output the correct results.</p>
-<p>Store the names in an empty variable named <code>super_long_names</code> - you can initialize it with <code>super_long_names &lt;- c()</code>. You must store this variable <strong>inside</strong> the function - so think carefully about where you place it. You will also need to store a temporary variable to check which of the super long names is the longest - think carefully where this one goes too!</p>
+<p>Make a new function named <code>long_name_checker_02</code> which is
+a modified version of your function from Task 04 so that it now stores
+all names that count as super long (which should be two names). At the
+end of your first for loop, add <strong>another</strong> for loop which
+then tells you which of the super long names are the longest. Use a
+message to output the correct results.</p>
+<p>Store the names in an empty variable named
+<code>super_long_names</code> - you can initialize it with
+<code>super_long_names &lt;- c()</code>. You must store this variable
+<strong>inside</strong> the function - so think carefully about where
+you place it. You will also need to store a temporary variable to check
+which of the super long names is the longest - think carefully where
+this one goes too!</p>
 <pre class="r"><code>long_name_checker_02 &lt;- function(list_of_names){
   super_long_names = c()
   
@@ -657,18 +713,27 @@ long_name_checker_02(names)</code></pre>
 </div>
 <div id="task-06" class="section level2">
 <h2>Task 06</h2>
-<p>Define a function named <code>print_letters</code> that takes no arguments.</p>
-<p>This function will contain a for loop which checks each letter of the alphabet. If the letter is a vowel, the loop should print the vowel and the order of the vowel in the alphabet (e.g., ‘A’ is the first vowel, ‘E’ is the second vowel - so your output for vowels should range from 1-5 - don’t include ‘Y’). If the letter is a consonant, print the numerical position of that letter in the alphabet (e.g., ‘B’ is 2, ‘Z’ = 26.)</p>
+<p>Define a function named <code>print_letters</code> that takes no
+arguments.</p>
+<p>This function will contain a for loop which checks each letter of the
+alphabet. If the letter is a vowel, the loop should print the vowel and
+the order of the vowel in the alphabet (e.g., ‘A’ is the first vowel,
+‘E’ is the second vowel - so your output for vowels should range from
+1-5 - don’t include ‘Y’). If the letter is a consonant, print the
+numerical position of that letter in the alphabet (e.g., ‘B’ is 2, ‘Z’ =
+26.)</p>
 <p>Tips:<br />
 </p>
 <ul>
-<li>You should define two counters to keep track of where you are in the list<br />
+<li>You should define two counters to keep track of where you are in the
+list<br />
 </li>
 <li>You should increase the counters accordingly<br />
 </li>
 <li>you should define a list of vowels to check against<br />
 </li>
-<li>you should need just one <code>if</code> and an <code>else</code> statement</li>
+<li>you should need just one <code>if</code> and an <code>else</code>
+statement</li>
 </ul>
 <pre class="r"><code>print_letters &lt;- function(){
   counter.all &lt;- 0
