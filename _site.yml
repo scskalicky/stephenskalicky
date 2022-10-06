@@ -29,6 +29,8 @@ navbar:
     #        href: sla.html
     - text: Tutorials and Extras
       menu:
+        - text: "A gentle introduction to Python and NLTK"
+          href: https://github.com/scskalicky/SNAP-CL
         - text: 'LexTALE working in JsPsych v7.+'
           href: https://github.com/scskalicky/LexTALE_jsPsych
         - text: 'Using Zotero in R Studio to Write Academic Papers'
