@@ -14,7 +14,7 @@
 
 <title>Plausibility</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -151,11 +151,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -184,8 +188,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +197,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -378,7 +375,7 @@ href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
 <pre class="r"><code>library(tidyverse)
 p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_data.csv&#39;)</code></pre>
 <pre><code>## Rows: 800 Columns: 6
-## ── Column specification ────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (3): story_id, att, condition
 ## dbl (3): subject, age, rating
@@ -387,7 +384,7 @@ p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_d
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>Use <code>str</code> to examine the structre of the data</p>
 <pre class="r"><code>str(p.data)</code></pre>
-<pre><code>## spec_tbl_df [800 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+<pre><code>## spc_tbl_ [800 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
 ##  $ subject  : num [1:800] 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ story_id : chr [1:800] &quot;S11&quot; &quot;S19&quot; &quot;S01&quot; &quot;S02&quot; ...
 ##  $ age      : num [1:800] 34 34 34 34 34 34 34 34 34 34 ...
@@ -504,6 +501,11 @@ Let’s create the following ggplot:</p>
   theme(legend.position = &#39;none&#39;)  + 
   geom_label() +
   theme_classic()</code></pre>
+<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this
+## warning was generated.</code></pre>
 <p><img src="plausibility-data_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="create-code" class="section level1">
@@ -662,8 +664,8 @@ the mean rating.<br />
   group_by(story_id, condition) %&gt;%
   summarise(mean.plaus = mean(rating), sd.plaus = sd(rating)) %&gt;%
   arrange(condition, mean.plaus)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override using the
-## `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override
+## using the `.groups` argument.</code></pre>
 <pre class="r"><code>p.data3</code></pre>
 <pre><code>## # A tibble: 80 × 4
 ## # Groups:   story_id [20]
@@ -679,7 +681,7 @@ the mean rating.<br />
 ##  8 S14      by phrase (agentive)       2.64     1.21
 ##  9 S18      by phrase (agentive)       2.64     1.57
 ## 10 S01      by phrase (agentive)       2.7      1.16
-## # … with 70 more rows</code></pre>
+## # ℹ 70 more rows</code></pre>
 <p>The following plot uses that data to create a staircase plot of the
 stories to visualize their relative rankings in the four different
 conditions:<br />

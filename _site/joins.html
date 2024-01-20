@@ -14,7 +14,7 @@
 
 <title>joins, factors, plots</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -151,11 +151,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -184,8 +188,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +197,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -481,7 +478,11 @@ be returned once for each matching row in x.”</em></p>
 <p>Also, note what happens if you do not specify a <code>by</code>
 argument</p>
 <pre class="r"><code>left_join(two,one)</code></pre>
-<pre><code>## Joining, by = &quot;subject&quot;</code></pre>
+<pre><code>## Joining with `by = join_by(subject)`</code></pre>
+<pre><code>## Warning in left_join(two, one): Each row in `x` is expected to match at most 1 row in `y`.
+## ℹ Row 1 of `x` matches multiple rows.
+## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to
+##   silence this warning.</code></pre>
 <pre><code>## # A tibble: 10 × 3
 ##    subject   age score
 ##      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
@@ -557,7 +558,7 @@ exp.data.long</code></pre>
 ##  8       3 post1  29.4
 ##  9       3 post2  20.3
 ## 10       4 pre    20.1
-## # … with 20 more rows</code></pre>
+## # ℹ 20 more rows</code></pre>
 </div>
 <div
 id="create-a-second-tibble-named-demographic.data-with-the-following-columns"
@@ -598,7 +599,7 @@ result of using <code>left_join()</code> on <code>exp.data.long</code>
 and <code>demographic.data</code><br />
 </h3>
 <pre class="r"><code>full.data &lt;- left_join(exp.data.long, demographic.data)</code></pre>
-<pre><code>## Joining, by = &quot;subject&quot;</code></pre>
+<pre><code>## Joining with `by = join_by(subject)`</code></pre>
 <pre class="r"><code>full.data</code></pre>
 <pre><code>## # A tibble: 30 × 5
 ##    subject test  score   age condition
@@ -613,7 +614,7 @@ and <code>demographic.data</code><br />
 ##  8       3 post1  29.4  20.0 high     
 ##  9       3 post2  20.3  20.0 high     
 ## 10       4 pre    20.1  20.2 high     
-## # … with 20 more rows</code></pre>
+## # ℹ 20 more rows</code></pre>
 </div>
 <div
 id="create-a-new-tibble-named-output-which-contains-the-mean-and-sd-of-score-at-each-test-time-separated-by-condition"
@@ -626,8 +627,8 @@ condition<br />
 <pre class="r"><code>output &lt;- full.data %&gt;%
   group_by(test, condition) %&gt;%
   summarise(mean.score = mean(score), sd.score = sd(score))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;test&#39;. You can override using the `.groups`
-## argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;test&#39;. You can override using
+## the `.groups` argument.</code></pre>
 <pre class="r"><code>output</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ## # Groups:   test [3]
