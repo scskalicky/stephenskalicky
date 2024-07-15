@@ -35,7 +35,7 @@ navbar:
           href: https://github.com/scskalicky/LexTALE_jsPsych
         - text: 'Using Zotero in R Studio to Write Academic Papers'
           href: https://github.com/scskalicky/zotero_tutorial/blob/main/zotero_and_Rstudio.md
-    - text: "R Workshop Tutorials (from 2021)"
+    - text: "R Workshop Tutorials (from 2021 - deprecating...)"
       menu: 
           - text: 'Getting Started with R'
             href: getting-started.html
