@@ -14,7 +14,7 @@
 
 <title>Recreate a plot</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -367,7 +367,7 @@ result of calling <code>read_csv()</code> on
 <pre class="r"><code>library(tidyverse)
 metaphor &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/metaphor_data.csv&#39;)</code></pre>
 <pre><code>## Rows: 1304 Columns: 28
-## ── Column specification ────────────────────────────────────────────
+## ── Column specification ────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (6): metaphor_id, response, met_type, sex, hand, language_group
 ## dbl (22): subject, conceptual, nm, trial_order, met_stim, met_RT, age, colle...
@@ -452,15 +452,16 @@ of removing the outliers from <code>met.small</code>. Use the
 </ol>
 <pre class="r"><code>met.trim &lt;- met.small %&gt;%
   dplyr::filter(outliers == 0)</code></pre>
-<pre><code>## Warning: Using one column matrices in `filter()` was deprecated in dplyr
-## 1.1.0.
-## ℹ Please use one dimensional logical vectors instead.
-## ℹ The deprecated feature was likely used in the dplyr package.
-##   Please report the issue at
-##   &lt;https://github.com/tidyverse/dplyr/issues&gt;.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this
-## warning was generated.</code></pre>
+<pre><code>## Warning: Using one column matrices in `filter()`
+## was deprecated in dplyr 1.1.0.
+## ℹ Please use one dimensional logical
+##   vectors instead.
+## This warning is displayed once every 8
+## hours.
+## Call
+## `lifecycle::last_lifecycle_warnings()`
+## to see where this warning was
+## generated.</code></pre>
 <pre class="r"><code># sanity check
 sum(met.trim$outliers)</code></pre>
 <pre><code>## [1] 0</code></pre>

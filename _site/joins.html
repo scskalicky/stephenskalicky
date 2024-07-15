@@ -14,7 +14,7 @@
 
 <title>joins, factors, plots</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -479,10 +479,6 @@ be returned once for each matching row in x.”</em></p>
 argument</p>
 <pre class="r"><code>left_join(two,one)</code></pre>
 <pre><code>## Joining with `by = join_by(subject)`</code></pre>
-<pre><code>## Warning in left_join(two, one): Each row in `x` is expected to match at most 1 row in `y`.
-## ℹ Row 1 of `x` matches multiple rows.
-## ℹ If multiple matches are expected, set `multiple = &quot;all&quot;` to
-##   silence this warning.</code></pre>
 <pre><code>## # A tibble: 10 × 3
 ##    subject   age score
 ##      &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
@@ -627,8 +623,9 @@ condition<br />
 <pre class="r"><code>output &lt;- full.data %&gt;%
   group_by(test, condition) %&gt;%
   summarise(mean.score = mean(score), sd.score = sd(score))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;test&#39;. You can override using
-## the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by
+## &#39;test&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <pre class="r"><code>output</code></pre>
 <pre><code>## # A tibble: 6 × 4
 ## # Groups:   test [3]

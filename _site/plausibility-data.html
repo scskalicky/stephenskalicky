@@ -14,7 +14,7 @@
 
 <title>Plausibility</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -375,7 +375,7 @@ href="https://www.stephenskalicky.com/r_data/plausibility_data.csv">here</a></p>
 <pre class="r"><code>library(tidyverse)
 p.data &lt;- read_csv(&#39;https://www.stephenskalicky.com/r_data/plausibility_data.csv&#39;)</code></pre>
 <pre><code>## Rows: 800 Columns: 6
-## ── Column specification ────────────────────────────────────────────
+## ── Column specification ────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (3): story_id, att, condition
 ## dbl (3): subject, age, rating
@@ -501,11 +501,15 @@ Let’s create the following ggplot:</p>
   theme(legend.position = &#39;none&#39;)  + 
   geom_label() +
   theme_classic()</code></pre>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+<pre><code>## Warning: Using `size` aesthetic for lines was
+## deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this
-## warning was generated.</code></pre>
+## This warning is displayed once every 8
+## hours.
+## Call
+## `lifecycle::last_lifecycle_warnings()`
+## to see where this warning was
+## generated.</code></pre>
 <p><img src="plausibility-data_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="create-code" class="section level1">
@@ -664,8 +668,9 @@ the mean rating.<br />
   group_by(story_id, condition) %&gt;%
   summarise(mean.plaus = mean(rating), sd.plaus = sd(rating)) %&gt;%
   arrange(condition, mean.plaus)</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;story_id&#39;. You can override
-## using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by
+## &#39;story_id&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <pre class="r"><code>p.data3</code></pre>
 <pre><code>## # A tibble: 80 × 4
 ## # Groups:   story_id [20]

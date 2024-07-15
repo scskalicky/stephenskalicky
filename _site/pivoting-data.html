@@ -15,7 +15,7 @@
 
 <title>Getting wide and long with data</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -577,9 +577,10 @@ my.names &lt;- colnames(space_data[4:13])
 
 clean_space &lt;- space_data %&gt;%
   pivot_longer(cols = my.names, values_to = &#39;rt&#39;, names_to = &#39;order&#39;)</code></pre>
-<pre><code>## Warning: Using an external vector in selections was deprecated in tidyselect
-## 1.1.0.
-## ℹ Please use `all_of()` or `any_of()` instead.
+<pre><code>## Warning: Using an external vector in selections
+## was deprecated in tidyselect 1.1.0.
+## ℹ Please use `all_of()` or `any_of()`
+##   instead.
 ##   # Was:
 ##   data %&gt;% select(my.names)
 ## 
@@ -588,9 +589,12 @@ clean_space &lt;- space_data %&gt;%
 ## 
 ## See
 ## &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this
-## warning was generated.</code></pre>
+## This warning is displayed once every 8
+## hours.
+## Call
+## `lifecycle::last_lifecycle_warnings()`
+## to see where this warning was
+## generated.</code></pre>
 <p>You should see something like this:</p>
 <pre class="r"><code>head(clean_space, n = 10)</code></pre>
 <div data-pagedtable="false">

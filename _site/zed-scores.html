@@ -15,7 +15,7 @@
 
 <title>zscores</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -569,18 +569,21 @@ transformation.</p>
   mutate(across(.cols = c(test1, test2), scale, center = T, scale = T)) %&gt;%
   mutate(across(everything(), as.vector))</code></pre>
 <pre><code>## Warning: There was 1 warning in `mutate()`.
-## ℹ In argument: `across(.cols = c(test1, test2), scale, center = T,
-##   scale = T)`.
+## ℹ In argument: `across(.cols = c(test1,
+##   test2), scale, center = T, scale =
+##   T)`.
 ## Caused by warning:
-## ! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
-## Supply arguments directly to `.fns` through an anonymous function
-## instead.
+## ! The `...` argument of `across()` is
+##   deprecated as of dplyr 1.1.0.
+## Supply arguments directly to `.fns`
+## through an anonymous function instead.
 ## 
 ##   # Previously
 ##   across(a:b, mean, na.rm = TRUE)
 ## 
 ##   # Now
-##   across(a:b, \(x) mean(x, na.rm = TRUE))</code></pre>
+##   across(a:b, \(x) mean(x, na.rm =
+##   TRUE))</code></pre>
 </div>
 
 

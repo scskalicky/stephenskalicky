@@ -15,7 +15,7 @@
 
 <title>Using dprime to analyse lexical decision behaviour</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
@@ -430,14 +430,16 @@ href="https://dictionary.apa.org/d-prime">interpreting dprime</a></p>
 <li>Plot dprime</li>
 </ol>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.2     ✔ purrr   1.0.1
-## ✔ tibble  3.2.1     ✔ dplyr   1.1.0
-## ✔ tidyr   1.3.0     ✔ stringr 1.5.0
-## ✔ readr   2.1.4     ✔ forcats 1.0.0
-## ── Conflicts ────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Attaching core tidyverse packages ───
+## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+## ✔ purrr     1.0.2     
+## ── Conflicts ── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 <pre class="r"><code>library(ggthemes)</code></pre>
 </div>
 <div id="loading-the-dataset" class="section level1">
@@ -448,7 +450,7 @@ or use read_csv() to import the data. The raw dataset can be saved as
 ‘df’.</p>
 <pre class="r"><code>df &lt;- read_csv(&#39;https://stephenskalicky.com/r_data/dprime_data_raw.csv&#39;)</code></pre>
 <pre><code>## Rows: 19711 Columns: 38
-## ── Column specification ────────────────────────────────────────────
+## ── Column specification ────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (10): block, word, type, resp, vuw, condition, gender, test, otherL1, deci
 ## dbl (28): order, rt, list, cycle, sequence, age, score, year, LexTale, cscor...
@@ -487,8 +489,9 @@ and <code>n()</code>.<br />
 scores.tv &lt;- df2 %&gt;%
   dplyr::group_by(vuw, type, resp) %&gt;%
   dplyr::summarise(n = n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;vuw&#39;, &#39;type&#39;. You can override
-## using the `.groups` argument.</code></pre>
+<pre><code>## `summarise()` has grouped output by
+## &#39;vuw&#39;, &#39;type&#39;. You can override using
+## the `.groups` argument.</code></pre>
 <pre class="r"><code># base R
 scores.b &lt;- as.data.frame(table(df2))</code></pre>
 <p>Your <code>scores</code> df should be like this:</p>
